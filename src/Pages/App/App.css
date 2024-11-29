@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'SF Pro Display';
+    src: url('/public/Fonts/SF-PRO-DISPLAY-SEMIBOLD.OTF') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+  }
