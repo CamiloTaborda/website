@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Layout from "../../Components/Layout";
 import AnimatedText from "../../Animations/AnimatedText";
 import Button from "../../Components/Button";
@@ -7,6 +8,7 @@ import ScrollArrow from '../../Components/ScrollArrow';
 import AnimatedSection from '../../Animations/AnimatedSection';
 
 const Home = () => {
+  const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
@@ -39,46 +41,45 @@ const Home = () => {
         <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0">
           <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up">
             <Button href="/CV/cv-camilo-taborda.pdf" download>
-              Descarga mi CV
+              {t('download_cv')}
             </Button>
             <Button href="https://wa.me/+573052737622">
-              Contáctame
+              {t('contact_me')}
             </Button>
           </div>
         </div>
 
         <div className="order-1 md:order-2 flex flex-col justify-center items-center w-full h-full mb-10 md:mb-0 animate-slide-in-right mt-44 md:mt-0">
           <h1 className="font-extrabold text-6xl text-gray-300 bg-gray-800 bg-opacity-75 border border-gray-500 border-b-4 px-6 py-4 rounded-md relative overflow-hidden shadow-lg mb-10">
-            ¡Hola!
+            {t('hello')}
           </h1>
           <AnimatedText
-            text="Soy Camilo Taborda, desarrollador de software apasionado y mi misión es crear aplicaciones que te hagan la vida más fácil. Me esfuerzo por ofrecerte la mejor experiencia posible, con soluciones simples y efectivas que realmente funcionen para ti."
+            text={t('description')} 
           />
         </div>
 
-        {/* Icono de flecha para indicar scroll */}
         <ScrollArrow />
       </div>
 
       {/* Segunda sección: modelo 3D + texto */}
-      <div className="flex justify-center items-center w-full bg-white px-0 md:px-6 lg:px-12 py-10">
-        <AnimatedSection>
-          <div className="flex w-full flex-col md:flex-row justify-between max-w-[1500px]">
-            {/* Texto arriba en pantallas pequeñas */}
-            <div className="w-full md:w-1/2 flex flex-col justify-center text-black p-10">
-              <h2 className="text-4xl font-bold mb-4">¡Mira este modelo en 3D!</h2>
-              <p className="text-lg text-black font-medium mb-4">
-                Esta es una bicicleta en 3D que puedes rotar, acercar y explorar desde cualquier ángulo. Dale una vuelta y descubre cómo interactúa con el entorno.
-              </p>
-              <Button href="/portfolio">Ver proyectos</Button>
-            </div>
+      <div className="relative w-full h-screen bg-white overflow-hidden">
+        <div className="absolute inset-0 flex justify-center items-center">
+          <MyModel />
+        </div>
 
-            {/* Modelo 3D debajo en pantallas pequeñas */}
-            <div className="w-full md:w-1/2 h-80">
-              <MyModel />
-            </div>
-          </div>
-        </AnimatedSection>
+        <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 md:px-12 bg-black/50">
+          <AnimatedSection>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+              {t('view_3d_model')}
+            </h2>
+            <p className="text-lg md:text-xl text-gray-200 font-medium max-w-2xl mb-6">
+              {t('3d_description')}
+            </p>
+            <Button href="/portfolio" className="bg-white text-black hover:scale-105 transition-transform duration-300">
+              {t('view_projects')}
+            </Button>
+          </AnimatedSection>
+        </div>
       </div>
     </Layout>
   );

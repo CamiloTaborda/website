@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 import Video from "../../Components/Video";
@@ -5,34 +6,35 @@ import ScrollArrow from "../../Components/ScrollArrow";
 import AnimatedSection from "../../Animations/AnimatedSection";
 
 const Portfolio = () => {
+  const { t } = useTranslation();
   const videos = [
-    { src: '/public/Video/Video1.mp4', caption: 'Website Ardata Tech', link: 'https://ardatatech.co/' },
-    { src: '/public/Video/Video2.mp4', caption: 'Website 77 Render Studio', link: 'https://www.77renderstudio.com/' },
-    { src: '/public/Video/Video3.mp4', caption: 'Configurador Modular', link: 'https://static.ardatatech.co/ARData/modular/' },
-    { src: '/public/Video/Video4.mp4', caption: 'Tour de productos', link: 'https://static.ardatatech.co/ARData/product-tour/' },
-    { src: '/public/Video/Video5.mp4', caption: 'Visor 360', link: 'https://static.ardatatech.co/ARData/360-3d-visor-copia/' },
-    { src: '/public/Video/Video6.mp4', caption: 'Animacion de producto', link: 'https://static.ardatatech.co/ARData/product-animation/' },
+    { src: '/Video/video3.mp4', caption: 'Modular Configurator', link: 'https://static.ardatatech.co/ARData/modular/' },
+    { src: '/Video/video5.mp4', caption: 'Viewer360', link: 'https://static.ardatatech.co/ARData/360-3d-visor-copia/' },
+    { src: '/Video/video6.mp4', caption: 'Product Animation', link: 'https://static.ardatatech.co/ARData/product-animation/' },
+    { src: '/Video/video4.mp4', caption: 'Product Tour', link: 'https://static.ardatatech.co/ARData/product-tour/' },
+    { src: '/Video/video1.mp4', caption: 'Website Ardata Tech', link: 'https://ardatatech.co/' },
+    { src: '/Video/video2.mp4', caption: 'Website 77 Render Studio', link: 'https://www.77renderstudio.com/' },
   ];
 
   return (
     <Layout background={{ backgroundColor: "black" }}>
       <div className="flex flex-col justify-center items-center w-full text-white h-auto overflow-auto bg-black">
         <div 
-          className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white bg-[url('./public/Icons/foto-codigo.jpg')] bg-cover bg-center bg-no-repeat">
+          className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white bg-[url('/Icons/foto-codigo.jpg')] bg-cover bg-center bg-no-repeat">
           
           {/* Overlay oscuro para mejorar la legibilidad */}
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
           {/* Contenido central con animaciones */}
-          <div className="relative z-10 flex flex-col items-center animate-fade-in">
-            <h1 className="font-bold text-4xl md:text-5xl mb-5 drop-shadow-lg animate-slide-in-down">Portfolio</h1>
+          <div className="relative flex flex-col items-center animate-fade-in">
+            <h1 className="font-bold text-4xl md:text-5xl mb-5 drop-shadow-lg animate-slide-in-down">{t("my_portfolio")}</h1>
             <p className="font-medium max-w-3xl leading-relaxed px-4 mb-10 drop-shadow-lg animate-slide-in-up">
-              Descubre una selección de mis proyectos más innovadores, donde he aplicado mis habilidades en desarrollo front-end y visualización 3D. Desde aplicaciones interactivas hasta configuradores personalizados, cada proyecto refleja mi pasión por crear experiencias únicas y funcionales para los usuarios.
+            {t("portfolio_description")}
             </p>
 
             {/* Botón CTA */}
             <Button href="https://wa.me/+573052737622">
-              ¡Contáctame!
+              {t("contact_me_porfolio")}
             </Button>
           </div>
           <ScrollArrow />
@@ -55,13 +57,13 @@ const Portfolio = () => {
           {/* Primer contenedor */}
           <div className="flex justify-center items-center w-full mb-4">
             <p className="font-medium max-w-3xl leading-relaxed text-center text-lg md:text-2xl">
-              ¿Listo para llevar tu proyecto al siguiente nivel? ¡Contáctame y hagamos realidad tus ideas!
+              {t("portfolio_description_1")}
             </p>
           </div>
 
           {/* Segundo contenedor */}
           <div className="flex justify-center items-center w-full">
-            <Button href="https://wa.me/+573052737622">Contáctame</Button>
+            <Button href="https://wa.me/+573052737622">{t("contact_me")}</Button>
           </div>
           </AnimatedSection>
         </div>

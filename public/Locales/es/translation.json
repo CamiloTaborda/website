@@ -1,0 +1,57 @@
+{
+    "followUs": "Sígueme en redes sociales",
+    "twitter": "Twitter",
+    "instagram": "Instagram",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "contact_footer": "Contacto",
+    "email": "camilotaborda2010@gmail.com",
+    "phone": "+57 3052737622",
+    "featuredProjects": "Proyectos Destacados",
+    "modularConfigurator": "Configurador Modular",
+    "productAnimation": "Animación de producto",
+    "productTour": "Tour de producto",
+    "companyName": "CamiloT",
+    "rightsReserved": "Todos los derechos reservados",
+   
+    "home": "Inicio",
+    "about": "Sobre mí",
+    "portfolio": "Portfolio",
+    "contact": "Contacto",
+
+    "download_cv": "Descarga mi CV",
+    "contact_me": "Contáctame",
+    "hello": "¡Hola!",
+    "description": "Soy Camilo Taborda, desarrollador de software apasionado y mi misión es crear aplicaciones que te hagan la vida más fácil. Me esfuerzo por ofrecerte la mejor experiencia posible, con soluciones simples y efectivas que realmente funcionen para ti.",
+    "view_3d_model": "¡Explora el Futuro del Diseño 3D!",
+    "3d_description": "Sumérgete en la magia de la tecnología 3D interactiva. Visualiza proyectos innovadores, controla el modelo y siente la experiencia como nunca antes.",
+    "view_projects": "Ver proyectos",
+
+    "my_name": "Camilo Taborda",
+    "my_description_1": "Soy un desarrollador front-end apasionado, con experiencia en JavaScript, React y Three.js. Me especializo en crear interfaces web interactivas y visualizaciones 3D que no solo son atractivas, sino también accesibles y optimizadas para un rendimiento excepcional.",
+    "my_description_2": "Disfruto resolver problemas y siempre estoy en la búsqueda de nuevas tecnologías y herramientas que me permitan mejorar mis habilidades. ¡Estoy emocionado por seguir aprendiendo y creciendo en este emocionante campo!",
+    "mySkills": "Mis habilidades",
+    "skillsDescription": "Soy un desarrollador front-end con experiencia en JavaScript, HTML y CSS. Trabajo con React para crear aplicaciones dinámicas, Tailwind CSS para diseños rápidos y modernos, y Three.js para integrar configuradores 3D interactivos.",
+    "myExperience": "Mi experiencia",
+    "77RenderStudio": "77 Render Studio",
+    "77RenderStudioDescription": "En 77 Render Studio, me dedicaba al desarrollo de software especializado en proyectos inmobiliarios, creando soluciones que optimizaban la visualización y gestión de propiedades.",
+    "ArdataTech": "Ardata Tech",
+    "ArdataTechDescription": "En Ardata Tech, nos especializamos en crear modelos 3D de productos para ecommerce, permitiendo a los clientes personalizar sus productos mediante un configurador interactivo.",
+
+    "my_education": "Mi educación",
+    "education_description_1": "Estoy en un constante proceso de aprendizaje a través de",
+    "platzi_description": "Platzi",
+    "education_description_2": "donde he podido adquirir y mejorar mis habilidades en diversas áreas del desarrollo de Software.",
+    "see_some_certifications": "Ver algunas certificaciones",
+    "hide_certifications": "Ocultar certificaciones",
+    "my_certificates": "Mis Certificados",
+
+    "my_portfolio": "Portfolio",
+    "portfolio_description": "Descubre una selección de mis proyectos más innovadores, donde he aplicado mis habilidades en desarrollo front-end y visualización 3D. Desde aplicaciones interactivas hasta configuradores personalizados, cada proyecto refleja mi pasión por crear experiencias únicas y funcionales para los usuarios.",
+    "contact_me_porfolio": "¡Contáctame!",
+    "portfolio_description_1": "¿Listo para llevar tu proyecto al siguiente nivel? ¡Contáctame y hagamos realidad tus ideas!",
+
+    "tilte_contact": "¿Tienes un proyecto en mente?",
+    "description_contact": "Estoy aquí para ayudarte a llevar tus ideas al siguiente nivel. Ya sea que estés buscando desarrollar una aplicación interactiva, un configurador en 3D o cualquier proyecto relacionado con tecnología, ¡me encantaría ser parte de tu visión! No dudes en enviarme un mensaje y hablemos de cómo podemos trabajar juntos."
+}
+  

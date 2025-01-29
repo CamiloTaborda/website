@@ -1,24 +1,24 @@
+import { useTranslation } from "react-i18next";
 import SlideUp from "../../Animations/SlideUp";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 
 const Contacto = () => {
+  const { t } = useTranslation();
+
   return (
     <Layout background={{ backgroundColor: "black" }}>
       <div className="flex flex-col justify-between items-center w-full min-h-screen">
         {/* Primera sección: título y botón */}
         <div className="flex flex-col justify-center items-center bg-black text-white w-full h-auto mt-40 mb-10 px-4">
           <div className="flex flex-col justify-center mt-10 mb-10 items-center w-full h-auto text-center animate-slide-in-up">
-            <h2 className="font-bold text-4xl mb-5">¿Tienes un proyecto en mente?</h2>
+            <h2 className="font-bold text-4xl mb-5">{t("tilte_contact")}</h2>
             <p className="font-medium max-w-3xl leading-relaxed">
-              Estoy aquí para ayudarte a llevar tus ideas al siguiente nivel. Ya sea que estés buscando 
-              desarrollar una aplicación interactiva, un configurador en 3D o cualquier proyecto relacionado
-              con tecnología, ¡me encantaría ser parte de tu visión! No dudes en enviarme un mensaje y 
-              hablemos de cómo podemos trabajar juntos.
+              {t("description_contact")}
             </p>
           </div>
           <div className="animate-slide-in-up">
-            <Button href="https://wa.me/+573052737622">Contáctame</Button>
+            <Button href="https://wa.me/+573052737622">{t("contact_me")}</Button>
           </div>
         </div>
 
@@ -29,7 +29,7 @@ const Contacto = () => {
             <div className="flex flex-col justify-center items-center mt-5 animate-slide-in-left">
               <img
                 className="w-8 h-8 duration-200 transform hover:scale-110 mb-2"
-                src="/public/Icons/ubicacion.png"
+                src="/Icons/ubicacion.png"
                 alt="Ubicación"
               />
               <p className="font-medium max-w-xs leading-relaxed text-center">
@@ -40,7 +40,7 @@ const Contacto = () => {
             <div className="flex flex-col justify-center items-center mt-5 animate-slide-in-right">
               <img
                 className="w-8 h-8 duration-200 transform hover:scale-110 mb-2"
-                src="/public/Icons/carta.png"
+                src="/Icons/carta.png"
                 alt="Email"
               />
               <p className="font-medium max-w-xs leading-relaxed text-center">
@@ -61,7 +61,7 @@ const Contacto = () => {
             >
               <SlideUp>
               <img
-                src="/public/Icons/linkedin.png"
+                src="/Icons/linkedin.png"
                 alt="LinkedIn"
                 className="w-8 h-8 transition-transform duration-200 transform hover:scale-110 animate-slide-in-up"
               />
@@ -74,7 +74,7 @@ const Contacto = () => {
             >
               <SlideUp>
               <img
-                src="/public/Icons/github.png"
+                src="/Icons/github.png"
                 alt="GitHub"
                 className="w-8 h-8 duration-200 transform hover:scale-110 animate-slide-in-up"
               />
