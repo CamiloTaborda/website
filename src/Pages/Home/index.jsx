@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import useCustomTranslation from "../../Hooks/useCustomTranslation"
 import Layout from "../../Components/Layout";
 import AnimatedText from "../../Animations/AnimatedText";
 import Button from "../../Components/Button";
@@ -8,7 +8,7 @@ import ScrollArrow from '../../Components/ScrollArrow';
 import AnimatedSection from '../../Animations/AnimatedSection';
 
 const Home = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Layout from "../../Components/Layout";
 import Diplomas from "../../Components/Diplomas";
 import ScrollArrow from "../../Components/ScrollArrow";
@@ -9,7 +9,7 @@ import SlideRight from "../../Animations/SlideRight";
 import SlideUp from "../../Animations/SlideUp";
 
 const SobreMi = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
 
   return (
     <Layout background={{ backgroundColor: "black" }}>

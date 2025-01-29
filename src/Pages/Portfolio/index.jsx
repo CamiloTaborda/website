@@ -1,4 +1,4 @@
-import { useTranslation } from "react-i18next";
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 import Video from "../../Components/Video";
@@ -6,7 +6,7 @@ import ScrollArrow from "../../Components/ScrollArrow";
 import AnimatedSection from "../../Animations/AnimatedSection";
 
 const Portfolio = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
   const videos = [
     { src: '/Video/video3.mp4', caption: 'Modular Configurator', link: 'https://static.ardatatech.co/ARData/modular/' },
     { src: '/Video/video5.mp4', caption: 'Viewer360', link: 'https://static.ardatatech.co/ARData/360-3d-visor-copia/' },

@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 
 const Footer = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
 
   return (
     <footer className="bg-black text-white py-6 border-t border-gray-600">

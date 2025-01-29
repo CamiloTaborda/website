@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 
 const diplomasData = [
   { title: 'Asincronismo con JavaScript', href: '/Diplomas/diploma-asincronismo-js.pdf' },
@@ -17,7 +17,7 @@ const diplomasData = [
 ];
 
 const Diplomas = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
   const [showDiplomas, setShowDiplomas] = useState(false);
   const [animationClass, setAnimationClass] = useState('');
 

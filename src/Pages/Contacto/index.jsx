@@ -1,10 +1,10 @@
-import { useTranslation } from "react-i18next";
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import SlideUp from "../../Animations/SlideUp";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 
 const Contacto = () => {
-  const { t } = useTranslation();
+  const t = useCustomTranslation();
 
   return (
     <Layout background={{ backgroundColor: "black" }}>
