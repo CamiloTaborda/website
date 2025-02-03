@@ -52,6 +52,16 @@
     "portfolio_description_1": "¿Listo para llevar tu proyecto al siguiente nivel? ¡Contáctame y hagamos realidad tus ideas!",
 
     "tilte_contact": "¿Tienes un proyecto en mente?",
-    "description_contact": "Estoy aquí para ayudarte a llevar tus ideas al siguiente nivel. Ya sea que estés buscando desarrollar una aplicación interactiva, un configurador en 3D o cualquier proyecto relacionado con tecnología, ¡me encantaría ser parte de tu visión! No dudes en enviarme un mensaje y hablemos de cómo podemos trabajar juntos."
+    "description_contact": "Estoy aquí para ayudarte a llevar tus ideas al siguiente nivel. Ya sea que estés buscando desarrollar una aplicación interactiva, un configurador en 3D o cualquier proyecto relacionado con tecnología, ¡me encantaría ser parte de tu visión! No dudes en enviarme un mensaje y hablemos de cómo podemos trabajar juntos.",
+
+    "form_title": "Envíame un mensaje",
+    "form_name": "Nombre",
+    "form_email": "Correo electrónico",
+    "form_message": "Mensaje",
+    "form_send": "Enviar",
+    "message_sent": "Mensaje enviado con éxito ✅",
+    "message_not_sent": "Hubo un error al enviar ❌",
+    "conection_error": "Error de conexión ❌",
+    "sending": "Sending..."
 }
   
