@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import useCustomTranslation from "../../Hooks/useCustomTranslation"
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Layout from "../../Components/Layout";
 import AnimatedText from "../../Animations/AnimatedText";
 import Button from "../../Components/Button";
@@ -10,6 +10,7 @@ import AnimatedSection from '../../Animations/AnimatedSection';
 const Home = () => {
   const t = useCustomTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -17,11 +18,14 @@ const Home = () => {
     };
 
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  }
 
   return (
     <Layout>
@@ -39,13 +43,45 @@ const Home = () => {
         }}
       >
         <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0">
-          <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up">
-            <Button href="/CV/cv-camilo-taborda.pdf" download>
-              {t('download_cv')}
-            </Button>
+          <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up relative z-50">
+            
+            {/* Botón de descarga con menú desplegable */}
+            <div 
+              className="relative z-50"
+              onMouseEnter={() => setIsMenuOpen(true)}
+              onMouseLeave={() => setIsMenuOpen(false)}
+            >
+              <Button>
+                {t('download_cv')}
+              </Button>
+
+              {/* Menú desplegable */}
+              {isMenuOpen && (
+                <div className="absolute left-0 w-48 font-bold text-gray-300 bg-gray-800 rounded-lg shadow-md z-50">
+                  <a 
+                    href="/CV/cv-camilo-taborda-español.pdf" 
+                    download
+                    onClick={closeMenu}
+                    className="block px-4 py-3 rounded-lg hover:bg-[#191919]"
+                  >
+                    {t('download_cv_spanish')}
+                  </a>
+                  <a 
+                    href="/CV/cv-camilo-taborda.pdf" 
+                    download
+                    onClick={closeMenu}
+                    className="block px-4 py-3 rounded-lg hover:bg-[#191919]"
+                  >
+                    {t('download_cv_english')}
+                  </a>
+                </div>
+              )}
+            </div>
+
             <Button href="https://wa.me/+573052737622">
               {t('contact_me')}
             </Button>
+
           </div>
         </div>
 
@@ -53,9 +89,7 @@ const Home = () => {
           <h1 className="font-extrabold text-6xl text-gray-300 bg-gray-800 bg-opacity-75 border border-gray-500 border-b-4 px-6 py-4 rounded-md relative overflow-hidden shadow-lg mb-10">
             {t('hello')}
           </h1>
-          <AnimatedText
-            text={t('description')} 
-          />
+          <AnimatedText text={t('description')} />
         </div>
 
         <ScrollArrow />
