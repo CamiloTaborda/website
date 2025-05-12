@@ -41,8 +41,8 @@ const SobreMi = () => {
 
           {/* Contenedor de texto */}
           <div className="flex flex-col justify-center w-full p-5 md:w-1/2 md:p-10 animate-slide-in-right">
-            <h1 className="font-bold text-4xl mb-5 text-center md:text-left">{t("my_name")}</h1>
-            <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left">
+            <h1 className="font-extrabold text-white text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">{t("my_name")}</h1>
+            <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
             {t("my_description_1")}
               <br />
               <br />
@@ -53,12 +53,12 @@ const SobreMi = () => {
         </div>
 
         {/* Sección de habilidades */}
-        <div className="flex flex-col justify-center items-center w-full h-auto py-20 bg-white text-black cursor-crosshair">
+        <div className="flex flex-col justify-center items-center w-full h-scren py-20 bg-white text-black cursor-crosshair">
           <AnimatedSection>
-            <div className="max-w-[1500px] flex flex-col md:flex-row justify-center items-center w-full h-auto p-0 md:p-5">
-              <div className="flex flex-col justify-center items-start w-full md:w-1/2 p-8 md:items-center animate-slide-in-up">
-                <h1 className="font-bold text-4xl mb-8 text-center">{t("mySkills")}</h1>
-                <p className="font-medium leading-relaxed text-left md:text-center w-full md:max-w-3xl">
+            <div className="max-w-[1500px] flex flex-col md:flex-row justify-center items-center w-full h-full p-0 md:p-5">
+              <div className="flex flex-col justify-center w-full md:w-1/2 p-8 md:items-center animate-slide-in-up">
+                <h1 className="font-extrabold text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">{t("mySkills")}</h1>
+                <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
                 {t("skillsDescription")}
                 </p>
               </div>
@@ -91,7 +91,7 @@ const SobreMi = () => {
 
         {/* Sección de experiencia */}
         <div className="flex flex-col justify-center items-center w-full h-auto py-36 bg-black text-white">
-          <h1 className="font-bold text-4xl mb-8">{t("myExperience")}</h1>
+          <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-8 leading-snug">{t("myExperience")}</h1>
           <div className="max-w-[1500px] w-[90%] md:w-[80%] flex flex-col md:flex-row justify-center gap-10">
             {/* Sección de 77 Render Studio */}
            <div
@@ -99,8 +99,8 @@ const SobreMi = () => {
             className="flex flex-col justify-center items-center cursor-pointer w-full md:w-1/2 px-5 md:px-8 mb-8 md:mb-0 border border-transparent rounded-lg bg-[#191919] p-10 transition-all duration-500 ease-in-out hover:border-[#ffffff]">
               <AnimatedSection>
                 <div className="w-full h-full flex flex-col justify-center items-center">
-                  <h2 className="font-bold text-3xl mb-5">{t("77RenderStudio")}</h2>
-                  <p className="font-medium text-center max-w-md leading-relaxed">
+                  <h2 className="font-extrabold text-white text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-6xl mb-5 leading-snug">{t("77RenderStudio")}</h2>
+                  <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
                   {t("77RenderStudioDescription")}
                   </p>
                   <SlideUp>
@@ -116,8 +116,8 @@ const SobreMi = () => {
             className="flex flex-col justify-center items-center cursor-pointer w-full md:w-1/2 px-5 md:px-8 border border-transparent rounded-lg bg-[#191919] p-10 transition-all duration-500 ease-in-out hover:border-[#ffffff]">
               <AnimatedSection>
                 <div className="w-full h-full flex flex-col justify-center items-center">
-                  <h2 className="font-bold text-3xl mb-5">{t("ArdataTech")}</h2>
-                  <p className="font-medium text-center max-w-md leading-relaxed">
+                  <h2 className="font-extrabold text-white text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-6xl mb-5 leading-snug">{t("ArdataTech")}</h2>
+                  <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
                   {t("ArdataTechDescription")}
                   </p>
                   <SlideUp>

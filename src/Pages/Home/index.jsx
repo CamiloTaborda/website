@@ -43,7 +43,7 @@ const Home = () => {
         }}
       >
         <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0">
-          <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up relative z-50">
+          <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up relative">
             
             {/* Botón de descarga con menú desplegable */}
             <div 
@@ -86,7 +86,7 @@ const Home = () => {
         </div>
 
         <div className="order-1 md:order-2 flex flex-col justify-center items-center w-full h-full mb-10 md:mb-0 animate-slide-in-right mt-44 md:mt-0">
-          <h1 className="font-extrabold text-6xl text-gray-300 bg-gray-800 bg-opacity-75 border border-gray-500 border-b-4 px-6 py-4 rounded-md relative overflow-hidden shadow-lg mb-10">
+          <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-snug text-gray-300 bg-gray-800 bg-opacity-75 border border-gray-500 border-b-4 px-6 py-4 rounded-md relative overflow-hidden shadow-lg mb-10">
             {t('hello')}
           </h1>
           <AnimatedText text={t('description')} />
@@ -103,10 +103,10 @@ const Home = () => {
 
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 md:px-12 bg-black/50">
           <AnimatedSection>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            <h2 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">
               {t('view_3d_model')}
             </h2>
-            <p className="text-lg md:text-xl text-gray-200 font-medium max-w-2xl mb-6">
+            <p className="text-white text-base md:text-lg xl:text-xl 2xl:text-2xl max-w-lg leading-relaxed mx-auto mb-10">
               {t('3d_description')}
             </p>
             <Button href="/portfolio" className="bg-white text-black hover:scale-105 transition-transform duration-300">

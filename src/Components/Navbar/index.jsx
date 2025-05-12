@@ -31,13 +31,13 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`flex justify-between items-center fixed z-10 w-full py-5 px-8 text-sm font-medium top-0 transition-all duration-300 ${
+      className={`flex justify-between items-center fixed z-10 w-full py-5 px-8 text-md font-bold top-0 transition-all duration-300 ${
         isScrolled ? 'bg-black' : 'bg-transparent'
       } text-white`}
     >
       <div className="w-full max-w-[1500px] mx-auto flex justify-between items-center">
         <ul className="flex items-center">
-          <li className="font-extrabold text-2xl">
+          <li className="font-extrabold text-4xl">
             <NavLink to="/">CamiloT</NavLink>
           </li>
         </ul>

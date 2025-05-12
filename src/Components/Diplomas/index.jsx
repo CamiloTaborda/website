@@ -36,8 +36,8 @@ const Diplomas = () => {
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-auto py-16 bg-white text-black">
-      <h1 className="font-bold text-3xl mb-8">{t("my_education")}</h1>
-      <p className="font-medium text-center max-w-md leading-relaxed mb-10">
+      <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-8 leading-snug">{t("my_education")}</h1>
+      <p className="text-base md:text-lg xl:text-xl 2xl:text-2xl max-w-lg leading-relaxed mb-10 p-4 sm:p-0">
         {t("education_description_1")} <a href="https://platzi.com" target="_blank" rel="noopener noreferrer" className="font-bold">{t("Platzi")}</a>, {t("education_description_2")}
       </p>
       <div onClick={toggleDiplomas} className="flex flex-col items-center cursor-pointer text-black font-semibold mb-5">

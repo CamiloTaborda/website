@@ -28,7 +28,7 @@ const AnimatedText = ({ text, speed = 150 }) => {
     return () => clearTimeout(timer);
   }, [charIndex, isDeleting, text, speed]);
 
-  return <p className="text-gray-200 text-xl font-medium max-w-lg text-center">{displayText}</p>;
+  return <p className="text-white p-4 sm:p-0 text-base md:text-lg xl:text-xl 2xl:text-2xl max-w-lg leading-relaxed">{displayText}</p>;
 };
 
 export default AnimatedText;
