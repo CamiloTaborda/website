@@ -42,12 +42,12 @@ const Home = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0">
+        <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0 z-10">
           <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up relative">
             
             {/* Botón de descarga con menú desplegable */}
             <div 
-              className="relative z-50"
+              className="relative"
               onMouseEnter={() => setIsMenuOpen(true)}
               onMouseLeave={() => setIsMenuOpen(false)}
             >
@@ -57,7 +57,7 @@ const Home = () => {
 
               {/* Menú desplegable */}
               {isMenuOpen && (
-                <div className="absolute left-0 w-48 font-bold text-gray-300 bg-gray-800 rounded-lg shadow-md z-50">
+                <div className="absolute left-0 w-48 font-bold text-gray-300 bg-gray-800 rounded-lg shadow-md">
                   <a 
                     href="/CV/cv-camilo-taborda-español.pdf" 
                     download
