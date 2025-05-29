@@ -23,7 +23,7 @@ const Portfolio = () => {
       src: "/Video/video3.mp4",
       img: "/Icons/foto-1.png",
       caption: "Modular Configurator",
-      link: "https://static.ardatatech.co/ARData/modular/",
+      link: "https://static.ardatatech.co/new-modular/",
     },
     {
       src: "/Video/video5.mp4",
