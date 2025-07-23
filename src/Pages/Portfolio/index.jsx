@@ -1,29 +1,19 @@
-import { useState, useEffect } from "react";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 import Video from "../../Components/Video";
-import ImagePreview from "../../Components/ImagePreview";
 import ScrollArrow from "../../Components/ScrollArrow";
 import AnimatedSection from "../../Animations/AnimatedSection";
 
 const Portfolio = () => {
   const t = useCustomTranslation();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const videos = [
     {
       src: "/Video/video3.mp4",
-      img: "/Icons/foto-1.png",
+      img: "/Icons/foto-1.png", // Mantener como fallback si es necesario
       caption: "Modular Configurator",
-      link: "https://static.ardatatech.co/new-modular/",
+      link: "https://static.ardatatech.co/full-modular-2/",
     },
     {
       src: "/Video/video5.mp4",
@@ -55,6 +45,18 @@ const Portfolio = () => {
       caption: "Website 77 Render Studio",
       link: "https://www.77renderstudio.com/",
     },
+    {
+      src: "/Video/video7.mp4",
+      img: "/Icons/foto-8.png",
+      caption: "Product Scene",
+      link: "https://static.ardatatech.co/web-components/ardata-product-scene/",
+    },
+    {
+      src: "/Video/video8.mp4",
+      img: "/Icons/foto-7.png",
+      caption: "Product Photo Studio",
+      link: "https://static.ardatatech.co/web-components/ardata-photo-studio/",
+    },
   ];
 
   return (
@@ -78,25 +80,19 @@ const Portfolio = () => {
           <ScrollArrow />
         </div>
 
-        {/* Grid de proyectos */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mt-10 py-36 pr-10 pl-10 text-white h-auto overflow-auto bg-white animate-slide-in-right">
-          {videos.map((item, index) =>
-            isMobile ? (
-              <ImagePreview
-                key={index}
-                src={item.img}
-                caption={item.caption}
-                link={item.link}
-              />
-            ) : (
+        {/* Grid de proyectos - SIEMPRE VIDEOS */}
+        <div className="flex justify-center w-full mt-10 py-36 bg-white">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-[1500px] w-full px-3 md:px-10 text-white h-auto overflow-auto animate-slide-in-right">
+            {videos.map((item, index) => (
               <Video
                 key={index}
                 src={item.src}
                 caption={item.caption}
                 link={item.link}
+                poster={item.img}
               />
-            )
-          )}
+            ))}
+          </div>
         </div>
 
         {/* Descripción final */}
