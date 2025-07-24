@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
@@ -7,6 +8,43 @@ import AnimatedSection from "../../Animations/AnimatedSection";
 
 const Portfolio = () => {
   const t = useCustomTranslation();
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  // Precargar imagen de fondo
+  useEffect(() => {
+    const imageUrl = '/Icons/foto-codigo.jpg';
+    const img = new Image();
+    
+    img.onload = () => {
+      setImageLoaded(true);
+      setImageError(false);
+    };
+    
+    img.onerror = () => {
+      setImageError(true);
+      setImageLoaded(false);
+    };
+    
+    img.src = imageUrl;
+  }, []);
+
+  const getBackgroundStyle = () => {
+    if (imageError) {
+      // Si hay error, usar gradiente de respaldo
+      return {
+        background: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
+      };
+    }
+
+    // Imagen cargada correctamente
+    return {
+      backgroundImage: `url('/Icons/foto-codigo.jpg')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    };
+  };
 
   const videos = [
     {
@@ -62,12 +100,26 @@ const Portfolio = () => {
   return (
     <Layout background={{ backgroundColor: "black" }}>
       <div className="flex flex-col justify-center items-center w-full text-white h-auto overflow-auto bg-black">
-        <div className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white bg-[url('/Icons/foto-codigo.jpg')] bg-cover bg-center bg-no-repeat">
-          {/* Overlay oscuro */}
-          <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white">
+          
+          {/* Pantalla oscura - siempre presente */}
+          <div className="absolute inset-0 bg-black z-0"></div>
+
+          {/* Overlay con imagen de fondo que aparece suavemente */}
+          <div 
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={getBackgroundStyle()}
+          ></div>
+
+          {/* Overlay oscuro para el contenido */}
+          <div className="absolute inset-0 bg-black bg-opacity-50 z-20"></div>
 
           {/* Contenido central */}
-          <div className="relative flex flex-col items-center animate-fade-in">
+          <div className={`relative flex flex-col items-center z-30 transition-opacity duration-1200 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}>
             <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug animate-slide-in-down">
               {t("my_portfolio")}
             </h1>

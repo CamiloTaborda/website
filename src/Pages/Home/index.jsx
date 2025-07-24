@@ -11,6 +11,8 @@ const Home = () => {
   const t = useCustomTranslation();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,27 +25,74 @@ const Home = () => {
     };
   }, []);
 
+  // Precargar imagen
+  useEffect(() => {
+    const imageUrl = isMobile ? '/Icons/foto-camilo-1.jpeg' : '/Icons/foto-camilo.jpeg';
+    const img = new Image();
+    
+    img.onload = () => {
+      setImageLoaded(true);
+      setImageError(false);
+    };
+    
+    img.onerror = () => {
+      setImageError(true);
+      setImageLoaded(false);
+    };
+    
+    // Reset estado cuando cambia el dispositivo
+    setImageLoaded(false);
+    setImageError(false);
+    
+    img.src = imageUrl;
+  }, [isMobile]);
+
   const closeMenu = () => {
     setIsMenuOpen(false);
   }
+
+  const getBackgroundStyle = () => {
+    if (imageError) {
+      // Si hay error, usar gradiente de respaldo
+      return {
+        background: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
+      };
+    }
+
+    // Imagen cargada correctamente
+    const imageUrl = isMobile ? '/Icons/foto-camilo-1.jpeg' : '/Icons/foto-camilo.jpeg';
+    return {
+      backgroundImage: 
+        `linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%),
+         linear-gradient(to right, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%),
+         url('${imageUrl}')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    };
+  };
 
   return (
     <Layout>
       {/* Primera sección: contenido principal */}
       <div 
-        className="flex flex-col md:flex-row justify-center items-center w-full text-white min-h-screen h-screen"
-        style={{
-          backgroundImage: 
-            `linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%),
-             linear-gradient(to right, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%),
-             url('${isMobile ? '/Icons/foto-camilo-1.jpeg' : '/Icons/foto-camilo.jpeg'}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
+        className="flex flex-col md:flex-row justify-center items-center w-full text-white min-h-screen h-screen relative"
       >
-        <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0 z-10">
-          <div className="flex justify-center items-center w-full gap-10 mb-10 animate-slide-in-up relative">
+        {/* Overlay de pantalla oscura - siempre presente */}
+        <div className="absolute inset-0 bg-slate-900 z-0"></div>
+
+        {/* Overlay con imagen de fondo que aparece suavemente */}
+        <div 
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={getBackgroundStyle()}
+        ></div>
+
+        <div className="order-2 md:order-1 flex flex-col justify-end items-center w-full h-full gap-10 mb-10 md:mb-0 z-20">
+          <div className={`flex justify-center items-center w-full gap-10 mb-10 relative transition-all duration-700 ${
+            imageLoaded ? 'animate-slide-in-up opacity-100' : 'opacity-0 translate-y-4'
+          }`}>
             
             {/* Botón de descarga con menú desplegable */}
             <div 
@@ -85,7 +134,9 @@ const Home = () => {
           </div>
         </div>
 
-        <div className="order-1 md:order-2 flex flex-col justify-center items-center w-full h-full mb-10 md:mb-0 animate-slide-in-right mt-44 md:mt-0">
+        <div className={`order-1 md:order-2 flex flex-col justify-center items-center w-full h-full mb-10 md:mb-0 mt-44 md:mt-0 z-20 transition-opacity duration-1200 ${
+          imageLoaded ? 'opacity-100' : 'opacity-0'
+        }`}>
           <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-snug text-gray-300 bg-gray-800 bg-opacity-75 border border-gray-500 border-b-4 px-6 py-4 rounded-md relative overflow-hidden shadow-lg mb-10">
             {t('hello')}
           </h1>
