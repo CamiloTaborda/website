@@ -21,7 +21,7 @@ const SobreMi = () => {
           {/* Contenedor de la imagen */}
           <div
             className="relative flex justify-center items-end w-full h-[50vh] md:h-auto bg-cover bg-center animate-slide-in-left md:w-1/2"
-            style={{ backgroundImage: "url('/Icons/foto3.jpeg')" }}
+            style={{ backgroundImage: "url('/Icons/img1.jpeg')" }}
           >
             <div
               className="absolute inset-0 bg-black opacity-100"
@@ -41,7 +41,8 @@ const SobreMi = () => {
 
           {/* Contenedor de texto */}
           <div className="flex flex-col justify-center w-full p-5 md:w-1/2 md:p-10 animate-slide-in-right">
-            <h1 className="font-extrabold text-white text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">{t("my_name")}</h1>
+            <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug text-center md:text-left">{t("my_name")}
+            </h1>
             <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
             {t("my_description_1")}
               <br />

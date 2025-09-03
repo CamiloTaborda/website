@@ -27,7 +27,7 @@ const Home = () => {
 
   // Precargar imagen
   useEffect(() => {
-    const imageUrl = isMobile ? '/Icons/foto-camilo-1.jpeg' : '/Icons/foto-camilo.jpeg';
+    const imageUrl = isMobile ? '/Icons/img2.jpeg' : '/Icons/foto-camilo.jpeg';
     const img = new Image();
     
     img.onload = () => {
@@ -60,7 +60,7 @@ const Home = () => {
     }
 
     // Imagen cargada correctamente
-    const imageUrl = isMobile ? '/Icons/foto-camilo-1.jpeg' : '/Icons/foto-camilo.jpeg';
+    const imageUrl = isMobile ? '/Icons/img2.jpeg' : '/Icons/foto-camilo.jpeg';
     return {
       backgroundImage: 
         `linear-gradient(to bottom, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 100%),
