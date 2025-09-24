@@ -7,6 +7,7 @@ import SlideDown from "../../Animations/SlideDown";
 import SlideLeft from "../../Animations/SlideLeft";
 import SlideRight from "../../Animations/SlideRight";
 import SlideUp from "../../Animations/SlideUp";
+import Ribbons from "../../Components/Ribbons"; // Asegúrate de que la ruta sea correcta
 
 const SobreMi = () => {
   const t = useCustomTranslation();
@@ -53,41 +54,57 @@ const SobreMi = () => {
           <ScrollArrow />
         </div>
 
-        {/* Sección de habilidades */}
-        <div className="flex flex-col justify-center items-center w-full h-scren py-20 bg-white text-black cursor-crosshair">
-          <AnimatedSection>
-            <div className="max-w-[1500px] flex flex-col md:flex-row justify-center items-center w-full h-full p-0 md:p-5">
-              <div className="flex flex-col justify-center w-full md:w-1/2 p-8 md:items-center animate-slide-in-up">
-                <h1 className="font-extrabold text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">{t("mySkills")}</h1>
-                <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
-                {t("skillsDescription")}
-                </p>
-              </div>
+        {/* Sección de habilidades con Ribbons interactivo */}
+        <div className="relative flex flex-col justify-center items-center w-full min-h-screen py-20 bg-white text-black overflow-hidden">
+          
+          {/* Ribbons como fondo interactivo */}
+          <div className="absolute inset-0 w-full h-full z-20">
+            <Ribbons
+              baseThickness={15}
+              colors={['#007BFF']}
+              speedMultiplier={0.5}
+              maxAge={500}
+              enableFade={false}
+              enableShaderEffect={true}
+            />
+          </div>
 
-              <div className="flex justify-center items-center w-full md:w-1/2 p-4 mx-auto">
-                <div className="grid grid-cols-3 grid-rows-2 gap-8 p-8 bg-black bg-opacity-10 border border-gray-300 rounded-lg backdrop-blur-md">
-                  <SlideRight>
-                  <img src="/Icons/js.png" alt="JS Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideRight>
-                  <SlideDown>
-                  <img src="/Icons/html-5.png" alt="HTML Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideDown>
-                  <SlideLeft>
-                  <img src="/Icons/css-3.png" alt="CSS Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideLeft>
-                  <SlideRight>
-                  <img src="/Icons/react.png" alt="React Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideRight>
-                  <SlideUp>
-                  <img src="/Icons/three-js-icon.png" alt="Three.js Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideUp>
-                  <SlideLeft>
-                  <img src="/Icons/tailwind.png" alt="Tailwind Icon" className="w-full max-w-[100px] h-auto" />
-                  </SlideLeft>
+          {/* Contenido sobre el fondo de ribbons */}
+          <div className="relative w-full h-full">
+            <AnimatedSection>
+              <div className="max-w-[1500px] flex flex-col md:flex-row justify-center items-center w-full h-full p-0 md:p-5">
+                <div className="flex flex-col justify-center w-full md:w-1/2 p-8 md:items-center animate-slide-in-up">
+                  <h1 className="font-extrabold text-center text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">{t("mySkills")}</h1>
+                  <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
+                  {t("skillsDescription")}
+                  </p>
+                </div>
+
+                <div className="flex justify-center items-center w-full md:w-1/2 p-4 mx-auto">
+                  <div className="grid grid-cols-3 grid-rows-2 gap-8 p-8 bg-black bg-opacity-10 border border-gray-300 rounded-lg backdrop-blur-md">
+                    <SlideRight>
+                    <img src="/Icons/js.png" alt="JS Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideRight>
+                    <SlideDown>
+                    <img src="/Icons/html-5.png" alt="HTML Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideDown>
+                    <SlideLeft>
+                    <img src="/Icons/css-3.png" alt="CSS Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideLeft>
+                    <SlideRight>
+                    <img src="/Icons/react.png" alt="React Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideRight>
+                    <SlideUp>
+                    <img src="/Icons/three-js-icon.png" alt="Three.js Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideUp>
+                    <SlideLeft>
+                    <img src="/Icons/tailwind.png" alt="Tailwind Icon" className="w-full max-w-[100px] h-auto" />
+                    </SlideLeft>
+                  </div>
                 </div>
               </div>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
+          </div>
         </div>
 
         {/* Sección de experiencia */}
