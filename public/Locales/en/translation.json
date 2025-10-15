@@ -29,10 +29,10 @@
     "view_projects": "View Projects",
 
     "my_name": "Camilo Taborda",
-    "my_description_1": "I'm a software developer focused on front-end development and the creation of interactive and innovative web applications. I specialize in 3D product configurators and immersive interfaces using React, Three.js, and React Three Fiber, as well as the integration of augmented reality (AR) experiences and artificial intelligence tools. My work focuses on building functional, accessible, and high-performance solutions that combine technology and design to deliver unique and optimized digital experiences for users.",
-    "my_description_2": "I am passionate about solving complex challenges and constantly seeking new technologies that allow me to grow as a professional. My goal is to build applications that are not only visually impactful but also deliver real value to users. I am committed to continuous learning and excited to explore the opportunities offered by emerging tools in software development.",
+    "my_description_1": "I’m a software developer focused on frontend development and the creation of interactive web experiences. Specialized in React, Next.js, Three.js, and React Three Fiber, I design 3D product configurators, immersive interfaces, and experiences that integrate augmented reality (AR) and artificial intelligence. My goal is to build functional, accessible, and high-performance solutions that combine technology and design to deliver unique and optimized digital experiences.",
+    "my_description_2": "I’m passionate about solving complex challenges and exploring new technologies that foster my professional growth. I strive to create visually engaging applications that provide real value to users. I’m committed to continuous learning and driven by the possibilities offered by emerging tools in software development.",
     "mySkills": "My skills",
-    "skillsDescription": "As a software developer, I leverage modern technologies to create scalable, high-performance web applications. I work with JavaScript, React, and Three.js for interactive interfaces and 3D configurators, and Tailwind CSS for fast, modern designs. I also use Framer Motion and GSAP to create smooth and dynamic animations. I integrate artificial intelligence tools into my development process to streamline tasks and optimize application personalization, enhancing overall efficiency and performance. This combination allows me to deliver complete, high-quality solutions on time.",
+    "skillsDescription": "As a software developer, I use modern technologies to build scalable, efficient, and high-performance web applications. I work with JavaScript, React.js, Next.js, and Three.js to create interactive interfaces and 3D configurators, using Tailwind CSS for modern and consistent designs. I also leverage Framer Motion and GSAP to deliver smooth and engaging animations. By integrating artificial intelligence tools into my development process, I optimize workflows, enhance personalization, and improve overall efficiency. This combination allows me to deliver complete, innovative, and high-quality solutions.",
     "myExperience": "My experience",
     "77RenderStudio": "77 Render Studio",
     "77RenderStudioDescription": "It's 77 Render Studio, I was dedicated to developing software specialized in real estate projects, creating solutions that optimized the visualization and management of properties.",
@@ -44,7 +44,7 @@
     "platzi_description": "Platzi",
     "education_description_2": "I’ve built advanced knowledge across key areas of development, allowing me to implement innovative, high-performance solutions. My focus is on applying what I learn to create complete, efficient, and scalable web applications.",
 
-    "see_some_certifications": "see some certifications",
+    "see_some_certifications": "see certifications",
     "hide_certifications": "hide certifications",
     "my_certificates": "My Certificates",
 

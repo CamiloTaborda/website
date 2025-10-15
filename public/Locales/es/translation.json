@@ -30,10 +30,10 @@
     "view_projects": "Ver proyectos",
 
     "my_name": "Camilo Taborda",
-    "my_description_1": "Soy desarrollador de software con enfoque en el desarrollo frontend y la creación de aplicaciones web interactivas e innovadoras. Estoy especializado en configuradores de productos 3D e interfaces inmersivas utilizando React, Three.js y React Three Fiber, además de la integración de experiencias de realidad aumentada (AR) y herramientas de inteligencia artificial. Mi trabajo se centra en construir soluciones funcionales, accesibles y de alto rendimiento, que combinan tecnología y diseño para ofrecer experiencias digitales únicas y optimizadas para el usuario.",
-    "my_description_2": "Me apasiona resolver desafíos complejos y estoy en constante búsqueda de nuevas tecnologías que me permitan crecer como profesional. Mi objetivo es desarrollar aplicaciones que no solo sean visualmente impactantes, sino que también generen valor real para los usuarios. Estoy comprometido con el aprendizaje continuo y motivado por explorar las posibilidades que brindan las herramientas emergentes en el desarrollo de software.",
+    "my_description_1": "Soy desarrollador de software enfocado en el desarrollo frontend y la creación de experiencias web interactivas. Especializado en React.js, Next.js, Three.js y React Three Fiber, diseño configuradores de productos 3D, interfaces inmersivas y experiencias con realidad aumentada (AR) e inteligencia artificial. Mi objetivo es construir soluciones funcionales, accesibles y de alto rendimiento que combinen tecnología y diseño para ofrecer experiencias digitales únicas y optimizadas para el usuario.",
+    "my_description_2": "Me apasiona resolver desafíos complejos y explorar nuevas tecnologías que impulsen mi crecimiento profesional. Busco crear aplicaciones visualmente atractivas y con impacto real para los usuarios. Estoy comprometido con el aprendizaje continuo y motivado por descubrir las posibilidades que ofrecen las herramientas emergentes en el desarrollo de software.",
     "mySkills": "Mis habilidades",
-    "skillsDescription": "Como desarrollador de software, utilizo tecnologías modernas para crear aplicaciones web escalables y de alto rendimiento. Trabajo con JavaScript, React y Three.js para interfaces interactivas y configuradores 3D, y Tailwind CSS para diseños rápidos y modernos. Además, aplico Framer Motion y GSAP para animaciones fluidas y dinámicas. Integro herramientas de inteligencia artificial en mis procesos de desarrollo para agilizar tareas y optimizar la personalización de las aplicaciones, mejorando la eficiencia y el rendimiento general. Esta combinación me permite entregar soluciones completas, de calidad y a tiempo.",
+    "skillsDescription": "Como desarrollador de software, utilizo tecnologías modernas para crear aplicaciones web escalables, eficientes y de alto rendimiento. Trabajo con JavaScript, React.js, Next.js y Three.js para construir interfaces interactivas y configuradores 3D, apoyándome en Tailwind CSS para lograr diseños modernos y consistentes. También empleo Framer Motion y GSAP para añadir animaciones fluidas y atractivas. Integro herramientas de inteligencia artificial en mis procesos de desarrollo para optimizar tareas, mejorar la personalización y elevar la eficiencia general de las aplicaciones. Esta combinación me permite entregar soluciones completas, innovadoras y de calidad.",
     "myExperience": "Mi experiencia",
     "77RenderStudio": "77 Render Studio",
     "77RenderStudioDescription": "En 77 Render Studio, me dedicaba al desarrollo de software especializado en proyectos inmobiliarios, creando soluciones que optimizaban la visualización y gestión de propiedades.",
@@ -45,8 +45,8 @@
     "platzi_description": "Platzi",
     "education_description_2": "he consolidado conocimientos avanzados en diversas áreas del desarrollo, lo que me permite implementar soluciones innovadoras y de alto rendimiento. Mi enfoque es aplicar lo aprendido para crear aplicaciones web completas, eficientes y escalables.",
 
-    "see_some_certifications": "Ver algunas certificaciones",
-    "hide_certifications": "Ocultar certificaciones",
+    "see_some_certifications": "Ver certificados",
+    "hide_certifications": "Ocultar certificados",
     "my_certificates": "Mis Certificados",
 
     "my_portfolio": "Portfolio",
