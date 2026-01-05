@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
@@ -10,34 +10,19 @@ const Portfolio = () => {
   const t = useCustomTranslation();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  // Precargar imagen de fondo
+  // --- Lógica de Precarga de Imagen ---
   useEffect(() => {
     const imageUrl = '/Icons/foto-codigo.jpg';
     const img = new Image();
-    
-    img.onload = () => {
-      setImageLoaded(true);
-      setImageError(false);
-    };
-    
-    img.onerror = () => {
-      setImageError(true);
-      setImageLoaded(false);
-    };
-    
+    img.onload = () => { setImageLoaded(true); setImageError(false); };
+    img.onerror = () => { setImageError(true); setImageLoaded(false); };
     img.src = imageUrl;
   }, []);
 
   const getBackgroundStyle = () => {
-    if (imageError) {
-      // Si hay error, usar gradiente de respaldo
-      return {
-        background: 'linear-gradient(135deg, #374151 0%, #111827 100%)',
-      };
-    }
-
-    // Imagen cargada correctamente
+    if (imageError) return { background: 'linear-gradient(135deg, #374151 0%, #111827 100%)' };
     return {
       backgroundImage: `url('/Icons/foto-codigo.jpg')`,
       backgroundSize: "cover",
@@ -46,112 +31,192 @@ const Portfolio = () => {
     };
   };
 
-  const videos = [
+  // --- Data Categorizada y con Herramientas ---
+  const projects = useMemo(() => [
     {
       src: "/Video/video3.mp4",
-      img: "/Icons/foto-1.png", // Mantener como fallback si es necesario
+      img: "/Icons/foto-1.png",
       caption: "Modular Configurator",
       link: "https://static.ardatatech.co/full-modular-2/",
-    },
-    {
-      src: "/Video/video5.mp4",
-      img: "/Icons/foto-2.png",
-      caption: "Viewer360",
-      link: "https://static.ardatatech.co/ardata-viewer-full/",
+      category: "3d_config",
+      tools: ["React", "Three.js", "WebGL", "GSAP", "Tailwind.CSS"]
     },
     {
       src: "/Video/video6.mp4",
       img: "/Icons/foto-3.png",
       caption: "Product Animation",
       link: "https://static.ardatatech.co/web-components/ardata-animation-product/",
+      category: "3d_config",
+      tools: ["React.js", "Model-Viewer (Three.js)", "GSAP", "Tailwind.CSS"]
     },
     {
       src: "/Video/video4.mp4",
       img: "/Icons/foto-4.png",
       caption: "Product Tour",
       link: "https://static.ardatatech.co/ARData/product-tour/",
+      category: "3d_config",
+      tools: ["React.js", "Model-Viewer (Three.js)", "GSAP", "Tailwind.CSS"]
     },
     {
-      src: "/Video/video1.mp4",
-      img: "/Icons/foto-6.png",
-      caption: "Website Ardata Tech",
-      link: "https://ardatatech.co/",
+      src: "/Video/video10.mp4",
+      img: "/Icons/foto-10.png",
+      caption: "Product Configurator",
+      link: "https://static.ardatatech.co/web-components/ardata-configurator/",
+      category: "3d_config",
+      tools: ["React.js", "Model-Viewer (Three.js)", "GSAP", "Tailwind.CSS"]
     },
     {
-      src: "/Video/video2.mp4",
-      img: "/Icons/foto-5.png",
-      caption: "Website 77 Render Studio",
-      link: "https://www.77renderstudio.com/",
+      src: "/Video/video5.mp4",
+      img: "/Icons/foto-2.png",
+      caption: "Viewer360",
+      link: "https://static.ardatatech.co/ardata-viewer-full/",
+      category: "360_viewers",
+      tools: ["React.js", "Model-Viewer (Three.js)", "Tailwind.CSS", "GSAP", "Framer Motion"]
     },
     {
       src: "/Video/video7.mp4",
       img: "/Icons/foto-8.png",
       caption: "Product Scene",
       link: "https://static.ardatatech.co/web-components/ardata-product-scene/",
+      category: "360_viewers",
+      tools: ["React.js", "Tailwind.CSS", "GSAP", "Framer Motion"]
     },
     {
       src: "/Video/video8.mp4",
       img: "/Icons/foto-7.png",
       caption: "Product Photo Studio",
       link: "https://static.ardatatech.co/web-components/ardata-photo-studio/",
+      category: "360_viewers",
+      tools: ["React.js", "Tailwind.CSS", "GSAP", "Framer Motion"]
     },
+    {
+      src: "/Video/video2.mp4",
+      img: "/Icons/foto-5.png",
+      caption: "Website 77 Render Studio",
+      link: "https://www.77renderstudio.com/",
+      category: "websites",
+      tools: ["React.js", "Tailwind CSS", "Framer Motion", "SEO"]
+    },
+    {
+      src: "/Video/video1.mp4",
+      img: "/Icons/foto-6.png",
+      caption: "Website Ardata Tech",
+      link: "https://ardatatech.co/",
+      category: "websites",
+      tools: ["Next.js", "Tailwind CSS", "Framer Motion", "SEO"]
+    },
+    {
+      src: "/Video/video9.mp4",
+      img: "/Icons/foto-9.png",
+      caption: "Website AC Tributaria",
+      link: "https://www.actributaria.com/",
+      category: "websites",
+      tools: ["Next.js", "Tailwind CSS", "Framer Motion", "SEO", "Vercel" ]
+    }
+  ], []);
+
+  const categories = [
+    { id: 'all', label: t("all_projects") || "Todos" },
+    { id: '3d_config', label: t("3d_configurators") || "Configuradores 3D" },
+    { id: '360_viewers', label: t("360_viewers") || "Visores 360" },
+    { id: 'websites', label: t("websites") || "Sitios Web" },
   ];
+
+  const filteredProjects = activeFilter === 'all' 
+    ? projects 
+    : projects.filter(p => p.category === activeFilter);
 
   return (
     <Layout background={{ backgroundColor: "black" }}>
       <div className="flex flex-col justify-center items-center w-full text-white h-auto overflow-auto bg-black">
+        
+        {/* HERO SECTION */}
         <div className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white">
-          
-          {/* Pantalla oscura - siempre presente */}
           <div className="absolute inset-0 bg-black z-0"></div>
-
-          {/* Overlay con imagen de fondo que aparece suavemente */}
           <div 
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
-            }`}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
             style={getBackgroundStyle()}
           ></div>
-
-          {/* Overlay oscuro para el contenido */}
           <div className="absolute inset-0 bg-black bg-opacity-50 z-20"></div>
 
-          {/* Contenido central */}
-          <div className={`relative flex flex-col items-center z-30 transition-opacity duration-1200 ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          }`}>
+          <div className={`relative flex flex-col items-center z-30 transition-opacity duration-1000 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
             <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug animate-slide-in-down">
               {t("my_portfolio")}
             </h1>
             <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl mb-10 animate-slide-in-up">
               {t("portfolio_description")}
             </p>
-
             <Button href="https://wa.me/+573052737622">{t("contact_me_porfolio")}</Button>
           </div>
           <ScrollArrow />
         </div>
 
-        {/* Grid de proyectos - SIEMPRE VIDEOS */}
-        <div className="flex justify-center w-full mt-10 py-36 bg-white">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-[1500px] w-full px-3 md:px-10 text-white h-auto overflow-auto animate-slide-in-right">
-            {videos.map((item, index) => (
-              <Video
-                key={index}
-                src={item.src}
-                caption={item.caption}
-                link={item.link}
-                poster={item.img}
-              />
+        {/* --- SECCIÓN DE PROYECTOS --- */}
+        <div className="flex flex-col items-center w-full py-24 bg-white text-black">
+          
+          {/* Barra de Filtros */}
+          <div className="flex flex-wrap justify-center gap-4 mb-16 px-4">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveFilter(cat.id)}
+                className={`px-6 py-2 rounded-full font-bold transition-all duration-300 border-2 ${
+                  activeFilter === cat.id 
+                  ? 'bg-black text-white border-black scale-105' 
+                  : 'bg-transparent text-gray-400 border-gray-200 hover:border-black hover:text-black'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Grid de Proyectos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1500px] w-full px-8 2xl:px-0">
+            {filteredProjects.map((item, index) => (
+              <div 
+                key={index} 
+                className="group relative overflow-hidden rounded-xl shadow-xl bg-black transform transition-all duration-500 hover:-translate-y-2 animate-slide-in-right"
+              >
+                {/* Componente Video original */}
+                <Video
+                  src={item.src}
+                  caption={item.caption}
+                  link={item.link}
+                  poster={item.img}
+                />
+
+                {/* Overlay Elegante con Herramientas (Efecto Hover) */}
+                <div className="absolute inset-0 bg-black/80 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-400 p-6">
+                  <h4 className="text-white text-xl font-bold mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    {item.caption}
+                  </h4>
+                  <div className="flex flex-wrap justify-center gap-2 mb-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-600 delay-75">
+                    {item.tools.map((tool, i) => (
+                      <span key={i} className="bg-white/10 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">
+                        {tool}
+                      </span>
+                    ))}
+                  </div>
+                  <a 
+                    href={item.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-6 py-2 bg-white text-black text-sm font-bold rounded-lg hover:bg-gray-200 transition-colors"
+                  >
+                    {t("view_project") || "VIEW PROJECT"}
+                  </a>
+                </div>
+              </div>
             ))}
           </div>
         </div>
 
-        {/* Descripción final */}
-        <div className="flex flex-col justify-center items-center w-full h-auto py-10 mt-10">
+        {/* DESCRIPCIÓN FINAL */}
+        <div className="flex flex-col justify-center items-center w-full h-auto py-20 bg-black">
           <AnimatedSection>
-            <div className="flex justify-center items-center w-full mb-4">
-              <p className="font-medium max-w-3xl leading-relaxed text-center text-lg md:text-2xl">
+            <div className="flex justify-center items-center w-full mb-6">
+              <p className="font-medium max-w-3xl leading-relaxed text-center text-lg md:text-2xl text-white">
                 {t("portfolio_description_1")}
               </p>
             </div>

@@ -2,6 +2,7 @@ import useCustomTranslation from "../../Hooks/useCustomTranslation";
 
 const Footer = () => {
   const t = useCustomTranslation();
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="bg-black text-white py-6 border-t border-gray-600">
@@ -34,7 +35,9 @@ const Footer = () => {
           </p>
         </div>
 
-        <p className="text-sm mt-4 md:col-span-3">&copy; 2024 {t('companyName')}. {t('rightsReserved')}</p>
+        <p className="text-sm mt-4 md:col-span-3">
+          &copy; {currentYear} {t('companyName')}. {t('rightsReserved')}
+        </p>
       </div>
     </footer>
   );

@@ -6,11 +6,29 @@ const Navbar = () => {
   const { t, i18n } = useTranslation(); 
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // NUEVOS ESTADOS PARA OCULTAR/MOSTRAR
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const activeStyle = 'underline underline-offset-8 decoration-2';
 
   const handleScroll = () => {
-    setIsScrolled(window.scrollY > 0);
+    const currentScrollY = window.scrollY;
+
+    // Lógica para el color de fondo (tu lógica original)
+    setIsScrolled(currentScrollY > 0);
+
+    // Lógica para ocultar/mostrar (Nueva)
+    if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      // Si bajamos más de 100px, ocultamos
+      setIsVisible(false);
+    } else {
+      // Si subimos, mostramos
+      setIsVisible(true);
+    }
+
+    setLastScrollY(currentScrollY);
   };
 
   const toggleMenu = () => {
@@ -27,12 +45,14 @@ const Navbar = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [lastScrollY]); // Añadimos lastScrollY como dependencia
 
   return (
     <nav
-      className={`flex justify-between items-center fixed z-50 w-full py-5 px-8 text-md font-bold top-0 transition-all duration-300 ${
-        isScrolled ? 'bg-black' : 'bg-transparent'
+      className={`flex justify-between items-center fixed z-50 w-full py-5 px-8 text-md font-bold top-0 transition-all duration-500 ${
+        isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
+      } ${
+        isVisible ? 'translate-y-0' : '-translate-y-full' // Movemos la barra hacia arriba para esconderla
       } text-white`}
     >
       <div className="w-full max-w-[1500px] mx-auto flex justify-between items-center">
@@ -97,7 +117,7 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* Menú desplegable para móviles */}
+      {/* Menú desplegable para móviles (sin cambios) */}
       {isMenuOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-90 flex flex-col items-center justify-center z-20">
           <ul className="flex flex-col items-center">

@@ -4,6 +4,7 @@ export const diplomasData = [
   { title: 'TypeScript', href: '/Diplomas/diploma-typescript.pdf' },
   { title: 'React SSR', href: '/Diplomas/diploma-react-ssr.pdf' },
   { title: 'React Redux Profesional', href: '/Diplomas/diploma-react-redux-profesional.pdf' },
+  { title: 'Supabase', href: '/Diplomas/diploma-supabase.pdf' },
   { title: 'React Patrones Render', href: '/Diplomas/diploma-react-patrones-render.pdf' },
   { title: 'React Router', href: '/Diplomas/diploma-react-router.pdf' },
   { title: 'React State Machine', href: '/Diplomas/diploma-react-state-machine.pdf' },
