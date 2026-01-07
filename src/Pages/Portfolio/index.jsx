@@ -4,21 +4,41 @@ import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 import Video from "../../Components/Video";
 import ScrollArrow from "../../Components/ScrollArrow";
+import Spinner from '../../Components/Spinner';
 import AnimatedSection from "../../Animations/AnimatedSection";
 
 const Portfolio = () => {
   const t = useCustomTranslation();
+  const [isPageReady, setIsPageReady] = useState(false); // Estado para controlar la visibilidad total
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
 
-  // --- Lógica de Precarga de Imagen ---
+  // --- Lógica de Control de Carga ---
   useEffect(() => {
     const imageUrl = '/Icons/foto-codigo.jpg';
     const img = new Image();
-    img.onload = () => { setImageLoaded(true); setImageError(false); };
-    img.onerror = () => { setImageError(true); setImageLoaded(false); };
+    
+    img.onload = () => { 
+      setImageLoaded(true); 
+      setImageError(false); 
+      // Damos un pequeño respiro de 500ms para que el navegador procese el render
+      setTimeout(() => setIsPageReady(true), 500); 
+    };
+    
+    img.onerror = () => { 
+      setImageError(true); 
+      setIsPageReady(true); // Mostramos la web aunque la imagen de fondo falle
+    };
+    
     img.src = imageUrl;
+
+    // Timer de seguridad: si a los 3.5 segundos no ha cargado, forzamos la entrada
+    const safetyTimer = setTimeout(() => {
+      setIsPageReady(true);
+    }, 3500);
+
+    return () => clearTimeout(safetyTimer);
   }, []);
 
   const getBackgroundStyle = () => {
@@ -31,7 +51,6 @@ const Portfolio = () => {
     };
   };
 
-  // --- Data Categorizada y con Herramientas ---
   const projects = useMemo(() => [
     {
       src: "/Video/video3.mp4",
@@ -95,7 +114,7 @@ const Portfolio = () => {
       caption: "Website 77 Render Studio",
       link: "https://www.77renderstudio.com/",
       category: "websites",
-      tools: ["React.js", "Tailwind CSS", "Framer Motion", "SEO"]
+      tools: ["Next.js", "Tailwind CSS", "Framer Motion", "SEO"]
     },
     {
       src: "/Video/video1.mp4",
@@ -103,7 +122,7 @@ const Portfolio = () => {
       caption: "Website Ardata Tech",
       link: "https://ardatatech.co/",
       category: "websites",
-      tools: ["Next.js", "Tailwind CSS", "Framer Motion", "SEO"]
+      tools: ["React.js", "Tailwind CSS", "Framer Motion", "SEO"]
     },
     {
       src: "/Video/video9.mp4",
@@ -127,106 +146,115 @@ const Portfolio = () => {
     : projects.filter(p => p.category === activeFilter);
 
   return (
-    <Layout background={{ backgroundColor: "black" }}>
-      <div className="flex flex-col justify-center items-center w-full text-white h-auto overflow-auto bg-black">
-        
-        {/* HERO SECTION */}
-        <div className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white">
-          <div className="absolute inset-0 bg-black z-0"></div>
-          <div 
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            style={getBackgroundStyle()}
-          ></div>
-          <div className="absolute inset-0 bg-black bg-opacity-50 z-20"></div>
-
-          <div className={`relative flex flex-col items-center z-30 transition-opacity duration-1000 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}>
-            <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug animate-slide-in-down">
-              {t("my_portfolio")}
-            </h1>
-            <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl mb-10 animate-slide-in-up">
-              {t("portfolio_description")}
-            </p>
-            <Button href="https://wa.me/+573052737622">{t("contact_me_porfolio")}</Button>
-          </div>
-          <ScrollArrow />
+    <>
+      {/* 1. PANTALLA DE CARGA (LOADER) */}
+      {!isPageReady && (
+        <div className="fixed inset-0 z-[100] bg-black flex justify-center items-center">
+          <Spinner />
         </div>
+      )}
 
-        {/* --- SECCIÓN DE PROYECTOS --- */}
-        <div className="flex flex-col items-center w-full py-24 bg-white text-black">
-          
-          {/* Barra de Filtros */}
-          <div className="flex flex-wrap justify-center gap-4 mb-16 px-4">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveFilter(cat.id)}
-                className={`px-6 py-2 rounded-full font-bold transition-all duration-300 border-2 ${
-                  activeFilter === cat.id 
-                  ? 'bg-black text-white border-black scale-105' 
-                  : 'bg-transparent text-gray-400 border-gray-200 hover:border-black hover:text-black'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Grid de Proyectos */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1500px] w-full px-8 2xl:px-0">
-            {filteredProjects.map((item, index) => (
+      {/* 2. CONTENIDO PRINCIPAL (Con transición de opacidad) */}
+      <div className={`transition-opacity duration-1000 ease-in-out ${isPageReady ? 'opacity-100' : 'opacity-0'}`}>
+        <Layout background={{ backgroundColor: "black" }}>
+          <div className="flex flex-col justify-center items-center w-full text-white h-auto overflow-auto bg-black">
+            
+            {/* HERO SECTION */}
+            <div className="relative flex flex-col justify-center items-center w-full min-h-screen p-4 text-center text-white">
+              <div className="absolute inset-0 bg-black z-0"></div>
               <div 
-                key={index} 
-                className="group relative overflow-hidden rounded-xl shadow-xl bg-black transform transition-all duration-500 hover:-translate-y-2 animate-slide-in-right"
-              >
-                {/* Componente Video original */}
-                <Video
-                  src={item.src}
-                  caption={item.caption}
-                  link={item.link}
-                  poster={item.img}
-                />
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out z-10 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                style={getBackgroundStyle()}
+              ></div>
+              <div className="absolute inset-0 bg-black bg-opacity-60 z-20"></div>
 
-                {/* Overlay Elegante con Herramientas (Efecto Hover) */}
-                <div className="absolute inset-0 bg-black/80 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-400 p-6">
-                  <h4 className="text-white text-xl font-bold mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    {item.caption}
-                  </h4>
-                  <div className="flex flex-wrap justify-center gap-2 mb-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-600 delay-75">
-                    {item.tools.map((tool, i) => (
-                      <span key={i} className="bg-white/10 text-white text-[10px] uppercase tracking-widest px-3 py-1 rounded-full border border-white/20">
-                        {tool}
-                      </span>
-                    ))}
-                  </div>
-                  <a 
-                    href={item.link} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="px-6 py-2 bg-white text-black text-sm font-bold rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    {t("view_project") || "VIEW PROJECT"}
-                  </a>
-                </div>
+              <div className="relative flex flex-col items-center z-30">
+                <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug">
+                  {t("my_portfolio")}
+                </h1>
+                <p className="font-medium max-w-3xl leading-relaxed text-center text-base md:text-md xl:text-lg 2xl:text-xl mb-10 text-gray-200">
+                  {t("portfolio_description")}
+                </p>
+                <Button href="https://wa.me/+573052737622">{t("contact_me_porfolio")}</Button>
               </div>
-            ))}
-          </div>
-        </div>
+              <ScrollArrow />
+            </div>
 
-        {/* DESCRIPCIÓN FINAL */}
-        <div className="flex flex-col justify-center items-center w-full h-auto py-20 bg-black">
-          <AnimatedSection>
-            <div className="flex justify-center items-center w-full mb-6">
-              <p className="font-medium max-w-3xl leading-relaxed text-center text-lg md:text-2xl text-white">
-                {t("portfolio_description_1")}
-              </p>
+            {/* SECCIÓN DE PROYECTOS */}
+            <div className="flex flex-col items-center w-full py-24 bg-white text-black">
+              
+              {/* Filtros */}
+              <div className="flex flex-wrap justify-center gap-4 mb-16 px-4">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveFilter(cat.id)}
+                    className={`px-6 py-2 rounded-full font-bold transition-all duration-300 border-2 ${
+                      activeFilter === cat.id 
+                      ? 'bg-black text-white border-black scale-105' 
+                      : 'bg-transparent text-gray-400 border-gray-200 hover:border-black hover:text-black'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid de Proyectos */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[1500px] w-full px-8 2xl:px-0">
+                {filteredProjects.map((item, index) => (
+                  <div 
+                    key={index} 
+                    className="group relative overflow-hidden rounded-xl shadow-xl bg-black transform transition-all duration-500 hover:-translate-y-2"
+                  >
+                    <Video
+                      src={item.src}
+                      caption={item.caption}
+                      link={item.link}
+                      poster={item.img}
+                    />
+
+                    {/* Overlay de Herramientas */}
+                    <div className="absolute inset-0 bg-black/85 flex flex-col justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-400 p-6 text-center">
+                      <h4 className="text-white text-xl font-bold mb-4 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                        {item.caption}
+                      </h4>
+                      <div className="flex flex-wrap justify-center gap-2 mb-8">
+                        {item.tools.map((tool, i) => (
+                          <span key={i} className="bg-white/10 text-white text-[10px] uppercase tracking-tighter px-2 py-1 rounded border border-white/20">
+                            {tool}
+                          </span>
+                        ))}
+                      </div>
+                      <a 
+                        href={item.link} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-6 py-2 bg-white text-black text-sm font-bold rounded hover:bg-gray-200 transition-colors"
+                      >
+                        {t("view_project") || "VIEW PROJECT"}
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex justify-center items-center w-full">
-              <Button href="https://wa.me/+573052737622">{t("contact_me")}</Button>
+
+            {/* SECCIÓN FINAL */}
+            <div className="flex flex-col justify-center items-center w-full py-24 bg-black">
+              <AnimatedSection>
+                <p className="font-medium max-w-3xl leading-relaxed text-center text-lg md:text-2xl text-white mb-8 px-6">
+                  {t("portfolio_description_1")}
+                </p>
+                <div className="flex justify-center w-full">
+                  <Button href="https://wa.me/+573052737622">{t("contact_me")}</Button>
+                </div>
+              </AnimatedSection>
             </div>
-          </AnimatedSection>
-        </div>
+          </div>
+        </Layout>
       </div>
-    </Layout>
+    </>
   );
 };
 
