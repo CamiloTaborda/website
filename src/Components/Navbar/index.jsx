@@ -1,9 +1,11 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import Button from "../Button";
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -56,53 +58,65 @@ const Navbar = () => {
       } text-white`}
     >
       <div className="w-full max-w-[1500px] mx-auto flex justify-between items-center">
+        {/* Logo */}
         <ul className="flex items-center">
           <li className="font-extrabold text-4xl">
             <NavLink to="/">CamiloT</NavLink>
           </li>
         </ul>
 
-        {/* Botón de menú hamburguesa (Z-index alto para quedar sobre el overlay si es necesario) */}
-        <div className="md:hidden cursor-pointer z-[60]" onClick={toggleMenu}>
+        {/* Botón de menú hamburguesa */}
+        <div className="lg:hidden cursor-pointer z-[60]" onClick={toggleMenu}>
           <div className={`w-8 h-0.5 bg-white mb-2 rounded-lg transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2.5' : ''}`} />
           <div className={`w-8 h-0.5 bg-white mb-2 rounded-lg transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
           <div className={`w-8 h-0.5 bg-white rounded-lg transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2.5' : ''}`} />
         </div>
 
         {/* Menú Escritorio */}
-        <ul className="hidden md:flex items-center gap-10">
-          <li>
-            <NavLink to="/" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-              {t('home')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/sobre-mi" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-              {t('about')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/portfolio" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-              {t('portfolio')}
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/contacto" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-              {t('contact')}
-            </NavLink>
-          </li>
-          <li
-            className="text-white flex justify-center items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={toggleLanguage}
-          >
-            <p>{i18n.language === 'es' ? 'ES' : 'EN'}</p>
-            <img
-              className="w-5 h-auto"
-              src={i18n.language === 'es' ? '/Icons/colombia.png' : '/Icons/estados-unidos.png'}
-              alt="lang"
-            />
-          </li>
-        </ul>
+        <div className="hidden lg:flex items-center gap-10">
+          {/* Menú central - Portfolio personal */}
+          <ul className="flex items-center gap-10">
+            <li>
+              <NavLink to="/" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
+                {t('home')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/sobre-mi" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
+                {t('about')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/portfolio" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
+                {t('portfolio')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contacto" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
+                {t('contact')}
+              </NavLink>
+            </li>
+            <li
+              className="text-white flex justify-center items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={toggleLanguage}
+            >
+              <p>{i18n.language === 'es' ? 'ES' : 'EN'}</p>
+              <img
+                className="w-5 h-auto"
+                src={i18n.language === 'es' ? '/Icons/colombia.png' : '/Icons/estados-unidos.png'}
+                alt="lang"
+              />
+            </li>
+          </ul>
+
+          {/* Separador visual */}
+          <div className="h-8 w-px bg-white/30"></div>
+
+          {/* Botón Servicios - Área comercial */}
+          <Button onClick={() => navigate('/servicios')}>
+            {t('services')}
+          </Button>
+        </div>
       </div>
 
       {/* Menú móvil optimizado */}
@@ -129,6 +143,17 @@ const Navbar = () => {
                 {t('contact')}
               </NavLink>
             </li>
+
+            {/* Separador en móvil */}
+            <div className="w-32 h-px bg-white/30 my-2"></div>
+
+            {/* Botón Servicios destacado en móvil */}
+            <li onClick={toggleMenu}>
+              <Button onClick={() => navigate('/servicios')}>
+                {t('services')}
+              </Button>
+            </li>
+
             <li 
               className="text-white cursor-pointer flex flex-col items-center gap-3 pt-4"
               onClick={() => {

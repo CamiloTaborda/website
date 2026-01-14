@@ -4,6 +4,7 @@ import Home from '../Home';
 import SobreMi from '../SobreMi';
 import Portfolio from '../Portfolio';
 import Contacto from '../Contacto';
+import Servicios from '../Servicios';
 import NotFound from '../NotFound';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
@@ -17,6 +18,7 @@ const AppRoutes = () => {
     { path: '/sobre-mi', element: <SobreMi /> },
     { path: '/portfolio', element: <Portfolio /> },
     { path: '/contacto', element: <Contacto /> },
+    { path: '/servicios', element: <Servicios /> },
     { path: '/*', element: <NotFound /> },
   ]);
 

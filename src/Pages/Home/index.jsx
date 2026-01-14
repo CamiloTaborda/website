@@ -116,7 +116,7 @@ const Home = () => {
             <p className="text-white text-base md:text-lg xl:text-xl 2xl:text-2xl max-w-lg leading-relaxed mx-auto mb-10">
               {t('3d_description')}
             </p>
-            <Button href="/portfolio" className="bg-white text-black hover:scale-105 transition-transform duration-300">
+            <Button href="/portfolio" className="hover:scale-105 transition-transform duration-300">
               {t('view_projects')}
             </Button>
           </AnimatedSection>
