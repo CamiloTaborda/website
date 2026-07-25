@@ -1,16 +1,33 @@
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
+import useSeo from "../../Hooks/useSeo";
 import Layout from "../../Components/Layout";
 import AnimatedText from "../../Animations/AnimatedText";
 import Button from "../../Components/Button";
-import MyModel from "../../Components/Viewer";
 import ScrollArrow from '../../Components/ScrollArrow';
+import SafeVisual from '../../Components/SafeVisual';
 import AnimatedSection from '../../Animations/AnimatedSection';
-import LiquidEther from '../../Components/LiquidEther';
+
+// Los dos componentes pesados de la home (three.js ~600 KB y model-viewer)
+// se cargan en paralelo despues del primer pintado: el titulo y los botones
+// aparecen sin esperarlos. Ambos son decorativos, no bloquean nada.
+const LiquidEther = lazy(() => import('../../Components/LiquidEther'));
+const MyModel = lazy(() => import('../../Components/Viewer'));
+
+// Fuera del componente: un array literal inline creaba una referencia nueva en
+// cada render y hacía que LiquidEther destruyera y reconstruyera toda la escena
+// WebGL cada vez que se abría o cerraba el menú del CV.
+const LIQUID_COLORS = ['#0066FF', '#3300FF', '#6B46C1'];
 
 const Home = () => {
   const t = useCustomTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useSeo({
+    title: t('seo_home_title'),
+    description: t('seo_home_description'),
+    path: '/',
+  });
 
   const closeMenu = () => {
     setIsMenuOpen(false);
@@ -26,8 +43,10 @@ const Home = () => {
 
         {/* LiquidEther Background - capa absoluta detrás de todo */}
         <div className="absolute inset-0 w-full h-full z-10 pointer-events-auto">
+          <SafeVisual>
+          <Suspense fallback={null}>
           <LiquidEther
-            colors={['#0066FF', '#3300FF', '#6B46C1']}
+            colors={LIQUID_COLORS}
             mouseForce={30}
             cursorSize={150}
             isViscous={false}
@@ -43,6 +62,8 @@ const Home = () => {
             autoResumeDelay={3000}
             autoRampDuration={0.6}
           />
+          </Suspense>
+          </SafeVisual>
         </div>
         
         {/* Contenido principal centrado */}
@@ -73,7 +94,7 @@ const Home = () => {
               {isMenuOpen && (
                 <div className="absolute left-0 top-full mt-0 w-48 font-bold text-gray-300 bg-gray-800 rounded-lg shadow-md z-30">
                   <a 
-                    href="/CV/cv-camilo-taborda-español.pdf" 
+                    href="/CV/cv-camilo-taborda-es.pdf"
                     download
                     onClick={closeMenu}
                     className="block px-4 py-3 rounded-t-lg hover:bg-[#191919]"
@@ -105,7 +126,11 @@ const Home = () => {
       {/* Segunda sección: modelo 3D + texto */}
       <div className="relative w-full h-screen bg-white overflow-hidden">
         <div className="absolute inset-0 flex justify-center items-center">
-          <MyModel />
+          <SafeVisual>
+            <Suspense fallback={null}>
+              <MyModel />
+            </Suspense>
+          </SafeVisual>
         </div>
 
         <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-6 md:px-12 bg-black/50">

@@ -6,6 +6,7 @@ import SlideLeft from "../../Animations/SlideLeft";
 import SlideRight from "../../Animations/SlideRight";
 import SlideDown from "../../Animations/SlideDown";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
+import useSeo from "../../Hooks/useSeo";
 import { 
   FiAlertCircle, 
   FiTrendingDown, 
@@ -34,6 +35,12 @@ import { FaHandshake, FaPhoneAlt  } from "react-icons/fa";
 
 const Servicios = () => {
   const t = useCustomTranslation();
+
+  useSeo({
+    title: t('seo_services_title'),
+    description: t('seo_services_description'),
+    path: '/servicios',
+  });
 
   const handleContactClick = () => {
     window.open("https://wa.me/573052737622?text=Hola, me interesa conocer más sobre tus servicios", "_blank");
@@ -234,7 +241,7 @@ const Servicios = () => {
                 ].map((solution, index) => (
                   <SlideUp key={index}>
                     <div className="flex flex-col items-center text-center bg-gradient-to-br from-gray-900 to-black border-2 border-gray-800 rounded-2xl p-8 transition-all duration-500 hover:border-white hover:scale-105 group h-full">
-                      <div className={`bg-gradient-to-br ${solution.color} p-4 rounded-2xl mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
+                      <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-4 rounded-2xl mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                         <solution.Icon className="text-5xl text-white" />
                       </div>
                       <h3 className="font-extrabold text-xl md:text-2xl mb-4">{solution.title}</h3>
@@ -405,7 +412,7 @@ const Servicios = () => {
                 ].map((reason, index) => (
                   <SlideUp key={index}>
                     <div className="flex flex-col lg:flex-row items-start gap-6 bg-gradient-to-br from-gray-900 to-black border-2 border-gray-800 rounded-2xl p-8 md:p-10 transition-all duration-500 hover:border-white hover:scale-105 group h-[400px] xl:h-[300px]">
-                      <div className={`bg-gradient-to-br ${reason.color} p-4 rounded-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
+                      <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-4 rounded-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
                         <reason.Icon className="text-4xl text-white" />
                       </div>
                       <div>
@@ -428,7 +435,7 @@ const Servicios = () => {
                 <div className="w-full md:w-2/5 flex justify-center relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl blur-2xl opacity-20 transform scale-105"></div>
                   <img 
-                    src="/Icons/img1.jpeg" 
+                    src="/Icons/img1.webp" 
                     alt="Camilo Taborda" 
                     className="relative w-80 h-80 md:w-96 md:h-96 object-cover rounded-2xl shadow-2xl border-4 border-black transition-transform duration-500 hover:scale-105"
                   />
@@ -466,7 +473,7 @@ const Servicios = () => {
                       className="bg-black text-white p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-gray-800"
                     >
                       <img 
-                        src="/Icons/linkedin.png" 
+                        src="/Icons/linkedin.webp" 
                         alt="LinkedIn" 
                         className="w-8 h-8 filter invert brightness-200" 
                       />
@@ -478,7 +485,7 @@ const Servicios = () => {
                       className="bg-black text-white p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-gray-800"
                     >
                       <img 
-                        src="/Icons/github.png" 
+                        src="/Icons/github.webp" 
                         alt="GitHub" 
                         className="w-8 h-8 filter invert brightness-200" 
                       />

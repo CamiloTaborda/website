@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
+import useSeo from "../../Hooks/useSeo";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
 import ScrollArrow from "../../Components/ScrollArrow";
@@ -17,6 +18,12 @@ const Portfolio = () => {
   const [imageError, setImageError] = useState(false);
   const [activeFilter, setActiveFilter] = useState('all');
 
+  useSeo({
+    title: t('seo_portfolio_title'),
+    description: t('seo_portfolio_description'),
+    path: '/portfolio',
+  });
+
   // ── Carga de imagen de fondo ──
   useEffect(() => {
     const img = new Image();
@@ -33,7 +40,7 @@ const Portfolio = () => {
       setIsPageReady(true);
     };
 
-    img.src = '/Icons/foto-codigo.jpg';
+    img.src = '/Icons/foto-codigo.webp';
     return () => clearTimeout(safetyTimer);
   }, []);
 
@@ -41,7 +48,7 @@ const Portfolio = () => {
     imageError
       ? { background: 'linear-gradient(135deg, #374151 0%, #111827 100%)' }
       : {
-          backgroundImage: `url('/Icons/foto-codigo.jpg')`,
+          backgroundImage: `url('/Icons/foto-codigo.webp')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

@@ -22,7 +22,7 @@ const Footer = () => {
           <h4 className="text-md font-semibold">{t('contact_footer')}</h4>
           <p className="text-sm flex flex-col mt-2">
             <a href="mailto:camilotaborda2010@gmail.com" className="hover:text-gray-400">{t('email')}</a>
-            <a href="https://wa.me/+573052737622" target="blank" className="hover:text-gray-400">{t('phone')}</a>
+            <a href="https://wa.me/+573052737622" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400">{t('phone')}</a>
           </p>
         </div>
 

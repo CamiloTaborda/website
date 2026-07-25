@@ -7,6 +7,7 @@ const ProjectCard = memo(({ item, t }) => (
     {/* Video limpio, sin caption encima */}
     <Video
       src={item.src}
+      caption={item.caption}
       link={item.link}
       poster={item.img}
     />

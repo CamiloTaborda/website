@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { isWebGLAvailable } from '../../Utils/webgl';
 
 export default function LiquidEther({
   mouseForce = 20,
@@ -30,8 +31,38 @@ export default function LiquidEther({
   const isVisibleRef = useRef(true);
   const resizeRafRef = useRef(null);
 
+  // El efecto de montaje construye toda la escena WebGL (shaders, FBOs, renderer).
+  // Si dependiera de los props, cualquier re-render del padre que pase un objeto
+  // nuevo lo destruiría y reconstruiría entero. Los leemos por ref y dejamos que
+  // el segundo useEffect sincronice los cambios en caliente.
+  const propsRef = useRef(null);
+  propsRef.current = {
+    mouseForce,
+    cursorSize,
+    isViscous,
+    viscous,
+    iterationsViscous,
+    iterationsPoisson,
+    dt,
+    BFECC,
+    resolution,
+    isBounce,
+    colors,
+    autoDemo,
+    autoSpeed,
+    autoIntensity,
+    takeoverDuration,
+    autoResumeDelay,
+    autoRampDuration
+  };
+
+  // Clave estable por valor: solo un cambio real de colores rehace la escena.
+  const colorsKey = Array.isArray(colors) ? colors.join('|') : String(colors);
+
   useEffect(() => {
     if (!mountRef.current) return;
+    // Sin WebGL no montamos nada: el fondo negro de la seccion se ve igual.
+    if (!isWebGLAvailable()) return;
 
     function makePaletteTexture(stops) {
       let arr;
@@ -63,7 +94,7 @@ export default function LiquidEther({
       return tex;
     }
 
-    const paletteTex = makePaletteTexture(colors);
+    const paletteTex = makePaletteTexture(propsRef.current.colors);
     const bgVec4 = new THREE.Vector4(0, 0, 0, 0); // always transparent
 
     class CommonClass {
@@ -973,8 +1004,8 @@ export default function LiquidEther({
             if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
             Common.renderer.dispose();
           }
-        } catch (e) {
-          void 0;
+        } catch {
+          /* el navegador ya limpio el recurso */
         }
       }
     }
@@ -985,12 +1016,12 @@ export default function LiquidEther({
 
     const webgl = new WebGLManager({
       $wrapper: container,
-      autoDemo,
-      autoSpeed,
-      autoIntensity,
-      takeoverDuration,
-      autoResumeDelay,
-      autoRampDuration
+      autoDemo: propsRef.current.autoDemo,
+      autoSpeed: propsRef.current.autoSpeed,
+      autoIntensity: propsRef.current.autoIntensity,
+      takeoverDuration: propsRef.current.takeoverDuration,
+      autoResumeDelay: propsRef.current.autoResumeDelay,
+      autoRampDuration: propsRef.current.autoRampDuration
     });
     webglRef.current = webgl;
 
@@ -998,6 +1029,18 @@ export default function LiquidEther({
       if (!webglRef.current) return;
       const sim = webglRef.current.output?.simulation;
       if (!sim) return;
+      const {
+        mouseForce,
+        cursorSize,
+        isViscous,
+        viscous,
+        iterationsViscous,
+        iterationsPoisson,
+        dt,
+        BFECC,
+        resolution,
+        isBounce
+      } = propsRef.current;
       const prevRes = sim.options.resolution;
       Object.assign(sim.options, {
         mouse_force: mouseForce,
@@ -1053,15 +1096,15 @@ export default function LiquidEther({
       if (resizeObserverRef.current) {
         try {
           resizeObserverRef.current.disconnect();
-        } catch (e) {
-          void 0;
+        } catch {
+          /* el navegador ya limpio el recurso */
         }
       }
       if (intersectionObserverRef.current) {
         try {
           intersectionObserverRef.current.disconnect();
-        } catch (e) {
-          void 0;
+        } catch {
+          /* el navegador ya limpio el recurso */
         }
       }
       if (webglRef.current) {
@@ -1069,25 +1112,9 @@ export default function LiquidEther({
       }
       webglRef.current = null;
     };
-  }, [
-    BFECC,
-    cursorSize,
-    dt,
-    isBounce,
-    isViscous,
-    iterationsPoisson,
-    iterationsViscous,
-    mouseForce,
-    resolution,
-    viscous,
-    colors,
-    autoDemo,
-    autoSpeed,
-    autoIntensity,
-    takeoverDuration,
-    autoResumeDelay,
-    autoRampDuration
-  ]);
+    // Solo un cambio real de paleta justifica reconstruir la escena.
+    // El resto de props se aplica en caliente en el efecto de abajo.
+  }, [colorsKey]);
 
   useEffect(() => {
     const webgl = webglRef.current;
@@ -1142,7 +1169,7 @@ export default function LiquidEther({
   return (
     <div
       ref={mountRef}
-      className={`w-full h-full relative overflow-hidden pointer-events-none touch-none ${className || ''}`}
+      className={`w-full h-full relative overflow-hidden touch-none ${className || ''}`}
       style={style}
     />
   );

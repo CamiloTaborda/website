@@ -1,19 +1,22 @@
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { useRoutes, BrowserRouter, useLocation } from 'react-router-dom';
 import Home from '../Home';
-import SobreMi from '../SobreMi';
-import Portfolio from '../Portfolio';
-import Contacto from '../Contacto';
-import Servicios from '../Servicios';
-import NotFound from '../NotFound';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
 import Spinner from '../../Components/Spinner';
 import '../../Styles/styles.css';
 import './App.css';
 
+// Home va eager porque es la landing: queremos pintarla sin esperar un chunk.
+// El resto se descarga solo cuando el visitante entra a esa ruta.
+const SobreMi = lazy(() => import('../SobreMi'));
+const Portfolio = lazy(() => import('../Portfolio'));
+const Contacto = lazy(() => import('../Contacto'));
+const Servicios = lazy(() => import('../Servicios'));
+const NotFound = lazy(() => import('../NotFound'));
+
 const AppRoutes = () => {
-  let routes = useRoutes([
+  const routes = useRoutes([
     { path: '/', element: <Home /> },
     { path: '/sobre-mi', element: <SobreMi /> },
     { path: '/portfolio', element: <Portfolio /> },
@@ -25,38 +28,30 @@ const AppRoutes = () => {
   return routes;
 };
 
-const App = () => {
-  const [loading, setLoading] = useState(true);
-  const location = useLocation();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); 
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [location]);
+  }, [pathname]);
 
-  return (
-    <div className="flex flex-col min-h-screen">
-      {loading ? (
-        <Spinner />
-      ) : (
-        <>
-          <Navbar />
-          <div className="flex-grow">
-            <AppRoutes />
-          </div>
-          <Footer /> 
-        </>
-      )}
-    </div>
-  );
+  return null;
 };
+
+const App = () => (
+  <div className="flex flex-col min-h-screen">
+    <ScrollToTop />
+    <Navbar />
+    <div className="flex-grow">
+      {/* El Spinner solo aparece mientras se descarga el chunk de la ruta,
+          no como retardo fijo en cada carga. */}
+      <Suspense fallback={<Spinner />}>
+        <AppRoutes />
+      </Suspense>
+    </div>
+    <Footer />
+  </div>
+);
 
 const Root = () => (
   <BrowserRouter>

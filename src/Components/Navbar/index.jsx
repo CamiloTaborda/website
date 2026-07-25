@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Button from "../Button";
 
@@ -9,28 +9,15 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // En refs, no en estado: antes lastScrollY estaba en las dependencias del
+  // efecto, asi que el listener se desuscribia y volvia a suscribirse en cada
+  // evento de scroll.
+  const lastScrollY = useRef(0);
+  const isMenuOpenRef = useRef(isMenuOpen);
+  isMenuOpenRef.current = isMenuOpen;
 
   const activeStyle = 'underline underline-offset-8 decoration-2';
-
-  const handleScroll = () => {
-    const currentScrollY = window.scrollY;
-
-    // Si el menú móvil está abierto, no ocultamos la barra
-    if (isMenuOpen) return;
-
-    // Lógica para color de fondo
-    setIsScrolled(currentScrollY > 20);
-
-    // Lógica para ocultar/mostrar al hacer scroll
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-      setIsVisible(false);
-    } else {
-      setIsVisible(true);
-    }
-
-    setLastScrollY(currentScrollY);
-  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -42,12 +29,23 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // Con el menú móvil abierto no ocultamos la barra
+      if (isMenuOpenRef.current) return;
+
+      setIsScrolled(currentScrollY > 20);
+
+      // Ocultar al bajar, mostrar al subir
+      setIsVisible(!(currentScrollY > lastScrollY.current && currentScrollY > 100));
+
+      lastScrollY.current = currentScrollY;
     };
-    // Mantenemos lastScrollY para que la lógica de comparación funcione correctamente
-  }, [lastScrollY, isMenuOpen]);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <nav
@@ -103,7 +101,7 @@ const Navbar = () => {
               <p>{i18n.language === 'es' ? 'ES' : 'EN'}</p>
               <img
                 className="w-5 h-auto"
-                src={i18n.language === 'es' ? '/Icons/colombia.png' : '/Icons/estados-unidos.png'}
+                src={i18n.language === 'es' ? '/Icons/colombia.webp' : '/Icons/estados-unidos.webp'}
                 alt="lang"
               />
             </li>
@@ -165,7 +163,7 @@ const Navbar = () => {
                 <p className="text-2xl">{i18n.language === 'es' ? 'ES' : 'EN'}</p>
                 <img
                   className="w-8"
-                  src={i18n.language === 'es' ? '/Icons/colombia.png' : '/Icons/estados-unidos.png'}
+                  src={i18n.language === 'es' ? '/Icons/colombia.webp' : '/Icons/estados-unidos.webp'}
                   alt="flag"
                 />
               </div>

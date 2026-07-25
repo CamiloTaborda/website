@@ -1,4 +1,5 @@
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
+import useSeo from "../../Hooks/useSeo";
 import Layout from "../../Components/Layout";
 import Diplomas from "../../Components/Diplomas";
 import ScrollArrow from "../../Components/ScrollArrow";
@@ -8,9 +9,19 @@ import SlideLeft from "../../Animations/SlideLeft";
 import SlideRight from "../../Animations/SlideRight";
 import SlideUp from "../../Animations/SlideUp";
 import Ribbons from "../../Components/Ribbons";
+import SafeVisual from "../../Components/SafeVisual";
+
+// Fuera del componente: un array inline se recrea en cada render.
+const RIBBON_COLORS = ['#007BFF'];
 
 const SobreMi = () => {
   const t = useCustomTranslation();
+
+  useSeo({
+    title: t('seo_about_title'),
+    description: t('seo_about_description'),
+    path: '/sobre-mi',
+  });
 
   return (
     <Layout background={{ backgroundColor: "black" }}>
@@ -22,7 +33,7 @@ const SobreMi = () => {
           {/* Contenedor de la imagen */}
           <div
             className="relative flex justify-center items-end w-full h-[50vh] min-h-[400px] md:h-full md:min-h-screen bg-cover bg-center animate-slide-in-left md:w-1/2"
-            style={{ backgroundImage: "url('/Icons/img1.jpeg')" }}
+            style={{ backgroundImage: "url('/Icons/img1.webp')" }}
           >
             <div
               className="absolute inset-0 bg-black opacity-100"
@@ -32,10 +43,10 @@ const SobreMi = () => {
             />
             <div className="flex gap-5 mb-10 pt-3 w-full justify-center relative z-10">
               <a href="https://www.linkedin.com/in/camilo-taborda-20724917a/" target="_blank" rel="noopener noreferrer">
-                <img src="/Icons/linkedin.png" alt="LinkedIn" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
+                <img src="/Icons/linkedin.webp" alt="LinkedIn" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
               </a>
               <a href="https://github.com/CamiloTaborda" target="_blank" rel="noopener noreferrer">
-                <img src="/Icons/github.png" alt="GitHub" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
+                <img src="/Icons/github.webp" alt="GitHub" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
               </a>
             </div>
           </div>
@@ -60,14 +71,16 @@ const SobreMi = () => {
   
   {/* Ribbons como fondo interactivo */}
   <div className="absolute inset-0 w-full h-full z-20">
-    <Ribbons
-      baseThickness={15}
-      colors={['#007BFF']}
-      speedMultiplier={0.5}
-      maxAge={500}
-      enableFade={false}
-      enableShaderEffect={true}
-    />
+    <SafeVisual>
+      <Ribbons
+        baseThickness={15}
+        colors={RIBBON_COLORS}
+        speedMultiplier={0.5}
+        maxAge={500}
+        enableFade={false}
+        enableShaderEffect={true}
+      />
+    </SafeVisual>
   </div>
 
   <div className="relative w-full h-full flex items-center justify-center">
@@ -88,14 +101,14 @@ const SobreMi = () => {
         <div className="flex justify-center items-center w-full max-w-6xl pb-12 md:pb-0">
           <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 md:gap-6 z-20">
             {[
-              { name: "JavaScript", icon: "js.png", shadow: "hover:shadow-yellow-500/50", Anim: SlideRight },
-              { name: "HTML5", icon: "html-5.png", shadow: "hover:shadow-orange-500/50", Anim: SlideDown },
-              { name: "CSS3", icon: "css-3.png", shadow: "hover:shadow-blue-400/50", Anim: SlideLeft },
-              { name: "React.js", icon: "react.png", shadow: "hover:shadow-cyan-400/50", Anim: SlideRight },
-              { name: "Next.js", icon: "next-logo.png", shadow: "hover:shadow-gray-600/50", Anim: SlideUp },
-              { name: "Three.js", icon: "three-js-icon.png", shadow: "hover:shadow-gray-800/50", Anim: SlideLeft },
-              { name: "Tailwind", icon: "tailwind.png", shadow: "hover:shadow-cyan-300/50", Anim: SlideDown },
-              { name: "Supabase", icon: "supabase.png", shadow: "hover:shadow-emerald-500/50", Anim: SlideUp },
+              { name: "JavaScript", icon: "js.webp", shadow: "hover:shadow-yellow-500/50", Anim: SlideRight },
+              { name: "HTML5", icon: "html-5.webp", shadow: "hover:shadow-orange-500/50", Anim: SlideDown },
+              { name: "CSS3", icon: "css-3.webp", shadow: "hover:shadow-blue-400/50", Anim: SlideLeft },
+              { name: "React.js", icon: "react.webp", shadow: "hover:shadow-cyan-400/50", Anim: SlideRight },
+              { name: "Next.js", icon: "next-logo.webp", shadow: "hover:shadow-gray-600/50", Anim: SlideUp },
+              { name: "Three.js", icon: "three-js-icon.webp", shadow: "hover:shadow-gray-800/50", Anim: SlideLeft },
+              { name: "Tailwind", icon: "tailwind.webp", shadow: "hover:shadow-cyan-300/50", Anim: SlideDown },
+              { name: "Supabase", icon: "supabase.webp", shadow: "hover:shadow-emerald-500/50", Anim: SlideUp },
             ].map((skill, index) => (
               <skill.Anim key={index}>
                 <div className={`group relative flex justify-center items-center aspect-square bg-white bg-opacity-40 backdrop-blur-md border-2 border-white border-opacity-50 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:scale-110 hover:bg-opacity-60 hover:shadow-2xl ${skill.shadow}`}>
@@ -150,7 +163,7 @@ const SobreMi = () => {
                   {t("ArdataTechDescription")}
                   </p>
                   <SlideUp>
-                  <img className="w-10 mt-5 transition-transform duration-200 transform hover:scale-110" src="/Icons/logo-color.png" alt="Ardata Tech Logo" />
+                  <img className="w-10 mt-5 transition-transform duration-200 transform hover:scale-110" src="/Icons/logo-color.webp" alt="Ardata Tech Logo" />
                   </SlideUp>
                 </div>
               </AnimatedSection>

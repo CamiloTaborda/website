@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Renderer, Transform, Vec3, Color, Polyline } from 'ogl';
+import { isWebGLAvailable } from '../../Utils/webgl';
 
 const Ribbons = ({
   colors = ['#FC8EAC'],
@@ -20,6 +21,8 @@ const Ribbons = ({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+    // Sin WebGL no montamos las cintas: la seccion se ve igual sin ellas.
+    if (!isWebGLAvailable()) return;
 
     const renderer = new Renderer({ dpr: window.devicePixelRatio || 2, alpha: true });
     const gl = renderer.gl;

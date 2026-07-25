@@ -1,8 +1,12 @@
 import '@google/model-viewer';
 import { useEffect, useRef } from 'react';
+import { isWebGLAvailable } from '../../Utils/webgl';
 
 const MyModel = () => {
   const modelRef = useRef(null);
+  // model-viewer crea su renderer fuera del ciclo de React, asi que un Error
+  // Boundary no lo alcanza: hay que no montarlo si no hay WebGL.
+  const supported = isWebGLAvailable();
 
   useEffect(() => {
     const model = modelRef.current;
@@ -25,6 +29,8 @@ const MyModel = () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  if (!supported) return null;
 
   return (
     <div className="w-full h-full bg-white">

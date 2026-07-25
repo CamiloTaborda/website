@@ -1,7 +1,7 @@
 export const projects = [
   {
     src: "/Video/video3.mp4",
-    img: "/Icons/foto-1.png",
+    img: "/Icons/foto-1.webp",
     caption: "Modular Configurator",
     link: "https://static.ardatatech.co/full-modular-2/",
     category: "3d_config",
@@ -9,7 +9,7 @@ export const projects = [
   },
   {
     src: "/Video/video6.mp4",
-    img: "/Icons/foto-3.png",
+    img: "/Icons/foto-3.webp",
     caption: "Product Animation",
     link: "https://static.ardatatech.co/web-components/ardata-animation-product/",
     category: "3d_config",
@@ -17,7 +17,7 @@ export const projects = [
   },
   {
     src: "/Video/video4.mp4",
-    img: "/Icons/foto-4.png",
+    img: "/Icons/foto-4.webp",
     caption: "Product Tour",
     link: "https://static.ardatatech.co/ARData/product-tour/",
     category: "3d_config",
@@ -25,7 +25,7 @@ export const projects = [
   },
   {
     src: "/Video/video10.mp4",
-    img: "/Icons/foto-10.png",
+    img: "/Icons/foto-10.webp",
     caption: "Product Configurator",
     link: "https://static.ardatatech.co/web-components/ardata-configurator/",
     category: "3d_config",
@@ -33,7 +33,7 @@ export const projects = [
   },
   {
     src: "/Video/video5.mp4",
-    img: "/Icons/foto-2.png",
+    img: "/Icons/foto-2.webp",
     caption: "Viewer360",
     link: "https://static.ardatatech.co/ardata-viewer-full/",
     category: "360_viewers",
@@ -41,7 +41,7 @@ export const projects = [
   },
   {
     src: "/Video/video7.mp4",
-    img: "/Icons/foto-8.png",
+    img: "/Icons/foto-8.webp",
     caption: "Product Scene",
     link: "https://static.ardatatech.co/web-components/ardata-product-scene/",
     category: "360_viewers",
@@ -49,7 +49,7 @@ export const projects = [
   },
   {
     src: "/Video/video8.mp4",
-    img: "/Icons/foto-7.png",
+    img: "/Icons/foto-7.webp",
     caption: "Product Photo Studio",
     link: "https://static.ardatatech.co/web-components/ardata-photo-studio/",
     category: "360_viewers",
@@ -57,7 +57,7 @@ export const projects = [
   },
   {
     src: "/Video/video2.mp4",
-    img: "/Icons/foto-5.png",
+    img: "/Icons/foto-5.webp",
     caption: "Website 77 Render Studio",
     link: "https://www.77renderstudio.com/",
     category: "websites",
@@ -65,7 +65,7 @@ export const projects = [
   },
   {
     src: "/Video/video1.mp4",
-    img: "/Icons/foto-6.png",
+    img: "/Icons/foto-6.webp",
     caption: "Website Ardata Tech",
     link: "https://ardatatech.co/",
     category: "websites",
@@ -73,7 +73,7 @@ export const projects = [
   },
   {
     src: "/Video/video9.mp4",
-    img: "/Icons/foto-9.png",
+    img: "/Icons/foto-9.webp",
     caption: "Website AC Tributaria",
     link: "https://www.actributaria.com/",
     category: "websites",
@@ -81,7 +81,7 @@ export const projects = [
   },
   {
     src: "/Video/video11.mp4",
-    img: "/Icons/foto-11.png",
+    img: "/Icons/foto-11.webp",
     caption: "Saint Fermín — Sales System",
     link: "https://saintfermin.77renderstudio.com/",
     category: "websites",

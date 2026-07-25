@@ -1,5 +1,6 @@
 import { useState } from "react";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
+import useSeo from "../../Hooks/useSeo";
 import SlideUp from "../../Animations/SlideUp";
 import Button from "../../Components/Button";
 import Layout from "../../Components/Layout";
@@ -8,6 +9,12 @@ const Contacto = () => {
   const t = useCustomTranslation();
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState("");
+
+  useSeo({
+    title: t('seo_contact_title'),
+    description: t('seo_contact_description'),
+    path: '/contacto',
+  });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +37,7 @@ const Contacto = () => {
       } else {
         setStatus(t("message_not_sent"));
       }
-    } catch (error) {
+    } catch {
       setStatus(t("conection_error"));
     }
   };
@@ -42,7 +49,7 @@ const Contacto = () => {
         <div className="flex flex-col md:flex-row justify-center items-center w-full gap-10 bg-black text-white px-4 min-h-screen max-w-screen-xl mx-auto">
           {/* Sección de información */}
           <div className="flex flex-col justify-center items-center text-center w-full md:w-1/2 p-6 animate-slide-in-left">
-            <h2 className="font-bold text-4xl mb-5">{t("tilte_contact")}</h2>
+            <h1 className="font-bold text-4xl mb-5">{t("tilte_contact")}</h1>
             <p className="font-medium max-w-3xl leading-relaxed">{t("description_contact")}</p>
             <div className="mt-6">
               <Button href="https://wa.me/+573052737622">{t("contact_me")}</Button>
@@ -98,7 +105,7 @@ const Contacto = () => {
             <div className="flex flex-col justify-center items-center mt-5 animate-slide-in-left">
               <img
                 className="w-8 h-8 mb-2 transform hover:scale-110"
-                src="/Icons/ubicacion.png"
+                src="/Icons/ubicacion.webp"
                 alt="Ubicación"
               />
               <p className="font-medium max-w-xs leading-relaxed text-center">Medellín, Colombia</p>
@@ -107,7 +114,7 @@ const Contacto = () => {
             <div className="flex flex-col justify-center items-center mt-5 animate-slide-in-right">
               <img
                 className="w-8 h-8 mb-2 transform hover:scale-110"
-                src="/Icons/carta.png"
+                src="/Icons/carta.webp"
                 alt="Email"
               />
               <p className="font-medium max-w-xs leading-relaxed text-center">
@@ -128,7 +135,7 @@ const Contacto = () => {
             >
               <SlideUp>
                 <img
-                  src="/Icons/linkedin.png"
+                  src="/Icons/linkedin.webp"
                   alt="LinkedIn"
                   className="w-8 h-8 transform hover:scale-110"
                 />
@@ -137,7 +144,7 @@ const Contacto = () => {
             <a href="https://github.com/CamiloTaborda" target="_blank" rel="noopener noreferrer">
               <SlideUp>
                 <img
-                  src="/Icons/github.png"
+                  src="/Icons/github.webp"
                   alt="GitHub"
                   className="w-8 h-8 transform hover:scale-110"
                 />

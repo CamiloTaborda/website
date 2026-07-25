@@ -1,219 +1,106 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import AnimatedSection from "../../Animations/AnimatedSection";
 
+// Margen de precarga: empezamos a bajar el video cuando está a 300px de entrar
+// en pantalla, para que llegue listo sin descargar los 11 de golpe.
+const PRELOAD_MARGIN = '300px';
+
 const Video = ({ src, caption, link, poster }) => {
+  const t = useCustomTranslation();
+  const containerRef = useRef(null);
   const videoRef = useRef(null);
+
+  // shouldLoad: hasta que no sea true, el <video> no tiene src y no pesa nada.
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const [isReady, setIsReady] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
+  // 1. Adjuntar el src solo cuando la tarjeta se acerca al viewport.
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    const el = containerRef.current;
+    if (!el) return;
 
-    // Configuraciones del video
-    video.setAttribute('webkit-playsinline', 'true');
-    video.setAttribute('playsinline', 'true');
-    video.muted = true;
-    video.loop = true;
-    video.preload = 'auto';
-
-    const playVideo = async () => {
-      if (!video) return;
-      
-      try {
-        video.muted = true;
-        video.volume = 0;
-        
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          await playPromise;
-          setIsPlaying(true);
-        }
-      } catch (error) {
-        console.log("Autoplay attempt failed:", error);
-        setIsPlaying(false);
-        
-        setTimeout(() => {
-          playVideo();
-        }, 500);
-      }
-    };
-
-    // Event listeners
-    const handleLoadStart = () => {
-      setIsLoaded(false);
-      setIsLoading(true);
-    };
-
-    const handleCanPlay = () => {
-      setIsLoaded(true);
-      setIsLoading(false);
-      playVideo();
-    };
-
-    const handlePlay = () => {
-      setIsPlaying(true);
-      setIsLoading(false);
-    };
-
-    const handlePause = () => {
-      setIsPlaying(false);
-      setTimeout(() => {
-        playVideo();
-      }, 100);
-    };
-
-    const handleWaiting = () => {
-      setIsLoading(true);
-    };
-
-    const handleCanPlayThrough = () => {
-      setIsLoading(false);
-    };
-
-    // Agregar event listeners
-    video.addEventListener('loadstart', handleLoadStart);
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('canplaythrough', handleCanPlayThrough);
-    video.addEventListener('play', handlePlay);
-    video.addEventListener('pause', handlePause);
-    video.addEventListener('waiting', handleWaiting);
-
-    // Intentar reproducir si está listo
-    if (video.readyState >= 3) {
-      setIsLoading(false);
-      playVideo();
+    if (typeof IntersectionObserver === 'undefined') {
+      setShouldLoad(true);
+      return;
     }
 
-    return () => {
-      if (video) {
-        video.removeEventListener('loadstart', handleLoadStart);
-        video.removeEventListener('canplay', handleCanPlay);
-        video.removeEventListener('canplaythrough', handleCanPlayThrough);
-        video.removeEventListener('play', handlePlay);
-        video.removeEventListener('pause', handlePause);
-        video.removeEventListener('waiting', handleWaiting);
-      }
-    };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: PRELOAD_MARGIN }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  // Intersection Observer
+  // 2. Reproducir solo mientras está visible; pausar al salir para no gastar
+  //    CPU ni batería con 11 videos corriendo a la vez.
   useEffect(() => {
+    if (!shouldLoad) return;
     const video = videoRef.current;
     if (!video) return;
 
-    const playVideoWhenVisible = async () => {
-      if (!video) return;
-      
-      try {
-        video.muted = true;
-        await video.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Play on visibility failed:", error);
-      }
-    };
-
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            playVideoWhenVisible();
-          }
-        });
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Si el navegador bloquea el autoplay, nos quedamos con el poster
+          // y el botón de play. Sin reintentos: el usuario puede tocar.
+          video.play().catch(() => {});
+        } else if (!video.paused) {
+          video.pause();
+        }
       },
-      { threshold: 0.1 }
+      { threshold: 0.25 }
     );
 
     observer.observe(video);
+    return () => observer.disconnect();
+  }, [shouldLoad]);
 
-    return () => {
-      observer.disconnect();
-    };
+  const handlePlay = useCallback(() => setIsPlaying(true), []);
+  const handlePause = useCallback(() => setIsPlaying(false), []);
+  const handleCanPlay = useCallback(() => setIsReady(true), []);
+
+  const tryPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (video && video.paused) video.play().catch(() => {});
   }, []);
 
-  // Manejar click
-  const handleVideoClick = async (e) => {
-    e.preventDefault();
-    
-    const video = videoRef.current;
-    
-    if (video && !isPlaying) {
-      try {
-        video.muted = true;
-        await video.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Could not play video:", error);
-      }
-    }
-    
-    setTimeout(() => {
-      window.open(link, '_blank', 'noopener,noreferrer');
-    }, 300);
-  };
-
-  // Manejar hover
-  const handleMouseEnter = async () => {
+  const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-    const video = videoRef.current;
-    if (video && !isPlaying) {
-      try {
-        video.muted = true;
-        await video.play();
-        setIsPlaying(true);
-      } catch (error) {
-        // Silently handle autoplay restrictions
-      }
-    }
-  };
+    tryPlay();
+  }, [tryPlay]);
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-  };
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
-  // Manejar touch
-  const handleTouchStart = async () => {
-    const video = videoRef.current;
-    if (video && !isPlaying) {
-      try {
-        video.muted = true;
-        await video.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Touch play failed:", error);
-      }
-    }
-  };
-
-  // Spinner de carga mejorado
-  const LoadingSpinner = () => (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl z-20">
-      <div className="relative">
-        <div className="w-12 h-12 border-4 border-slate-600 border-t-blue-500 rounded-full animate-spin" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-        </div>
-      </div>
-      <div className="mt-3 text-sm text-slate-400 font-medium">Cargando proyecto...</div>
-    </div>
-  );
+  const showSpinner = shouldLoad && !isReady;
 
   return (
-    <div className="mb-6 w-full">
+    <div className="mb-6 w-full" ref={containerRef}>
       <AnimatedSection>
-        <div
-          className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer border border-slate-700"
-          onClick={handleVideoClick}
+        {/* <a> real en vez de div+onClick: navegable por teclado, permite
+            abrir en pestaña nueva con click central y no lo bloquea el popup blocker. */}
+        <a
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={caption}
+          className="block group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 cursor-pointer border border-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-900"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onTouchStart={handleTouchStart}
+          onTouchStart={tryPlay}
         >
           {/* Barra superior animada */}
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-30"></div>
-          
+
           {/* Efecto de brillo */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-10 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 z-10"></div>
 
@@ -221,37 +108,45 @@ const Video = ({ src, caption, link, poster }) => {
           <div className="relative aspect-video overflow-hidden bg-black">
             <video
               ref={videoRef}
-              src={src}
+              src={shouldLoad ? src : undefined}
               poster={poster}
               muted
               loop
               playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              className={`w-full h-full object-cover transition-all duration-700 ${
+              preload="none"
+              tabIndex={-1}
+              aria-hidden="true"
+              onCanPlay={handleCanPlay}
+              onPlay={handlePlay}
+              onPause={handlePause}
+              className={`w-full h-full object-cover transition-transform duration-700 ${
                 isHovered ? 'scale-110' : 'scale-100'
-              } ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+              }`}
             />
-            
-            {/* Spinner de carga */}
-            {isLoading && <LoadingSpinner />}
-            
-            {/* Overlay oscuro dinámico */}
-            <div className={`absolute inset-0 transition-all duration-500 ${
-              isPlaying ? 'bg-opacity-10' : 'bg-opacity-40'
-            } bg-black`}></div>
 
-            {/* Icono de play/link */}
-            {!isPlaying && isLoaded && !isLoading && (
+            {/* Spinner mientras baja el video (el poster ya se ve detrás) */}
+            {showSpinner && (
+              <div className="absolute bottom-3 left-3 z-20">
+                <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              </div>
+            )}
+
+            {/* Overlay oscuro dinámico */}
+            <div
+              className={`absolute inset-0 transition-all duration-500 ${
+                isPlaying ? 'bg-opacity-10' : 'bg-opacity-40'
+              } bg-black`}
+            ></div>
+
+            {/* Icono de play mientras no reproduce */}
+            {!isPlaying && (
               <div className="absolute inset-0 flex items-center justify-center z-20">
-                <div className="transform transition-all duration-500">
-                  <div className="relative">
-                    <div className="absolute inset-0 bg-white rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
-                    <div className="relative bg-white bg-opacity-90 backdrop-blur-sm p-4 rounded-full group-hover:bg-opacity-100 transition-all duration-500 group-hover:scale-110">
-                      <svg className="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
-                      </svg>
-                    </div>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-white rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                  <div className="relative bg-white bg-opacity-90 backdrop-blur-sm p-4 rounded-full group-hover:bg-opacity-100 transition-all duration-500 group-hover:scale-110">
+                    <svg className="w-8 h-8 text-slate-900" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -275,7 +170,7 @@ const Video = ({ src, caption, link, poster }) => {
                   {caption}
                 </h3>
                 <div className="flex items-center gap-2 mt-2 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                  <span className="text-xs text-slate-400 font-medium">Ver proyecto</span>
+                  <span className="text-xs text-slate-400 font-medium">{t('view_project')}</span>
                   <svg className="w-4 h-4 text-slate-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -288,7 +183,7 @@ const Video = ({ src, caption, link, poster }) => {
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
                   </svg>
-                  Proyecto
+                  {t('project_badge')}
                 </span>
               </div>
             </div>
@@ -296,7 +191,7 @@ const Video = ({ src, caption, link, poster }) => {
 
           {/* Borde inferior con gradiente */}
           <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-slate-600 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-        </div>
+        </a>
       </AnimatedSection>
     </div>
   );
