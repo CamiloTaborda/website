@@ -101,6 +101,13 @@ export default {
           '0%, 100%': { transform: 'translateY(0)', opacity: '0.4' },
           '50%':      { transform: 'translateY(6px)', opacity: '1' },
         },
+        // Barra de carga indeterminada: no simula un porcentaje falso, solo
+        // indica que algo está en curso.
+        'loader-sweep': {
+          '0%':   { transform: 'translateX(-100%) scaleX(0.4)' },
+          '50%':  { transform: 'translateX(30%) scaleX(1)' },
+          '100%': { transform: 'translateX(180%) scaleX(0.4)' },
+        },
       },
 
       animation: {
@@ -108,6 +115,7 @@ export default {
         'fade-up': 'fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both',
         'fade-in': 'fade-in 1s ease-out both',
         'scroll-hint': 'scroll-hint 2s ease-in-out infinite',
+        'loader-sweep': 'loader-sweep 1.15s cubic-bezier(0.65, 0, 0.35, 1) infinite',
       },
     },
   },
