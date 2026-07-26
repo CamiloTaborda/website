@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
-import Layout from "../../Components/Layout";
 
 const NotFound = () => {
   const t = useCustomTranslation();
@@ -13,27 +12,38 @@ const NotFound = () => {
   });
 
   return (
-    <Layout background={{ backgroundColor: "black" }}>
-      <div className="bg-black min-h-screen w-full flex flex-col justify-center items-center text-center px-6 gap-6">
-        <img
-          className="filter invert brightness-200 w-40 h-40 md:w-48 md:h-48"
-          src="/Icons/pagina-no-encontrada.webp"
-          alt=""
-        />
-        <h1 className="font-extrabold text-white text-3xl md:text-5xl">
-          {t('not_found_title')}
-        </h1>
-        <p className="font-medium text-gray-300 text-base md:text-lg max-w-md">
-          {t('not_found_text')}
-        </p>
-        <Link
-          to="/"
-          className="inline-flex items-center gap-2 bg-slate-950 text-slate-400 border border-slate-400 border-b-4 font-medium px-4 py-2 rounded-md hover:brightness-150 hover:border-t-4 hover:border-b active:opacity-75 outline-none duration-300"
-        >
-          {t('not_found_button')}
-        </Link>
+    <main className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink text-white">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background:
+            'radial-gradient(ellipse 50% 50% at 50% 40%, rgba(0,113,227,0.15) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="container-page relative z-10">
+        <div className="flex flex-col items-center text-center">
+          <p className="eyebrow mb-7 tabular-nums animate-fade-up">404</p>
+
+          <h1 className="text-display-xl text-gradient-light max-w-2xl animate-fade-up delay-1">
+            {t('not_found_title')}
+          </h1>
+
+          <p className="mt-7 max-w-md text-body-lg text-ink-300 animate-fade-up delay-2">
+            {t('not_found_text')}
+          </p>
+
+          <div className="mt-11 flex flex-col sm:flex-row items-center gap-4 animate-fade-up delay-3">
+            <Link to="/" className="btn-primary">
+              {t('not_found_button')}
+            </Link>
+            <Link to="/portfolio" className="btn-ghost-light">
+              {t('home_cta_primary')}
+            </Link>
+          </div>
+        </div>
       </div>
-    </Layout>
+    </main>
   );
 };
 

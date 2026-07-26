@@ -1,37 +1,27 @@
-import Layout from "../../Components/Layout";
-import Button from "../../Components/Button";
-import AnimatedSection from "../../Animations/AnimatedSection";
-import SlideUp from "../../Animations/SlideUp";
-import SlideLeft from "../../Animations/SlideLeft";
-import SlideRight from "../../Animations/SlideRight";
-import SlideDown from "../../Animations/SlideDown";
+import { Link } from "react-router-dom";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
-import { 
-  FiAlertCircle, 
-  FiTrendingDown, 
-  FiSmartphone, 
-  FiImage 
-} from "react-icons/fi";
-import {  
-  BiTargetLock, 
-  BiMessageSquareDetail, 
-  BiRocket 
-} from "react-icons/bi";
-import { 
-  HiSparkles,
-  HiOutlineGlobeAlt, 
-  HiOutlineLightningBolt, 
-  HiOutlineCode, 
-  HiOutlineRefresh 
-} from "react-icons/hi";
-import { 
-  BsBriefcase, 
-  BsBullseye,  
-  BsChatDots 
-} from "react-icons/bs";
-import { AiOutlineRocket } from "react-icons/ai";
-import { FaHandshake, FaPhoneAlt  } from "react-icons/fa";
+import Reveal from "../../Animations/Reveal";
+import {
+  HiOutlineSquares2X2,
+  HiOutlineCube,
+  HiOutlineDevicePhoneMobile,
+  HiOutlineGlobeAlt,
+} from "react-icons/hi2";
+
+const WHATSAPP =
+  "https://wa.me/573052737622?text=Hola%20Camilo,%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20tus%20servicios";
+
+// Cuatro servicios, uno por cada bloque de trabajo real del CV.
+const SERVICES = [1, 2, 3, 4].map((n) => ({
+  n,
+  Icon: [
+    HiOutlineSquares2X2,
+    HiOutlineCube,
+    HiOutlineDevicePhoneMobile,
+    HiOutlineGlobeAlt,
+  ][n - 1],
+}));
 
 const Servicios = () => {
   const t = useCustomTranslation();
@@ -42,516 +32,188 @@ const Servicios = () => {
     path: '/servicios',
   });
 
-  const handleContactClick = () => {
-    window.open("https://wa.me/573052737622?text=Hola, me interesa conocer más sobre tus servicios", "_blank");
-  };
-
   return (
-    <Layout background={{ backgroundColor: "black" }}>
-      <div className="flex flex-col justify-between items-center w-full text-white h-auto overflow-auto">
-        
-        {/* 1️⃣ HERO SECTION - Pantalla completa con efecto de degradado */}
-        <div className="relative flex flex-col justify-center items-center w-full min-h-screen px-5 2xl:px-0 bg-gradient-to-b from-black via-gray-900 to-black">
-          <AnimatedSection>
-            <div className="max-w-[1500px] flex flex-col items-center text-center gap-5 mt-20 xl:mt-10 2xl:mt-0">
-              <SlideDown>
-                <div className="inline-block px-6 py-2 bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 rounded-full">
-                 <p className="flex items-center gap-2 text-xs md:text-base font-bold text-gray-300">
-                 <BiRocket className="text-gray-300" size={18} />
-                  {t('services_hero_tag')}
-                 </p>
-                </div>
-              </SlideDown>
+    <main className="bg-ink text-white">
 
-              <SlideUp>
-                <h1 className="font-extrabold text-white text-3xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight">
-                  {t('services_hero_title')}
-                </h1>
-              </SlideUp>
-              
-              <SlideUp>
-                <p className="font-medium text-md md:text-xl xl:text-2xl 2xl:text-3xl text-gray-300 max-w-4xl leading-relaxed">
-                  {t('services_hero_text')}
-                </p>
-              </SlideUp>
+      {/* ───────────────────────── HERO ───────────────────────── */}
+      <section className="relative flex min-h-[78svh] items-center overflow-hidden pt-32 pb-24">
+        {/* Halo tenue arriba: da profundidad sin competir con el texto */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-70"
+          style={{
+            background:
+              'radial-gradient(ellipse 55% 45% at 50% 0%, rgba(0,113,227,0.16) 0%, transparent 70%)',
+          }}
+        />
 
-              <SlideUp>
-                <div className="flex flex-col sm:flex-row mt-5">
-                <Button onClick={handleContactClick}>
-                <FaPhoneAlt size={16} />
-                 {t('services_hero_button')}
-                </Button>
-                </div>
-              </SlideUp>
-
-              <SlideUp>
-                <div className="hidden md:flex flex-col md:flex-row items-center gap-8 mt-8 text-gray-400">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_hero_tag_1')}</span>
-                  </div>
-                  <div className="hidden md:block w-px h-6"><span>•</span></div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_hero_tag_2')}</span>
-                  </div>
-                  <div className="hidden md:block w-px h-6"><span>•</span></div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_hero_tag_3')}</span>
-                  </div>
-                </div>
-              </SlideUp>
+        <div className="container-page relative z-10">
+          <div className="max-w-4xl">
+            <p className="eyebrow mb-7 animate-fade-up">{t('sv_eyebrow')}</p>
+            <h1 className="text-display-xl text-gradient-light animate-fade-up delay-1">
+              {t('sv_title')}
+            </h1>
+            <p className="mt-8 max-w-2xl text-body-lg text-ink-300 animate-fade-up delay-2">
+              {t('sv_subtitle')}
+            </p>
+            <div className="mt-11 animate-fade-up delay-3">
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-primary">
+                {t('sv_cta')}
+              </a>
             </div>
-          </AnimatedSection>
-        </div>
-
-        {/* 2️⃣ PROBLEMAS COMUNES - Fondo blanco */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-white text-black">
-  <AnimatedSection>
-    <div className="max-w-[1500px] w-full px-5 2xl:px-0 flex flex-col items-center gap-16">
-
-      {/* HEADER */}
-      <div className="text-center ">
-        <SlideUp>
-          <h2 className="w-full font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight mb-6">
-            {t('services_2_title')}
-          </h2>
-        </SlideUp>
-        <SlideUp>
-          <p className="font-medium text-lg md:text-xl text-gray-600 leading-relaxed">
-            {t('services_2_text')}
-          </p>
-        </SlideUp>
-      </div>
-
-      {/* GRID */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-        {[
-          {
-            Icon: FiAlertCircle,
-            title: t('services_2_card_1'),
-            description:
-              t('services_2_card_1_description'),
-            color: "text-gray-600",
-          },
-          {
-            Icon: FiSmartphone,
-            title: t('services_2_card_2'),
-            description:
-              t('services_2_card_2_description'),
-            color: "text-gray-600",
-          },
-          {
-            Icon: FiImage,
-            title: t('services_2_card_3'),
-            description:
-              t('services_2_card_3_description'),
-            color: "text-gray-600",
-          },
-          {
-            Icon: FiTrendingDown,
-            title: t('services_2_card_4'),
-            description:
-              t('services_2_card_4_description'),
-            color: "text-gray-600",
-          },
-        ].map((problem, index) => (
-          <SlideUp key={index}>
-            <div
-              className="
-                flex flex-col justify-between
-                h-[350px]
-                bg-gradient-to-br from-gray-50 to-gray-100
-                border-2 border-gray-200
-                rounded-2xl
-                p-8 md:p-10
-                transition-all duration-500
-                hover:scale-105 hover:border-black hover:shadow-2xl
-                group
-              "
-            >
-              {/* CONTENT */}
-              <div>
-                <problem.Icon
-                  className={`text-6xl mb-6 ${problem.color} transition-transform duration-300 group-hover:scale-110`}
-                />
-
-                <h3 className="font-extrabold text-2xl md:text-3xl mb-4 line-clamp-2">
-                  {problem.title}
-                </h3>
-
-                <p className="font-medium text-base md:text-lg text-gray-700 leading-relaxed line-clamp-3">
-                  {problem.description}
-                </p>
-              </div>
-            </div>
-          </SlideUp>
-        ))}
-      </div>
-    </div>
-  </AnimatedSection>
-</div>
-
-
-        {/* 3️⃣ TU SOLUCIÓN - Fondo negro con patrón */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-black text-white relative overflow-hidden">
-          {/* Patrón de fondo sutil */}
-          <div className="absolute inset-0 opacity-5">
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-              backgroundSize: '50px 50px'
-            }}></div>
           </div>
-
-          <AnimatedSection>
-            <div className="max-w-[1500px] w-full px-5 2xl:px-0 flex flex-col items-center gap-16 relative z-10">
-              <div className="text-center ">
-                <SlideUp>
-                  <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight mb-6">
-                    {t('services_3_title')}
-                  </h2>
-                </SlideUp>
-                <SlideUp>
-                  <p className="font-medium text-lg md:text-xl text-gray-300 leading-relaxed">
-                    {t('services_3_text')}
-                  </p>
-                </SlideUp>
-              </div>
-
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {[
-                  { 
-                    Icon: HiSparkles, 
-                    title: t('services_3_card_1'), 
-                    description: t('services_3_card_1_description'),
-                  },
-                  { 
-                    Icon: BiTargetLock, 
-                    title: t('services_3_card_2'), 
-                    description: t('services_3_card_2_description'),
-                  },
-                  { 
-                    Icon: BiMessageSquareDetail, 
-                    title: t('services_3_card_3'), 
-                    description: t('services_3_card_3_description'),
-                  },
-                  { 
-                    Icon: BiRocket, 
-                    title: t('services_3_card_4'), 
-                    description: t('services_3_card_4_description'),
-                  }
-                ].map((solution, index) => (
-                  <SlideUp key={index}>
-                    <div className="flex flex-col items-center text-center bg-gradient-to-br from-gray-900 to-black border-2 border-gray-800 rounded-2xl p-8 transition-all duration-500 hover:border-white hover:scale-105 group h-full">
-                      <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-4 rounded-2xl mb-6 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                        <solution.Icon className="text-5xl text-white" />
-                      </div>
-                      <h3 className="font-extrabold text-xl md:text-2xl mb-4">{solution.title}</h3>
-                      <p className="font-medium text-sm md:text-base text-gray-300 leading-relaxed">{solution.description}</p>
-                    </div>
-                  </SlideUp>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
         </div>
+      </section>
 
-        {/* 4️⃣ SERVICIOS - Fondo blanco */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-white text-black">
-          <AnimatedSection>
-            <div className="max-w-[1500px] w-full px-5 2xl:px-0 flex flex-col items-center gap-16">
-              <div className="text-center ">
-                <SlideUp>
-                  <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight mb-6">
-                    {t('services_4_title')}
-                  </h2>
-                </SlideUp>
-                <SlideUp>
-                  <p className="font-medium text-lg md:text-xl text-gray-600 leading-relaxed">
-                    {t('services_4_text')}
-                  </p>
-                </SlideUp>
-              </div>
+      {/* ──────────────────────── SERVICIOS ──────────────────────── */}
+      <section className="bg-ink-50 text-ink-700">
+        <div className="container-page section-y">
+          <Reveal>
+            <p className="eyebrow text-accent mb-6">{t('sv_what_eyebrow')}</p>
+            <h2 className="text-display-lg text-gradient-dark max-w-3xl">
+              {t('sv_what_title')}
+            </h2>
+          </Reveal>
 
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                {[
-                  {
-                    Icon: HiOutlineGlobeAlt,
-                    title: t('services_4_card_1'),
-                    features: [
-                      t('services_4_card_1_feature_1'),
-                      t('services_4_card_1_feature_2'),
-                      t('services_4_card_1_feature_3'),
-                      t('services_4_card_1_feature_4'),
-                      t('services_4_card_1_feature_5'),
-                      t('services_4_card_1_feature_6')
-                    ],
-                    ideal: t('services_4_card_1_ideal')
-                  },
-                  {
-                    Icon: HiOutlineLightningBolt,
-                    title: t('services_4_card_2'),
-                    features: [
-                      t('services_4_card_2_feature_1'),
-                      t('services_4_card_2_feature_2'),
-                      t('services_4_card_2_feature_3'),
-                      t('services_4_card_2_feature_4'),
-                      t('services_4_card_2_feature_5'),
-                      t('services_4_card_2_feature_6')
-                    ],
-                    ideal: t('services_4_card_2_ideal')
-                  },
-                  {
-                    Icon: HiOutlineCode,
-                    title: t('services_4_card_3'),
-                    features: [
-                      t('services_4_card_3_feature_1'),
-                      t('services_4_card_3_feature_2'),
-                      t('services_4_card_3_feature_3'),
-                      t('services_4_card_3_feature_4'),
-                      t('services_4_card_3_feature_5'),
-                      t('services_4_card_3_feature_6')
-                    ],
-                    ideal: t('services_4_card_3_ideal')
-                  },
-                  {
-                    Icon: HiOutlineRefresh,
-                    title: t('services_4_card_4'),
-                    features: [
-                      t('services_4_card_4_feature_1'),
-                      t('services_4_card_4_feature_2'),
-                      t('services_4_card_4_feature_3'),
-                      t('services_4_card_4_feature_4'),
-                      t('services_4_card_4_feature_5'),
-                      t('services_4_card_4_feature_6')
-                    ],
-                    ideal: t('services_4_card_4_ideal')
-                  }
-                ].map((service, index) => (
-                  <SlideUp key={index}>
-                    <div className="flex flex-col bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 rounded-2xl p-8 transition-all duration-500 hover:scale-105 hover:border-black hover:shadow-2xl h-full group">
-                      <div className="bg-black text-white p-4 rounded-xl mb-6 inline-flex items-center justify-center w-fit transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                        <service.Icon className="text-4xl" />
-                      </div>
-                      <h3 className="font-extrabold text-2xl md:text-3xl mb-6">{service.title}</h3>
-                      
-                      <ul className="flex flex-col gap-3 mb-6 flex-grow">
-                        {service.features.map((feature, i) => (
-                          <li key={i} className="flex items-start gap-3">
-                            <span className="text-green-600 text-xl mt-1 flex-shrink-0">✓</span>
-                            <span className="font-medium text-sm md:text-base text-gray-700">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      <div className="pt-4 border-t-2 border-gray-200">
-                        <p className="text-xs md:text-sm font-bold text-gray-500 mb-4">{service.ideal}</p>
-                        <Button onClick={handleContactClick}>
-                          {t('services_4_button')}
-                        </Button>
-                      </div>
-                    </div>
-                  </SlideUp>
-                ))}
-              </div>
-
-              <SlideUp>
-                <div className="bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-2xl p-8 md:p-10 text-center ">
-                  <p className="font-bold text-xl md:text-2xl text-gray-800 mb-2">
-                     {t('services_4_text_2')}
-                  </p>
-                  <p className="font-medium text-base md:text-lg text-gray-600 mb-3">
-                    {t('services_4_text_3')}
-                  </p>
-                  <Button onClick={handleContactClick}>
-                    {t('services_4_button_2')}
-                  </Button>
-                </div>
-              </SlideUp>
-            </div>
-          </AnimatedSection>
-        </div>
-
-        {/* 5️⃣ POR QUÉ TRABAJAR CONTIGO - Fondo negro */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-gradient-to-b from-black via-gray-900 to-black text-white">
-          <AnimatedSection>
-            <div className="max-w-[1500px] w-full px-5 2xl:px-0 flex flex-col items-center gap-16">
-              <div className="text-center ">
-                <SlideUp>
-                  <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight mb-6">
-                    {t('services_5_title')}
-                  </h2>
-                </SlideUp>
-                <SlideUp>
-                  <p className="font-medium text-lg md:text-xl text-gray-300 leading-relaxed">
-                    {t('services_5_text')}
-                  </p>
-                </SlideUp>
-              </div>
-
-              <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-                {[
-                  {
-                    Icon: BsBriefcase,
-                    title: t('services_5_card_1'),
-                    description: t('services_5_card_1_description'),
-                  },
-                  {
-                    Icon: BsBullseye,
-                    title: t('services_5_card_2'),
-                    description: t('services_5_card_2_description'),
-                  },
-                  {
-                    Icon: FaHandshake,
-                    title: t('services_5_card_3'),
-                    description: t('services_5_card_3_description'),
-                  },
-                  {
-                    Icon: BsChatDots,
-                    title: t('services_5_card_4'),
-                    description: t('services_5_card_4_description'),
-                  }
-                ].map((reason, index) => (
-                  <SlideUp key={index}>
-                    <div className="flex flex-col lg:flex-row items-start gap-6 bg-gradient-to-br from-gray-900 to-black border-2 border-gray-800 rounded-2xl p-8 md:p-10 transition-all duration-500 hover:border-white hover:scale-105 group h-[400px] xl:h-[300px]">
-                      <div className="bg-white bg-opacity-10 backdrop-blur-md border border-white border-opacity-20 p-4 rounded-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                        <reason.Icon className="text-4xl text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-extrabold text-2xl md:text-3xl mb-4">{reason.title}</h3>
-                        <p className="font-medium text-base md:text-lg text-gray-300 leading-relaxed">{reason.description}</p>
-                      </div>
-                    </div>
-                  </SlideUp>
-                ))}
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-
-        {/* 6️⃣ QUIÉN ERES - Fondo blanco mejorado */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-gradient-to-br from-white via-gray-50 to-white text-black">
-          <AnimatedSection>
-            <div className="max-w-[1500px] flex flex-col md:flex-row items-center gap-16 px-5 2xl:px-0">
-              <SlideLeft>
-                <div className="w-full md:w-2/5 flex justify-center relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl blur-2xl opacity-20 transform scale-105"></div>
-                  <img 
-                    src="/Icons/img1.webp" 
-                    alt="Camilo Taborda" 
-                    className="relative w-80 h-80 md:w-96 md:h-96 object-cover rounded-2xl shadow-2xl border-4 border-black transition-transform duration-500 hover:scale-105"
-                  />
-                </div>
-              </SlideLeft>
-
-              <SlideRight>
-                <div className="w-full md:w-3/5 flex flex-col gap-8 text-center md:text-left">
-                  <div>
-                    <p className="text-sm md:text-base font-bold text-gray-500 mb-3 uppercase tracking-wider">
-                    {t('services_about_me')}
-                    </p>
-                    <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
-                      {t('services_name')}
-                    </h2>
-                  </div>
-                  
-                  <div className="space-y-5">
-                    <p className="font-medium text-lg md:text-xl leading-relaxed text-gray-700">
-                      {t('services_text_1')}
-                    </p>
-                    <p className="font-medium text-lg md:text-xl leading-relaxed text-gray-700">
-                      {t('services_text_2')} <span className="font-bold text-black">{t('services_text_2_span')}</span> {t('services_text_2_2')}
-                    </p>
-                    <p className="font-medium text-lg md:text-xl leading-relaxed text-gray-700">
-                      {t('services_text_3')} <span className="font-bold text-black">{t('services_text_3_span')}</span>, {t('services_text_3_2')}
-                    </p>
+          <div className="mt-20 grid gap-6 md:grid-cols-2">
+            {SERVICES.map(({ n, Icon }, i) => (
+              <Reveal key={n} delay={i * 0.08}>
+                <article className="card-light flex h-full flex-col p-9 lg:p-11
+                                    hover:shadow-[0_8px_40px_rgba(0,0,0,0.07)] hover:-translate-y-1">
+                  <div className="mb-8 flex items-center gap-4">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-ink-700 text-white">
+                      <Icon className="h-5 w-5" />
+                    </span>
+                    <span className="text-caption tabular-nums text-ink-300">0{n}</span>
                   </div>
 
-                  <div className="flex gap-6 justify-center md:justify-start pt-4">
-                    <a 
-                      href="https://www.linkedin.com/in/camilo-taborda-20724917a/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-black text-white p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-gray-800"
-                    >
-                      <img 
-                        src="/Icons/linkedin.webp" 
-                        alt="LinkedIn" 
-                        className="w-8 h-8 filter invert brightness-200" 
-                      />
-                    </a>
-                    <a 
-                      href="https://github.com/CamiloTaborda" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-black text-white p-4 rounded-xl transition-all duration-300 hover:scale-110 hover:bg-gray-800"
-                    >
-                      <img 
-                        src="/Icons/github.webp" 
-                        alt="GitHub" 
-                        className="w-8 h-8 filter invert brightness-200" 
-                      />
-                    </a>
-                  </div>
-                </div>
-              </SlideRight>
-            </div>
-          </AnimatedSection>
-        </div>
+                  <h3 className="text-display-sm">{t(`sv_${n}_title`)}</h3>
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-500">
+                    {t(`sv_${n}_text`)}
+                  </p>
 
-        {/* 7️⃣ CTA FINAL - Fondo negro con efecto especial */}
-        <div className="relative flex flex-col justify-center items-center w-full min-h-screen py-20 md:py-24 bg-black text-white overflow-hidden">
-          {/* Efecto de fondo animado */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"></div>
+                  <div className="mt-9">
+                    <p className="text-caption uppercase tracking-widest text-ink-300">
+                      {t('sv_includes')}
+                    </p>
+                    <ul className="mt-4 flex flex-col gap-2.5">
+                      {[1, 2, 3, 4, 5].map((f) => (
+                        <li key={f} className="flex items-start gap-3 text-[0.9375rem] text-ink-600">
+                          <svg className="mt-[7px] h-3 w-3 flex-shrink-0 text-accent" viewBox="0 0 12 12"
+                               fill="none" aria-hidden="true">
+                            <path d="M2 6.2l2.6 2.6L10 3.4" stroke="currentColor" strokeWidth="1.8"
+                                  strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          {t(`sv_${n}_f${f}`)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* mt-auto en el envoltorio: alinea el bloque final abajo en
+                      todas las tarjetas aunque las listas midan distinto. */}
+                  <div className="mt-auto pt-9">
+                    <div className="border-t border-ink-700/10 pt-7">
+                      <p className="text-[0.8125rem] text-ink-400">
+                        <span className="text-ink-300">{t('sv_for')}: </span>
+                        {t(`sv_${n}_for`)}
+                      </p>
+                      <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
+                         className="btn-ghost-dark mt-6">
+                        {t('sv_quote')}
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
-
-          <AnimatedSection>
-            <div className="max-w-[1000px] flex flex-col items-center text-center gap-10 px-5 2xl:px-0 relative z-10">
-              <SlideUp>
-                <AiOutlineRocket className="text-7xl md:text-8xl text-white mb-4" />
-              </SlideUp>
-
-              <SlideUp>
-                <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl leading-tight">
-                  {t('services_cta_title')}
-                </h2>
-              </SlideUp>
-
-              <SlideUp>
-                <p className="font-medium text-lg md:text-xl xl:text-2xl text-gray-300  leading-relaxed">
-                  {t('services_cta_text')}
-                </p>
-              </SlideUp>
-
-              <SlideUp>
-                <div className="flex flex-col sm:flex-row mt-5">
-                <Button onClick={handleContactClick}>
-                <FaPhoneAlt size={16} />
-                 {t('services_cta_button')}
-                </Button>
-                </div>
-              </SlideUp>
-
-              <SlideUp>
-                <div className="flex flex-col md:flex-row items-center gap-8 mt-8 text-gray-400">
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_cta_1')}</span>
-                  </div>
-                  <div className="hidden md:block w-px h-6"><span>•</span></div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_cta_2')}</span>
-                  </div>
-                  <div className="hidden md:block w-px h-6"><span>•</span></div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm md:text-base font-medium">✓ {t('services_cta_3')}</span>
-                  </div>
-                </div>
-              </SlideUp>
-            </div>
-          </AnimatedSection>
         </div>
+      </section>
 
-      </div>
-    </Layout>
+      {/* ───────────────────────── PROCESO ───────────────────────── */}
+      <section className="border-t border-white/[0.08]">
+        <div className="container-page section-y">
+          <Reveal>
+            <p className="eyebrow mb-6">{t('sv_process_eyebrow')}</p>
+            <h2 className="text-display-lg text-gradient-light max-w-3xl">
+              {t('sv_process_title')}
+            </h2>
+          </Reveal>
+
+          <ol className="mt-20 grid gap-x-8 gap-y-14 sm:grid-cols-2 xl:grid-cols-4">
+            {[1, 2, 3, 4].map((s, i) => (
+              <Reveal key={s} delay={i * 0.08}>
+                <li className="relative pt-8 border-t border-white/[0.12]">
+                  {/* El número vive en el borde superior, como en una tabla de contenidos */}
+                  <span className="absolute -top-[9px] left-0 bg-ink pr-4 text-caption tabular-nums text-accent-soft">
+                    0{s}
+                  </span>
+                  <h3 className="text-display-sm">{t(`sv_step_${s}_title`)}</h3>
+                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink-400">
+                    {t(`sv_step_${s}_text`)}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ────────────────────────── POR QUÉ ────────────────────────── */}
+      <section className="bg-ink-50 text-ink-700">
+        <div className="container-page section-y">
+          <div className="grid gap-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
+            <Reveal>
+              <p className="eyebrow text-accent mb-6">{t('sv_why_eyebrow')}</p>
+              <h2 className="text-display-md text-gradient-dark lg:sticky lg:top-32">
+                {t('sv_why_title')}
+              </h2>
+            </Reveal>
+
+            <div className="grid gap-x-10 gap-y-12 sm:grid-cols-2">
+              {[1, 2, 3, 4].map((w, i) => (
+                <Reveal key={w} delay={i * 0.08}>
+                  <h3 className="text-display-sm">{t(`sv_why_${w}_title`)}</h3>
+                  <p className="mt-3.5 text-[0.9375rem] leading-relaxed text-ink-500">
+                    {t(`sv_why_${w}_text`)}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────── CTA FINAL ─────────────────────── */}
+      <section className="relative overflow-hidden border-t border-white/[0.08]">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              'radial-gradient(ellipse 50% 50% at 50% 100%, rgba(0,113,227,0.15) 0%, transparent 70%)',
+          }}
+        />
+        <div className="container-page section-y relative z-10">
+          <Reveal className="flex flex-col items-center text-center">
+            <h2 className="text-display-lg text-gradient-light max-w-3xl">
+              {t('sv_cta_title')}
+            </h2>
+            <p className="mt-7 max-w-xl text-body-lg text-ink-300">
+              {t('sv_cta_text')}
+            </p>
+            <div className="mt-11 flex flex-col sm:flex-row items-center gap-4">
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-accent">
+                {t('sv_cta_primary')}
+              </a>
+              <Link to="/portfolio" className="btn-ghost-light">
+                {t('sv_cta_secondary')}
+              </Link>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+    </main>
   );
 };
 

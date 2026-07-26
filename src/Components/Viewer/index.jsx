@@ -33,16 +33,17 @@ const MyModel = () => {
   if (!supported) return null;
 
   return (
-    <div className="w-full h-full bg-white">
+    // Fondo transparente: el color lo pone la seccion que lo contiene.
+    <div className="w-full h-full">
       <model-viewer
         ref={modelRef}
         src="/3dModels/Bike.glb"
-        alt="A 3D model"
+        alt="Modelo 3D interactivo de una bicicleta"
         auto-rotate
         loading="lazy"
         disable-zoom
         camera-orbit="0deg 75deg 2.5m"
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
       ></model-viewer>
     </div>
   );

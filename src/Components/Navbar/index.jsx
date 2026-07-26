@@ -1,177 +1,165 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import Button from "../Button";
+
+const LINKS = [
+  { to: '/',          key: 'home'      },
+  { to: '/servicios', key: 'services'  },
+  { to: '/portfolio', key: 'portfolio' },
+  { to: '/sobre-mi',  key: 'about'     },
+  { to: '/contacto',  key: 'contact'   },
+];
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // En refs, no en estado: antes lastScrollY estaba en las dependencias del
-  // efecto, asi que el listener se desuscribia y volvia a suscribirse en cada
-  // evento de scroll.
-  const lastScrollY = useRef(0);
-  const isMenuOpenRef = useRef(isMenuOpen);
-  isMenuOpenRef.current = isMenuOpen;
-
-  const activeStyle = 'underline underline-offset-8 decoration-2';
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const toggleLanguage = () => {
-    const newLanguage = i18n.language === 'es' ? 'en' : 'es';
-    i18n.changeLanguage(newLanguage);
-  };
+  // El idioma detectado puede venir como 'es-CO': nos quedamos con la base.
+  const lang = i18n.language?.split('-')[0] === 'en' ? 'en' : 'es';
+  const menuOpenRef = useRef(menuOpen);
+  menuOpenRef.current = menuOpen;
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-
-      // Con el menú móvil abierto no ocultamos la barra
-      if (isMenuOpenRef.current) return;
-
-      setIsScrolled(currentScrollY > 20);
-
-      // Ocultar al bajar, mostrar al subir
-      setIsVisible(!(currentScrollY > lastScrollY.current && currentScrollY > 100));
-
-      lastScrollY.current = currentScrollY;
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Con el menú móvil abierto bloqueamos el scroll del fondo.
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
+  // Escape cierra el menú.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const toggleLanguage = () => i18n.changeLanguage(lang === 'es' ? 'en' : 'es');
+
+  const linkClass = ({ isActive }) =>
+    `text-[0.8125rem] transition-colors duration-400 ease-smooth ${
+      isActive ? 'text-white' : 'text-ink-300 hover:text-white'
+    }`;
+
   return (
-    <nav
-      className={`flex justify-between items-center fixed z-50 w-full py-5 px-8 text-md font-bold top-0 transition-all duration-500 ${
-        isScrolled ? 'bg-black shadow-lg' : 'bg-transparent'
-      } ${
-        isVisible ? 'translate-y-0' : '-translate-y-full'
-      } text-white`}
-    >
-      <div className="w-full max-w-[1500px] mx-auto flex justify-between items-center">
-        {/* Logo */}
-        <ul className="flex items-center">
-          <li className="font-extrabold text-4xl">
-            <NavLink to="/">CamiloT</NavLink>
-          </li>
-        </ul>
+    <>
+      <header
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-600 ease-smooth ${
+          // Opacidad alta a propósito: con menos, el texto blanco se vuelve
+          // ilegible cuando la barra pasa sobre las secciones de fondo claro.
+          scrolled || menuOpen
+            ? 'bg-ink/85 backdrop-blur-2xl backdrop-saturate-150 border-b border-white/[0.08]'
+            : 'bg-transparent border-b border-transparent'
+        }`}
+      >
+        <nav className="container-page flex items-center justify-between h-12 sm:h-14">
+          <NavLink
+            to="/"
+            className="text-[0.9375rem] font-semibold tracking-tight text-white"
+            onClick={() => setMenuOpen(false)}
+          >
+            Camilo Taborda
+          </NavLink>
 
-        {/* Botón de menú hamburguesa */}
-        <div className="lg:hidden cursor-pointer z-[60]" onClick={toggleMenu}>
-          <div className={`w-8 h-0.5 bg-white mb-2 rounded-lg transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-2.5' : ''}`} />
-          <div className={`w-8 h-0.5 bg-white mb-2 rounded-lg transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`} />
-          <div className={`w-8 h-0.5 bg-white rounded-lg transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-2.5' : ''}`} />
-        </div>
-
-        {/* Menú Escritorio */}
-        <div className="hidden lg:flex items-center gap-10">
-          {/* Menú central - Portfolio personal */}
-          <ul className="flex items-center gap-10">
-            <li>
-              <NavLink to="/" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('home')}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/sobre-mi" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('about')}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/portfolio" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('portfolio')}
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/contacto" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('contact')}
-              </NavLink>
-            </li>
-            <li
-              className="text-white flex justify-center items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
-              onClick={toggleLanguage}
-            >
-              <p>{i18n.language === 'es' ? 'ES' : 'EN'}</p>
-              <img
-                className="w-5 h-auto"
-                src={i18n.language === 'es' ? '/Icons/colombia.webp' : '/Icons/estados-unidos.webp'}
-                alt="lang"
-              />
-            </li>
+          {/* Escritorio */}
+          <ul className="hidden md:flex items-center gap-9">
+            {LINKS.map((l) => (
+              <li key={l.to}>
+                <NavLink to={l.to} end={l.to === '/'} className={linkClass}>
+                  {t(l.key)}
+                </NavLink>
+              </li>
+            ))}
           </ul>
 
-          {/* Separador visual */}
-          <div className="h-8 w-px bg-white/30"></div>
+          <div className="hidden md:flex items-center gap-5">
+            <button
+              type="button"
+              onClick={toggleLanguage}
+              className="text-[0.8125rem] text-ink-300 hover:text-white transition-colors duration-400"
+              aria-label={lang === 'es' ? 'Switch to English' : 'Cambiar a español'}
+            >
+              {lang === 'es' ? 'EN' : 'ES'}
+            </button>
+            <a
+              href="https://wa.me/573052737622"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full bg-white px-4 py-1.5 text-[0.8125rem] font-medium text-ink-700
+                         hover:bg-ink-100 transition-colors duration-400 ease-smooth"
+            >
+              {t('contact_me')}
+            </a>
+          </div>
 
-          {/* Botón Servicios - Área comercial */}
-          <Button onClick={() => navigate('/servicios')}>
-            {t('services')}
-          </Button>
+          {/* Botón hamburguesa: <button> real, accesible por teclado */}
+          <button
+            type="button"
+            className="md:hidden -mr-2 p-2"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className="sr-only">Menú</span>
+            <div className="flex flex-col justify-center w-5 h-5 gap-[5px]">
+              <span className={`block h-px w-full bg-white transition-all duration-400 ease-smooth ${
+                menuOpen ? 'translate-y-[3px] rotate-45' : ''}`} />
+              <span className={`block h-px w-full bg-white transition-all duration-400 ease-smooth ${
+                menuOpen ? '-translate-y-[3px] -rotate-45' : ''}`} />
+            </div>
+          </button>
+        </nav>
+      </header>
+
+      {/* Móvil */}
+      <div
+        id="mobile-menu"
+        className={`md:hidden fixed inset-0 z-40 bg-ink/95 backdrop-blur-2xl transition-all duration-500 ease-smooth ${
+          menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
+        }`}
+      >
+        <div className="container-page flex flex-col justify-center min-h-screen gap-1 pb-16">
+          {LINKS.map((l, i) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === '/'}
+              onClick={() => setMenuOpen(false)}
+              className={({ isActive }) =>
+                `py-3 text-display-sm transition-all duration-500 ease-smooth ${
+                  isActive ? 'text-white' : 'text-ink-400'
+                } ${menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`
+              }
+              style={{ transitionDelay: menuOpen ? `${i * 45 + 80}ms` : '0ms' }}
+            >
+              {t(l.key)}
+            </NavLink>
+          ))}
+
+          <div className="mt-10 flex items-center gap-4">
+            <a
+              href="https://wa.me/573052737622"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMenuOpen(false)}
+              className="btn-primary"
+            >
+              {t('contact_me')}
+            </a>
+            <button type="button" onClick={toggleLanguage} className="btn-ghost-light">
+              {lang === 'es' ? 'EN' : 'ES'}
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Menú móvil optimizado */}
-      {isMenuOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-[55] w-full h-screen left-0 top-0">
-          <ul className="flex flex-col items-center gap-8 w-full">
-            <li className="text-white text-3xl" onClick={toggleMenu}>
-              <NavLink to="/" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('home')}
-              </NavLink>
-            </li>
-            <li className="text-white text-3xl" onClick={toggleMenu}>
-              <NavLink to="/sobre-mi" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('about')}
-              </NavLink>
-            </li>
-            <li className="text-white text-3xl" onClick={toggleMenu}>
-              <NavLink to="/portfolio" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('portfolio')}
-              </NavLink>
-            </li>
-            <li className="text-white text-3xl" onClick={toggleMenu}>
-              <NavLink to="/contacto" className={({ isActive }) => (isActive ? activeStyle : undefined)}>
-                {t('contact')}
-              </NavLink>
-            </li>
-
-            {/* Separador en móvil */}
-            <div className="w-32 h-px bg-white/30 my-2"></div>
-
-            {/* Botón Servicios destacado en móvil */}
-            <li onClick={toggleMenu}>
-              <Button onClick={() => navigate('/servicios')}>
-                {t('services')}
-              </Button>
-            </li>
-
-            <li 
-              className="text-white cursor-pointer flex flex-col items-center gap-3 pt-4"
-              onClick={() => {
-                toggleLanguage();
-                toggleMenu();
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <p className="text-2xl">{i18n.language === 'es' ? 'ES' : 'EN'}</p>
-                <img
-                  className="w-8"
-                  src={i18n.language === 'es' ? '/Icons/colombia.webp' : '/Icons/estados-unidos.webp'}
-                  alt="flag"
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
-      )}
-    </nav>
+    </>
   );
 };
 

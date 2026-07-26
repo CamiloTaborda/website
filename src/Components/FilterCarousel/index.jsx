@@ -1,11 +1,12 @@
 import { useRef, useCallback } from 'react';
 
-const FilterCarousel = ({ categories, activeFilter, onFilterChange }) => {
-  const filterButtonRefs = useRef({});
+const FilterCarousel = ({ categories, activeFilter, onFilterChange, label, counts }) => {
+  const buttonRefs = useRef({});
 
   const handleClick = useCallback((id) => {
     onFilterChange(id);
-    filterButtonRefs.current[id]?.scrollIntoView({
+    // En móvil la fila desborda: centramos el filtro elegido.
+    buttonRefs.current[id]?.scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
       inline: 'center',
@@ -13,24 +14,38 @@ const FilterCarousel = ({ categories, activeFilter, onFilterChange }) => {
   }, [onFilterChange]);
 
   return (
-    <div className="relative w-full mb-16 px-4">
-      <div className="overflow-x-auto scrollbar-hide">
-        <div className="flex md:justify-center gap-4 min-w-max md:min-w-0 md:flex-wrap pb-2">
-          {categories.map((cat) => (
+    <div className="overflow-x-auto scrollbar-hide -mx-6 px-6 sm:mx-0 sm:px-0">
+      <div
+        role="tablist"
+        aria-label={label}
+        className="flex min-w-max gap-2 sm:min-w-0 sm:flex-wrap"
+      >
+        {categories.map((cat) => {
+          const isActive = activeFilter === cat.id;
+          return (
             <button
               key={cat.id}
-              ref={(el) => (filterButtonRefs.current[cat.id] = el)}
+              ref={(el) => (buttonRefs.current[cat.id] = el)}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
               onClick={() => handleClick(cat.id)}
-              className={`flex-shrink-0 px-6 py-2 rounded-full font-bold transition-all duration-300 border-2 ${
-                activeFilter === cat.id
-                  ? 'bg-black text-white border-black scale-105'
-                  : 'bg-transparent text-gray-400 border-gray-200 hover:border-black hover:text-black'
+              className={`flex-shrink-0 rounded-full px-5 py-2.5 text-[0.875rem]
+                          transition-all duration-400 ease-smooth ${
+                isActive
+                  ? 'bg-white text-ink-700'
+                  : 'border border-white/12 text-ink-300 hover:border-white/30 hover:text-white'
               }`}
             >
               {cat.label}
+              {counts?.[cat.id] != null && (
+                <span className={`ml-2 tabular-nums ${isActive ? 'text-ink-400' : 'text-ink-500'}`}>
+                  {counts[cat.id]}
+                </span>
+              )}
             </button>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );

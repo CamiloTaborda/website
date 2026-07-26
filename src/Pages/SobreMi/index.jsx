@@ -1,18 +1,45 @@
+import { Suspense, lazy } from "react";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
-import Layout from "../../Components/Layout";
-import Diplomas from "../../Components/Diplomas";
-import ScrollArrow from "../../Components/ScrollArrow";
-import AnimatedSection from "../../Animations/AnimatedSection";
-import SlideDown from "../../Animations/SlideDown";
-import SlideLeft from "../../Animations/SlideLeft";
-import SlideRight from "../../Animations/SlideRight";
-import SlideUp from "../../Animations/SlideUp";
-import Ribbons from "../../Components/Ribbons";
+import Reveal from "../../Animations/Reveal";
 import SafeVisual from "../../Components/SafeVisual";
+import Diplomas from "../../Components/Diplomas";
 
-// Fuera del componente: un array inline se recrea en cada render.
-const RIBBON_COLORS = ['#007BFF'];
+const Ribbons = lazy(() => import("../../Components/Ribbons"));
+
+// Fuera del componente: un array inline se recrea en cada render y haría que
+// Ribbons reconstruya su escena WebGL.
+const RIBBON_COLORS = ['#0071e3'];
+
+const WHATSAPP =
+  "https://wa.me/573052737622?text=Hola%20Camilo,%20me%20gustar%C3%ADa%20hablar%20contigo";
+
+const EXPERIENCE = [
+  { n: 1, url: 'https://ardatatech.co/' },
+  { n: 2, url: 'https://www.77renderstudio.com/' },
+];
+
+const STACK = [
+  {
+    key: 'am_stack_front',
+    items: ['JavaScript (ES6+)', 'TypeScript', 'React.js', 'Next.js', 'Three.js',
+            'React Three Fiber', 'model-viewer', 'Realidad Aumentada', 'Tailwind CSS',
+            'GSAP', 'Framer Motion'],
+  },
+  {
+    key: 'am_stack_back',
+    items: ['Supabase', 'Autenticación', 'REST APIs', 'Python', 'Django'],
+  },
+  {
+    key: 'am_stack_tools',
+    items: ['Git & GitHub', 'Vite', 'Vercel', 'Claude Code'],
+  },
+];
+
+const SOCIAL = [
+  { href: 'https://www.linkedin.com/in/camilo-taborda-20724917a/', label: 'LinkedIn' },
+  { href: 'https://github.com/CamiloTaborda',                      label: 'GitHub'   },
+];
 
 const SobreMi = () => {
   const t = useCustomTranslation();
@@ -24,157 +51,223 @@ const SobreMi = () => {
   });
 
   return (
-    <Layout background={{ backgroundColor: "black" }}>
-      <div className="flex flex-col justify-between items-center w-full text-white h-auto overflow-auto">
-        
-        {/* Sección superior con imagen y presentación - PANTALLA COMPLETA */}
-        <div className="relative flex flex-col w-full min-h-screen md:flex-row">
-          
-          {/* Contenedor de la imagen */}
-          <div
-            className="relative flex justify-center items-end w-full h-[50vh] min-h-[400px] md:h-full md:min-h-screen bg-cover bg-center animate-slide-in-left md:w-1/2"
-            style={{ backgroundImage: "url('/Icons/img1.webp')" }}
-          >
-            <div
-              className="absolute inset-0 bg-black opacity-100"
-              style={{
-                background: "linear-gradient(to right, transparent, black)",
-              }}
-            />
-            <div className="flex gap-5 mb-10 pt-3 w-full justify-center relative z-10">
-              <a href="https://www.linkedin.com/in/camilo-taborda-20724917a/" target="_blank" rel="noopener noreferrer">
-                <img src="/Icons/linkedin.webp" alt="LinkedIn" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
-              </a>
-              <a href="https://github.com/CamiloTaborda" target="_blank" rel="noopener noreferrer">
-                <img src="/Icons/github.webp" alt="GitHub" className="animate-slide-in-up w-8 h-8 filter invert brightness-200 transition-transform duration-200 transform hover:scale-110" />
-              </a>
-            </div>
+    <main className="bg-ink text-white">
+
+      {/* ───────────────────────── HERO ───────────────────────── */}
+      <section className="relative overflow-hidden pt-36 pb-24 sm:pt-44 sm:pb-32">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-70"
+          style={{
+            background:
+              'radial-gradient(ellipse 60% 50% at 70% 0%, rgba(0,113,227,0.15) 0%, transparent 70%)',
+          }}
+        />
+
+        <div className="container-page relative z-10">
+          <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
+            <Reveal>
+              {/* La foto en 4:5, sin marcos ni sombras de colores */}
+              <div className="relative overflow-hidden rounded-3xl ring-1 ring-white/10">
+                <img
+                  src="/Icons/img1.webp"
+                  alt="Camilo Taborda"
+                  width="1200"
+                  height="1500"
+                  className="aspect-[4/5] w-full object-cover"
+                />
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <p className="eyebrow mb-7">{t('am_eyebrow')}</p>
+              <h1 className="text-display-xl text-gradient-light">{t('am_name')}</h1>
+
+              <p className="mt-5 text-body-lg text-ink-200">
+                {t('am_role')}
+                <span className="mx-2.5 text-ink-500">·</span>
+                <span className="text-ink-400">{t('am_location')}</span>
+              </p>
+
+              <div className="mt-9 flex flex-col gap-5 max-w-prose">
+                <p className="text-body text-ink-300">{t('am_intro_1')}</p>
+                <p className="text-body text-ink-300">{t('am_intro_2')}</p>
+              </div>
+
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                {SOCIAL.map((s) => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                     className="btn-ghost-light">
+                    {s.label}
+                  </a>
+                ))}
+                <a href="/CV/cv-camilo-taborda.pdf" download className="btn-ghost-light">
+                  {t('am_cta_secondary')}
+                </a>
+              </div>
+            </Reveal>
           </div>
-
-          {/* Contenedor de texto */}
-          <div className="flex flex-col justify-center w-full min-h-[50vh] md:h-full md:min-h-screen p-8 md:w-1/2 md:p-10 animate-slide-in-right">
-            <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 leading-snug text-center md:text-left">{t("my_name")}
-            </h1>
-            <p className="font-medium max-w-3xl leading-relaxed text-center md:text-left text-base md:text-md xl:text-lg 2xl:text-xl">
-            {t("my_description_1")}
-              <br />
-              <br />
-              {t("my_description_2")}
-            </p>
-          </div>
-          <ScrollArrow />
         </div>
+      </section>
 
-        {/* Sección de habilidades con Ribbons - PANTALLA COMPLETA */}
-        {/* Sección de habilidades con Ribbons - PANTALLA COMPLETA */}
-<div className="relative flex flex-col justify-center items-center w-full min-screen py-16 md:py-20 bg-white text-black overflow-hidden">
-  
-  {/* Ribbons como fondo interactivo */}
-  <div className="absolute inset-0 w-full h-full z-20">
-    <SafeVisual>
-      <Ribbons
-        baseThickness={15}
-        colors={RIBBON_COLORS}
-        speedMultiplier={0.5}
-        maxAge={500}
-        enableFade={false}
-        enableShaderEffect={true}
-      />
-    </SafeVisual>
-  </div>
+      {/* ──────────────────────── EXPERIENCIA ──────────────────────── */}
+      <section className="border-t border-white/[0.08]">
+        <div className="container-page section-y">
+          <Reveal>
+            <p className="eyebrow mb-6">{t('am_exp_eyebrow')}</p>
+            <h2 className="text-display-lg text-gradient-light max-w-3xl">
+              {t('am_exp_title')}
+            </h2>
+          </Reveal>
 
-  <div className="relative w-full h-full flex items-center justify-center">
-    <AnimatedSection>
-      <div className="max-w-[1600px] flex flex-col justify-center items-center w-full h-full px-5 md:px-10 mx-auto gap-8 md:gap-12">
-        
-        {/* Título y descripción centrados */}
-        <div className="flex flex-col items-center text-center max-w-4xl animate-slide-in-up">
-          <h1 className="font-extrabold text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-4 md:mb-6 leading-tight">
-            {t("mySkills")}
-          </h1>
-          <p className="font-medium leading-relaxed text-base md:text-lg xl:text-xl 2xl:text-2xl opacity-90">
-            {t("skillsDescription")}
-          </p>
-        </div>
-
-        {/* Grid de tecnologías optimizado */}
-        <div className="flex justify-center items-center w-full max-w-6xl pb-12 md:pb-0">
-          <div className="w-full grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 md:gap-6 z-20">
-            {[
-              { name: "JavaScript", icon: "js.webp", shadow: "hover:shadow-yellow-500/50", Anim: SlideRight },
-              { name: "HTML5", icon: "html-5.webp", shadow: "hover:shadow-orange-500/50", Anim: SlideDown },
-              { name: "CSS3", icon: "css-3.webp", shadow: "hover:shadow-blue-400/50", Anim: SlideLeft },
-              { name: "React.js", icon: "react.webp", shadow: "hover:shadow-cyan-400/50", Anim: SlideRight },
-              { name: "Next.js", icon: "next-logo.webp", shadow: "hover:shadow-gray-600/50", Anim: SlideUp },
-              { name: "Three.js", icon: "three-js-icon.webp", shadow: "hover:shadow-gray-800/50", Anim: SlideLeft },
-              { name: "Tailwind", icon: "tailwind.webp", shadow: "hover:shadow-cyan-300/50", Anim: SlideDown },
-              { name: "Supabase", icon: "supabase.webp", shadow: "hover:shadow-emerald-500/50", Anim: SlideUp },
-            ].map((skill, index) => (
-              <skill.Anim key={index}>
-                <div className={`group relative flex justify-center items-center aspect-square bg-white bg-opacity-40 backdrop-blur-md border-2 border-white border-opacity-50 rounded-2xl p-4 md:p-6 transition-all duration-300 hover:scale-110 hover:bg-opacity-60 hover:shadow-2xl ${skill.shadow}`}>
-                  <img 
-                    src={`/Icons/${skill.icon}`} 
-                    alt={skill.name} 
-                    className="w-full h-full object-contain transition-transform duration-300 group-hover:rotate-6" 
-                  />
-                  {/* Tooltip Dinámico */}
-                  <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap text-[10px] md:text-xs font-bold bg-black text-white px-3 py-1 rounded-full z-30">
-                    {skill.name}
+          <div className="mt-20 flex flex-col gap-16">
+            {EXPERIENCE.map(({ n, url }, i) => (
+              <Reveal key={n} delay={i * 0.08}>
+                <article className="grid gap-8 border-t border-white/[0.12] pt-10 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-16">
+                  <div>
+                    <p className="text-caption tabular-nums text-accent-soft">
+                      {t(`am_exp_${n}_period`)}
+                    </p>
+                    <h3 className="mt-4 text-display-sm">
+                      <a href={url} target="_blank" rel="noopener noreferrer"
+                         className="transition-colors duration-400 ease-smooth hover:text-accent-soft">
+                        {t(`am_exp_${n}_company`)}
+                      </a>
+                    </h3>
+                    <p className="mt-2 text-[0.9375rem] text-ink-400">
+                      {t(`am_exp_${n}_role`)}
+                    </p>
                   </div>
-                </div>
-              </skill.Anim>
+
+                  <div>
+                    <p className="text-body text-ink-300 max-w-prose">
+                      {t(`am_exp_${n}_text`)}
+                    </p>
+                    <ul className="mt-8 flex flex-wrap gap-2.5">
+                      {[1, 2, 3].map((h) => (
+                        <li key={h}
+                            className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2
+                                       text-[0.8125rem] text-ink-200">
+                          {t(`am_exp_${n}_h${h}`)}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
-      </div>
-    </AnimatedSection>
-  </div>
-</div>
+      </section>
 
-        {/* Sección de experiencia - PANTALLA COMPLETA */}
-        <div className="flex flex-col justify-center items-center w-full min-h-screen py-16 md:py-20 bg-black text-white">
-          <h1 className="font-extrabold text-white text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl mb-8 md:mb-12 leading-snug px-5 text-center">{t("myExperience")}</h1>
-          <div className="max-w-[1500px] w-[90%] md:w-[80%] flex flex-col md:flex-row justify-center gap-8 md:gap-10 pb-8 md:pb-0">
-            {/* Sección de 77 Render Studio */}
-           <div
-            onClick={() => window.open("https://www.77renderstudio.com/", "_blank")}  
-            className="flex flex-col justify-center items-center cursor-pointer w-full md:w-1/2 px-5 md:px-8 border border-transparent rounded-lg bg-[#191919] p-8 md:p-10 transition-all duration-500 ease-in-out hover:border-[#ffffff]">
-              <AnimatedSection>
-                <div className="w-full h-full flex flex-col justify-center items-center">
-                  <h2 className="font-extrabold text-white text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-6xl mb-5 leading-snug text-center">{t("77RenderStudio")}</h2>
-                  <p className="font-medium max-w-3xl leading-relaxed text-center text-base md:text-md xl:text-lg 2xl:text-xl">
-                  {t("77RenderStudioDescription")}
-                  </p>
-                  <SlideUp>
-                  <img className="w-10 mt-5 transition-transform duration-200 transform hover:scale-110" src="/Icons/77-logo.webp" alt="77 Render Studio Logo" />
-                  </SlideUp>
-                </div>
-              </AnimatedSection>
-            </div>
-
-            {/* Sección de Ardata Tech */}
-            <div
-            onClick={() => window.open("https://ardatatech.co/", "_blank")} 
-            className="flex flex-col justify-center items-center cursor-pointer w-full md:w-1/2 px-5 md:px-8 border border-transparent rounded-lg bg-[#191919] p-8 md:p-10 transition-all duration-500 ease-in-out hover:border-[#ffffff]">
-              <AnimatedSection>
-                <div className="w-full h-full flex flex-col justify-center items-center">
-                  <h2 className="font-extrabold text-white text-2xl md:text-3xl lg:text-3xl xl:text-4xl 2xl:text-6xl mb-5 leading-snug text-center">{t("ArdataTech")}</h2>
-                  <p className="font-medium max-w-3xl leading-relaxed text-center text-base md:text-md xl:text-lg 2xl:text-xl">
-                  {t("ArdataTechDescription")}
-                  </p>
-                  <SlideUp>
-                  <img className="w-10 mt-5 transition-transform duration-200 transform hover:scale-110" src="/Icons/logo-color.webp" alt="Ardata Tech Logo" />
-                  </SlideUp>
-                </div>
-              </AnimatedSection>
-            </div>
-          </div>
+      {/* ────────────────────────── STACK ────────────────────────── */}
+      <section className="relative overflow-hidden bg-ink-50 text-ink-700">
+        {/* Ribbons como fondo sutil: es un guiño a lo que construyo, no un
+            protagonista. Va detrás del contenido y sin capturar el puntero. */}
+        <div className="pointer-events-none absolute inset-0 opacity-[0.13]">
+          <SafeVisual>
+            <Suspense fallback={null}>
+              <Ribbons
+                baseThickness={12}
+                colors={RIBBON_COLORS}
+                speedMultiplier={0.4}
+                maxAge={420}
+                enableFade={false}
+                enableShaderEffect
+              />
+            </Suspense>
+          </SafeVisual>
         </div>
 
-        {/* Sección de educación */}
-        <Diplomas />
-      </div>
-    </Layout>
+        <div className="container-page section-y relative z-10">
+          <Reveal>
+            <p className="eyebrow text-accent mb-6">{t('am_stack_eyebrow')}</p>
+            <h2 className="text-display-lg text-gradient-dark max-w-3xl">
+              {t('am_stack_title')}
+            </h2>
+          </Reveal>
+
+          <div className="mt-20 grid gap-x-10 gap-y-14 md:grid-cols-2 xl:grid-cols-4">
+            {STACK.map((group, i) => (
+              <Reveal key={group.key} delay={i * 0.07}>
+                <h3 className="border-b border-ink-700/15 pb-4 text-caption uppercase tracking-widest text-ink-400">
+                  {t(group.key)}
+                </h3>
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {group.items.map((tech) => (
+                    <li key={tech}
+                        className="rounded-full border border-ink-700/12 bg-white px-4 py-2
+                                   text-[0.8125rem] text-ink-600">
+                      {tech}
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            ))}
+
+            <Reveal delay={0.21}>
+              <h3 className="border-b border-ink-700/15 pb-4 text-caption uppercase tracking-widest text-ink-400">
+                {t('am_stack_lang')}
+              </h3>
+              <ul className="mt-5 flex flex-col gap-3">
+                <li className="text-[0.9375rem] text-ink-600">{t('am_lang_es')}</li>
+                <li className="text-[0.9375rem] text-ink-600">{t('am_lang_en')}</li>
+              </ul>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────────────────────── FORMACIÓN ───────────────────────── */}
+      <section className="border-t border-white/[0.08]">
+        <div className="container-page section-y">
+          <Reveal>
+            <p className="eyebrow mb-6">{t('am_edu_eyebrow')}</p>
+            <h2 className="text-display-lg text-gradient-light max-w-3xl">
+              {t('am_edu_title')}
+            </h2>
+            <p className="mt-7 max-w-prose text-body text-ink-300">
+              {t('am_edu_text')}
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="mt-12">
+              <Diplomas />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─────────────────────── CTA FINAL ─────────────────────── */}
+      <section className="relative overflow-hidden border-t border-white/[0.08]">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              'radial-gradient(ellipse 50% 50% at 50% 100%, rgba(0,113,227,0.15) 0%, transparent 70%)',
+          }}
+        />
+        <div className="container-page section-y relative z-10">
+          <Reveal className="flex flex-col items-center text-center">
+            <h2 className="text-display-lg text-gradient-light max-w-3xl">
+              {t('am_cta_title')}
+            </h2>
+            <p className="mt-7 max-w-xl text-body-lg text-ink-300">
+              {t('am_cta_text')}
+            </p>
+            <div className="mt-11 flex flex-col sm:flex-row items-center gap-4">
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" className="btn-accent">
+                {t('am_cta_primary')}
+              </a>
+              <a href="/CV/cv-camilo-taborda.pdf" download className="btn-ghost-light">
+                {t('am_cta_secondary')}
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+    </main>
   );
 };
 
