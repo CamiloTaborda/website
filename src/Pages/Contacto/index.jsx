@@ -19,6 +19,9 @@ const Contacto = () => {
   const t = useCustomTranslation();
   const uid = useId();
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  // Honeypot: campo invisible para personas. Si viene con contenido, quien
+  // envió el formulario es un bot rellenando todos los campos del DOM.
+  const [trap, setTrap] = useState("");
   const [state, setState] = useState('idle');
 
   useSeo({
@@ -33,13 +36,24 @@ const Contacto = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (state === 'sending') return;
+
+    // Bot detectado: fingimos éxito y descartamos. Mostrar un error le diría
+    // al bot qué campo evitar en el siguiente intento.
+    if (trap) {
+      setState('ok');
+      setForm({ name: "", email: "", message: "" });
+      return;
+    }
+
     setState('sending');
 
     try {
       const res = await fetch(FORMSPREE, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(form),
+        // _gotcha es el nombre que Formspree reconoce como honeypot: si llega
+        // con contenido, descarta el envío también del lado del servidor.
+        body: JSON.stringify({ ...form, _gotcha: trap }),
       });
 
       if (res.ok) {
@@ -165,6 +179,23 @@ const Contacto = () => {
                 <h2 className="text-display-sm">{t('ct_form_title')}</h2>
 
                 <form onSubmit={handleSubmit} className="mt-9 flex flex-col gap-6" noValidate={false}>
+                  {/* Honeypot. Fuera de pantalla en vez de display:none, porque
+                      algunos bots ignoran los campos ocultos por CSS. Sin
+                      tabIndex ni autocompletado, así que ninguna persona que
+                      navegue con teclado o lector de pantalla lo encuentra. */}
+                  <div className="absolute left-[-9999px] top-0 h-px w-px overflow-hidden" aria-hidden="true">
+                    <label htmlFor={`${uid}-company`}>No completar este campo</label>
+                    <input
+                      id={`${uid}-company`}
+                      type="text"
+                      name="_gotcha"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={trap}
+                      onChange={(e) => setTrap(e.target.value)}
+                    />
+                  </div>
+
                   <div>
                     <label htmlFor={`${uid}-name`} className={labelClass}>
                       {t('ct_form_name')}

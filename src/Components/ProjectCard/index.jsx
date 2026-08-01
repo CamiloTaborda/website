@@ -14,9 +14,10 @@ const ProjectCard = memo(({ item, t }) => (
     aria-label={`${item.caption} — ${t('pf_open')}`}
     className="group block focus:outline-none"
   >
-    {/* Marco del video. aspect-video (16:9) coincide con el material grabado:
-        con otra proporción, object-cover recortaría parte de la interfaz. */}
-    <div className="relative aspect-video overflow-hidden rounded-3xl bg-ink-800
+    {/* Marco del video. 21:10 se aproxima a la proporción que quedó tras
+        recortar las franjas negras de las grabaciones (~2,1:1), así que
+        object-cover apenas tiene que recortar nada de la interfaz. */}
+    <div className="relative aspect-[21/10] overflow-hidden rounded-3xl bg-ink-800
                     ring-1 ring-white/10 transition-all duration-600 ease-smooth
                     group-hover:ring-white/25
                     group-focus-visible:ring-2 group-focus-visible:ring-accent-soft">

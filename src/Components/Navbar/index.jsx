@@ -1,6 +1,8 @@
 import { NavLink } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+
+const FOCUSABLES = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const LINKS = [
   { to: '/',          key: 'home'      },
@@ -19,6 +21,8 @@ const Navbar = () => {
   const lang = i18n.language?.split('-')[0] === 'en' ? 'en' : 'es';
   const menuOpenRef = useRef(menuOpen);
   menuOpenRef.current = menuOpen;
+  const panelRef = useRef(null);
+  const burgerRef = useRef(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -33,12 +37,48 @@ const Navbar = () => {
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  // Escape cierra el menú.
-  useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+  // Escape cierra el menú y el foco vuelve al botón que lo abrió: si no, el
+  // tabulador continuaría desde el principio del documento.
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    burgerRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    // Al abrir, llevamos el foco dentro del panel.
+    const items = () => [...panel.querySelectorAll(FOCUSABLES)];
+    items()[0]?.focus();
+
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        closeMenu();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+
+      // Ciclo cerrado: el tabulador no sale del menú mientras esté abierto.
+      const list = items();
+      if (list.length === 0) return;
+      const primero = list[0];
+      const ultimo = list[list.length - 1];
+
+      if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primero.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen, closeMenu]);
 
   const toggleLanguage = () => i18n.changeLanguage(lang === 'es' ? 'en' : 'es');
 
@@ -100,6 +140,7 @@ const Navbar = () => {
 
           {/* Botón hamburguesa: <button> real, accesible por teclado */}
           <button
+            ref={burgerRef}
             type="button"
             className="md:hidden -mr-2 p-2"
             onClick={() => setMenuOpen((v) => !v)}
@@ -121,6 +162,11 @@ const Navbar = () => {
       {/* Móvil */}
       <div
         id="mobile-menu"
+        ref={panelRef}
+        // inert saca todo el panel del orden de tabulación cuando está cerrado;
+        // sin esto, el foco entraba en enlaces invisibles.
+        inert={menuOpen ? undefined : ''}
+        aria-hidden={!menuOpen}
         className={`md:hidden fixed inset-0 z-40 bg-ink/95 backdrop-blur-2xl transition-all duration-500 ease-smooth ${
           menuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
