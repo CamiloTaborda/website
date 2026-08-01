@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 
+// Mismo orden que el navbar: primero el recorrido personal y al final la
+// vía comercial, para que la navegación se lea igual en todo el sitio.
 const NAV = [
-  { to: '/servicios', key: 'services'  },
   { to: '/portfolio', key: 'portfolio' },
   { to: '/sobre-mi',  key: 'about'     },
   { to: '/contacto',  key: 'contact'   },
+  { to: '/servicios', key: 'services'  },
 ];
 
 const SOCIAL = [

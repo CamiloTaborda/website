@@ -4,13 +4,17 @@ import { useTranslation } from "react-i18next";
 
 const FOCUSABLES = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
+// Recorrido personal: quién soy y qué he construido.
 const LINKS = [
   { to: '/',          key: 'home'      },
-  { to: '/servicios', key: 'services'  },
   { to: '/portfolio', key: 'portfolio' },
   { to: '/sobre-mi',  key: 'about'     },
   { to: '/contacto',  key: 'contact'   },
 ];
+
+// Servicios va aparte: es la vía comercial, con otra intención y otro
+// público. Agrupado con el resto se leía como una sección más del portfolio.
+const SERVICES_LINK = { to: '/servicios', key: 'services' };
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -116,6 +120,15 @@ const Navbar = () => {
                 </NavLink>
               </li>
             ))}
+
+            {/* Divisor: marca dónde termina el recorrido personal */}
+            <li aria-hidden="true" className="h-3.5 w-px bg-white/15" />
+
+            <li>
+              <NavLink to={SERVICES_LINK.to} className={linkClass}>
+                {t(SERVICES_LINK.key)}
+              </NavLink>
+            </li>
           </ul>
 
           <div className="hidden md:flex items-center gap-5">
@@ -188,6 +201,21 @@ const Navbar = () => {
               {t(l.key)}
             </NavLink>
           ))}
+
+          {/* Misma separación que en escritorio: línea y aire antes de la
+              vía comercial. */}
+          <NavLink
+            to={SERVICES_LINK.to}
+            onClick={() => setMenuOpen(false)}
+            className={({ isActive }) =>
+              `mt-5 border-t border-white/[0.12] pt-8 text-display-sm transition-all duration-500 ease-smooth ${
+                isActive ? 'text-white' : 'text-ink-400'
+              } ${menuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`
+            }
+            style={{ transitionDelay: menuOpen ? `${LINKS.length * 45 + 80}ms` : '0ms' }}
+          >
+            {t(SERVICES_LINK.key)}
+          </NavLink>
 
           <div className="mt-10 flex items-center gap-4">
             <a
