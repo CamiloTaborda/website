@@ -53,10 +53,13 @@ const Home = () => {
     <main className="bg-ink text-white">
 
       {/* ───────────────────────── HERO ───────────────────────── */}
-      <section className="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden px-6">
+      {/* Sin overflow-hidden en la sección: recortaba el menú de descarga del
+          CV en pantallas de menos de ~700px de alto. La contención la hace
+          el contenedor del efecto, que es lo único que puede desbordar. */}
+      <section className="relative min-h-[100svh] flex flex-col items-center justify-center px-6">
         <div className="absolute inset-0 bg-ink" />
 
-        <div className="absolute inset-0 opacity-70">
+        <div className="absolute inset-0 overflow-hidden opacity-70">
           <SafeVisual>
             <Suspense fallback={null}>
               <LiquidEther
@@ -112,8 +115,10 @@ const Home = () => {
                 </svg>
               </button>
 
+              {/* z-40 explícito: sin él, la sección siguiente (que abre su
+                  propio contexto de apilamiento) se dibujaba encima. */}
               {cvOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-44 overflow-hidden
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-44 z-40 overflow-hidden
                                 rounded-2xl border border-white/10 bg-ink-800/95 backdrop-blur-xl
                                 shadow-2xl animate-fade-in">
                   <a href="/CV/cv-camilo-taborda-es.pdf" download
