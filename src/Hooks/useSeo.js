@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const SITE_URL = 'https://www.camilotaborda.dev';
+export const SITE_URL = 'https://camilotaborda.dev';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 /**
