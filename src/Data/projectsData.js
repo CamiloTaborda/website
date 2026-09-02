@@ -3,7 +3,7 @@ export const projects = [
     src: "/Video/video3.mp4",
     img: "/Icons/foto-1.webp",
     caption: "Modular Configurator",
-    link: "https://static.ardatatech.co/full-modular-2/",
+    link: "https://modular.ardatatech.co",
     category: "3d_config",
     tools: ["React", "Three.js", "WebGL", "GSAP", "Tailwind.CSS"]
   },

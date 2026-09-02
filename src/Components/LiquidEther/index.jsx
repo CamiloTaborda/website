@@ -1167,9 +1167,13 @@ export default function LiquidEther({
   ]);
 
   return (
+    // touch-pan-y y no touch-none: con "none" el navegador no gestiona ningun
+    // gesto sobre este nodo, y como el efecto cubre toda la primera pantalla,
+    // en movil el dedo no podia hacer scroll. Con "pan-y" el scroll vertical
+    // vuelve a ser del navegador y el efecto conserva el movimiento lateral.
     <div
       ref={mountRef}
-      className={`w-full h-full relative overflow-hidden touch-none ${className || ''}`}
+      className={`w-full h-full relative overflow-hidden touch-pan-y ${className || ''}`}
       style={style}
     />
   );
