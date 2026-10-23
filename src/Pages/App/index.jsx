@@ -38,7 +38,8 @@ const ScrollToTop = () => {
   return null;
 };
 
-const App = () => (
+// Exportado aparte para que el prerender lo envuelva en un StaticRouter.
+export const App = () => (
   <div className="flex flex-col min-h-screen">
     <ScrollToTop />
     <Navbar />

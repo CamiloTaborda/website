@@ -5,11 +5,7 @@ import useSeo from "../../Hooks/useSeo";
 const NotFound = () => {
   const t = useCustomTranslation();
 
-  useSeo({
-    title: t('seo_notfound_title'),
-    description: t('seo_notfound_description'),
-    path: '/404',
-  });
+  useSeo('/404');
 
   return (
     <main className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-ink text-white">

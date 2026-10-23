@@ -5,7 +5,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
-  { ignores: ['dist'] },
+  { ignores: ['dist', 'dist-ssr'] },
   {
     files: ['**/*.{js,jsx}'],
     languageOptions: {
@@ -44,6 +44,17 @@ export default [
     languageOptions: {
       globals: { ...globals.node },
       sourceType: 'module',
+    },
+  },
+  {
+    // Prerender: se ejecuta en Node durante el build. entry-server exporta
+    // datos además del render, y nunca pasa por el fast refresh del dev server.
+    files: ['scripts/**/*.js', 'src/entry-server.jsx'],
+    languageOptions: {
+      globals: { ...globals.node },
+    },
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
 ]

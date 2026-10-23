@@ -15,7 +15,8 @@ const MyModel = lazy(() => import('../../Components/Viewer'));
 const STACK = [
   'JavaScript', 'TypeScript', 'React', 'Next.js', 'Three.js',
   'React Three Fiber', 'model-viewer', 'Tailwind CSS', 'GSAP',
-  'Framer Motion', 'Supabase', 'REST APIs', 'Python', 'Git', 'Vercel',
+  'Framer Motion', 'Supabase', 'REST APIs', 'Python', 'Django', 'Git',
+  'Vercel', 'DigitalOcean', 'AWS',
 ];
 
 const Home = () => {
@@ -23,11 +24,7 @@ const Home = () => {
   const [cvOpen, setCvOpen] = useState(false);
   const cvTimer = useRef(null);
 
-  useSeo({
-    title: t('seo_home_title'),
-    description: t('seo_home_description'),
-    path: '/',
-  });
+  useSeo('/');
 
   // Pequeño retardo al salir para que el puntero pueda viajar del botón al
   // menú sin que se cierre debajo del cursor.

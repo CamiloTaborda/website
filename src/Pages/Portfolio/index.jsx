@@ -15,11 +15,7 @@ const Portfolio = () => {
   const t = useCustomTranslation();
   const [activeFilter, setActiveFilter] = useState(CATEGORY_IDS.ALL);
 
-  useSeo({
-    title: t('seo_portfolio_title'),
-    description: t('seo_portfolio_description'),
-    path: '/portfolio',
-  });
+  useSeo('/portfolio');
 
   const categories = useMemo(() => getCategories(t), [t]);
 
@@ -67,7 +63,7 @@ const Portfolio = () => {
       {/* ──────────────────────── PROYECTOS ──────────────────────── */}
       <section className="pb-28 sm:pb-36">
         <div className="container-page">
-          {/* Los filtros quedan fijos al hacer scroll: con 11 proyectos evita
+          {/* Los filtros quedan fijos al hacer scroll: con una docena de proyectos evita
               tener que volver arriba para cambiar de categoría. */}
           <div className="sticky top-12 z-30 -mx-6 mb-16 border-b border-white/[0.08]
                           bg-ink/85 px-6 py-5 backdrop-blur-2xl sm:top-14 sm:mx-0 sm:rounded-2xl

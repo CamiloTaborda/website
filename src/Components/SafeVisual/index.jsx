@@ -8,15 +8,24 @@ import { Component } from 'react';
  * virtuales, escritorio remoto, drivers viejos, politicas corporativas).
  *
  * Son adornos: si fallan, la pagina debe seguir funcionando sin ellos.
+ *
+ * Tampoco se montan hasta que el componente vive en el navegador: el HTML
+ * prerenderizado no puede contener WebGL, y model-viewer ni siquiera se puede
+ * importar fuera de un navegador. Renderizar null en el servidor y en el
+ * primer render del cliente mantiene la hidratacion consistente.
  */
 class SafeVisual extends Component {
   constructor(props) {
     super(props);
-    this.state = { failed: false };
+    this.state = { failed: false, mounted: false };
   }
 
   static getDerivedStateFromError() {
     return { failed: true };
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true });
   }
 
   componentDidCatch(error) {
@@ -25,6 +34,7 @@ class SafeVisual extends Component {
 
   render() {
     if (this.state.failed) return this.props.fallback ?? null;
+    if (!this.state.mounted) return null;
     return this.props.children;
   }
 }

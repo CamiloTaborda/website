@@ -17,8 +17,8 @@ especializado en React, Three.js y configuradores 3D.
 ```bash
 npm install
 npm run dev        # servidor de desarrollo
-npm run build      # build de producción en dist/
-npm run preview    # sirve dist/ localmente
+npm run build      # build de producción + prerender de cada ruta en dist/
+npx serve dist     # sirve dist/ como Vercel (URLs limpias y 404 real)
 npm run lint       # ESLint (debe salir en 0)
 ```
 
@@ -27,14 +27,18 @@ npm run lint       # ESLint (debe salir en 0)
 ```
 public/            assets servidos desde la raíz (/Icons/..., /Video/...)
 src/
-  Animations/      wrappers de framer-motion (SlideUp, SlideLeft, ...)
+  Animations/      Reveal: entrada al hacer scroll con framer-motion
   Components/      componentes reutilizables
   Data/            datos de proyectos y categorías
   DiplomasData/    listado de certificados
   Hooks/           useCustomTranslation, useSeo
   Locales/         traducciones es / en (van al bundle)
   Pages/           una carpeta por ruta
+  Seo/             rutas, cabeceras y JSON-LD (fuente única para prerender y cliente)
   Utils/           helpers (detección de WebGL)
+  entry-server.jsx render de una ruta a HTML, lo usa el prerender
+scripts/
+  prerender.js     HTML de cada ruta, 404.html, sitemap.xml y llms.txt
 ```
 
 ## Notas de mantenimiento
@@ -64,11 +68,31 @@ en JPEG porque WhatsApp no renderiza WebP en los previews al compartir.
 `isWebGLAvailable()` antes de montarse. Sin esa protección, un equipo sin
 aceleración por hardware veía la página completamente en blanco.
 
-**SEO.** Cada página llama a `useSeo({ title, description, path })`. Al añadir una
-ruta nueva hay que sumarla también a `public/sitemap.xml`.
+**SEO, GEO y AEO.** Cada ruta se prerenderiza a HTML estático durante el build:
+`vite build` genera el cliente, `vite build --ssr` compila `src/entry-server.jsx` y
+`scripts/prerender.js` escribe `dist/<ruta>.html` con el contenido, la cabecera
+(title, description, canonical, Open Graph) y el JSON-LD de esa ruta. Los
+rastreadores de los motores de IA no ejecutan JavaScript: sin esto solo veían un
+`<div>` vacío.
+
+- El HTML estático va en español. En el navegador, React hidrata ese HTML si el
+  visitante usa español y renderiza desde cero si usa inglés.
+- Los efectos WebGL no se prerenderizan: `SafeVisual` los monta después de
+  hidratar. Un componente que toque `window` o `document` durante el render (no
+  dentro de un efecto) rompe el build.
+- **Ruta nueva:** añadirla a `ROUTES` en `src/Seo/site.js`, crear las claves
+  `seo_<nombre>_title` y `seo_<nombre>_description` en las traducciones y llamar a
+  `useSeo('/ruta')` en la página. El sitemap y `llms.txt` se generan solos.
+- **Proyecto nuevo:** basta con añadirlo a `src/Data/projectsData.js`; el JSON-LD
+  del portfolio y `llms.txt` lo recogen en el siguiente build.
+- Las preguntas frecuentes de Servicios (`sv_faq_*`) se muestran en la página y se
+  publican como `FAQPage` desde las mismas claves.
 
 ## Despliegue
 
-`vercel.json` cubre Vercel; `public/_redirects` cubre Netlify y Cloudflare Pages.
-Ambos redirigen todas las rutas a `index.html` — sin eso, recargar `/servicios`
-devuelve 404.
+Vercel. `cleanUrls` sirve `servicios.html` en `/servicios`, y una ruta que no
+existe recibe `404.html` con estado 404 real. Ya no hay un rewrite general a
+`index.html`, que respondía 200 a cualquier URL inventada.
+
+Los PDF de `public/CV/` se sirven con `Content-Disposition: attachment` para que
+se descarguen siempre, también en navegadores que ignoran el atributo `download`.

@@ -32,7 +32,7 @@ const STACK = [
   },
   {
     key: 'am_stack_tools',
-    items: ['Git & GitHub', 'Vite', 'Vercel', 'Claude Code'],
+    items: ['Git & GitHub', 'Vite', 'Vercel', 'DigitalOcean', 'AWS', 'Claude Code'],
   },
 ];
 
@@ -44,11 +44,7 @@ const SOCIAL = [
 const SobreMi = () => {
   const t = useCustomTranslation();
 
-  useSeo({
-    title: t('seo_about_title'),
-    description: t('seo_about_description'),
-    path: '/sobre-mi',
-  });
+  useSeo('/sobre-mi');
 
   return (
     <main className="bg-ink text-white">
@@ -143,7 +139,7 @@ const SobreMi = () => {
                       {t(`am_exp_${n}_text`)}
                     </p>
                     <ul className="mt-8 flex flex-wrap gap-2.5">
-                      {[1, 2, 3].map((h) => (
+                      {[1, 2, 3, 4].map((h) => (
                         <li key={h}
                             className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2
                                        text-[0.8125rem] text-ink-200">

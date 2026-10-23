@@ -24,11 +24,7 @@ const Contacto = () => {
   const [trap, setTrap] = useState("");
   const [state, setState] = useState('idle');
 
-  useSeo({
-    title: t('seo_contact_title'),
-    description: t('seo_contact_description'),
-    path: '/contacto',
-  });
+  useSeo('/contacto');
 
   const handleChange = (e) =>
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
