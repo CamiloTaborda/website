@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 
 // Margen de precarga: empezamos a bajar el video cuando está a 300px de
-// entrar en pantalla, para no descargar los 11 de golpe.
+// entrar en pantalla, para no descargarlos todos de golpe.
 const PRELOAD_MARGIN = '300px';
 
 /**

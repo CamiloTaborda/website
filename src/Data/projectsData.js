@@ -1,5 +1,13 @@
 export const projects = [
   {
+    src: "/Video/video12.mp4",
+    img: "/Icons/foto-12.webp",
+    caption: "Aerodyne X1 — Drone Configurator",
+    link: "https://product-tour-lemon.vercel.app/",
+    category: "3d_config",
+    tools: ["React", "React Three Fiber", "Three.js", "Vercel"]
+  },
+  {
     src: "/Video/video3.mp4",
     img: "/Icons/foto-1.webp",
     caption: "Modular Configurator",
