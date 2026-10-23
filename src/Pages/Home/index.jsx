@@ -4,6 +4,7 @@ import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
 import Reveal from "../../Animations/Reveal";
 import SafeVisual from "../../Components/SafeVisual";
+import Faq from "../../Components/Faq";
 
 // Fuera del componente: un array literal inline creaba una referencia nueva en
 // cada render y hacía que LiquidEther reconstruyera toda la escena WebGL.
@@ -251,6 +252,12 @@ const Home = () => {
           </Reveal>
         </div>
       </section>
+
+      {/* ─────────────────────── PREGUNTAS ─────────────────────── */}
+      {/* Justo antes del cierre: resuelve las dudas típicas y deja al visitante
+          frente al botón de contacto. Clara para no encadenar tres secciones
+          oscuras seguidas (stack, preguntas y CTA). */}
+      <Faq tone="light" />
 
       {/* ─────────────────────── CTA FINAL ─────────────────────── */}
       <section className="border-t border-white/[0.08]">

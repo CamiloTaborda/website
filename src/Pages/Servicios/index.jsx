@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
 import Reveal from "../../Animations/Reveal";
-import { faqItems } from "../../Seo/schema";
+import Faq from "../../Components/Faq";
 import {
   HiOutlineSquares2X2,
   HiOutlineCube,
@@ -182,40 +182,8 @@ const Servicios = () => {
       </section>
 
       {/* ──────────────────────── PREGUNTAS ──────────────────────── */}
-      {/* <details> en lugar de un acordeón con estado: la respuesta está en el
-          HTML aunque esté plegada, que es lo que leen los buscadores y los
-          motores de respuesta. Las mismas preguntas van en el JSON-LD. */}
-      <section className="border-t border-white/[0.08]">
-        <div className="container-page section-y">
-          <div className="grid gap-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)]">
-            <Reveal>
-              <p className="eyebrow mb-6">{t('sv_faq_eyebrow')}</p>
-              <h2 className="text-display-md text-gradient-light lg:sticky lg:top-32">
-                {t('sv_faq_title')}
-              </h2>
-            </Reveal>
-
-            <Reveal delay={0.08}>
-              <div className="border-t border-white/[0.12]">
-                {faqItems(t).map(({ q, a }) => (
-                  <details key={q} className="group border-b border-white/[0.12]">
-                    <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-7
-                                        text-display-sm text-white [&::-webkit-details-marker]:hidden">
-                      <h3>{q}</h3>
-                      <svg className="mt-2 h-3.5 w-3.5 flex-shrink-0 text-ink-400 transition-transform duration-400
-                                      ease-smooth group-open:rotate-45"
-                           viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                        <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                      </svg>
-                    </summary>
-                    <p className="max-w-prose pb-8 text-[0.9375rem] leading-relaxed text-ink-300">{a}</p>
-                  </details>
-                ))}
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
+      {/* Las mismas preguntas van en el JSON-LD FAQPage de esta ruta. */}
+      <Faq />
 
       {/* ─────────────────────── CTA FINAL ─────────────────────── */}
       <section className="relative overflow-hidden border-t border-white/[0.08]">
