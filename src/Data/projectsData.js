@@ -1,5 +1,13 @@
 export const projects = [
   {
+    src: "/Video/video13.mp4",
+    img: "/Icons/foto-13.webp",
+    caption: "3D Space Planner",
+    link: "https://3dplanner.ardatatech.co/",
+    category: "3d_config",
+    tools: ["Next.js", "Three.js", "WebGL", "Tailwind CSS"]
+  },
+  {
     src: "/Video/video12.mp4",
     img: "/Icons/foto-12.webp",
     caption: "Aerodyne X1 — Drone Configurator",
