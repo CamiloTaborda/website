@@ -157,9 +157,8 @@ const Contacto = () => {
                     {SOCIAL.map((s) => (
                       <li key={s.label}>
                         <a href={s.href} target="_blank" rel="noopener noreferrer"
-                           className="inline-block rounded-full border border-white/10 bg-white/[0.04] px-4 py-2
-                                      text-[0.8125rem] text-ink-200 transition-colors duration-400 ease-smooth
-                                      hover:border-white/25 hover:text-white">
+                           className="pressable inline-block rounded-full border border-white/10 bg-white/[0.04] px-4 py-2
+                                      text-[0.8125rem] text-ink-200 hover:border-white/25 hover:text-white">
                           {s.label}
                         </a>
                       </li>

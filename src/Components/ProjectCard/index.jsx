@@ -16,10 +16,13 @@ const ProjectCard = memo(({ item, t }) => (
   >
     {/* Marco del video. 21:10 se aproxima a la proporción que quedó tras
         recortar las franjas negras de las grabaciones (~2,1:1), así que
-        object-cover apenas tiene que recortar nada de la interfaz. */}
+        object-cover apenas tiene que recortar nada de la interfaz.
+        Al pulsar, el marco cede un poco al instante (100 ms) y vuelve con la
+        curva suave al soltar: confirma el toque antes de abrir la pestaña. */}
     <div className="relative aspect-[21/10] overflow-hidden rounded-3xl bg-ink-800
-                    ring-1 ring-white/10 transition-all duration-600 ease-smooth
+                    ring-1 ring-white/10 transition-[box-shadow,transform] duration-600 ease-smooth
                     group-hover:ring-white/25
+                    group-active:scale-[0.985] group-active:duration-100 group-active:ease-out
                     group-focus-visible:ring-2 group-focus-visible:ring-accent-soft">
       <div className="absolute inset-0 transition-transform duration-800 ease-smooth group-hover:scale-[1.04]">
         <Video src={item.src} poster={item.img} />

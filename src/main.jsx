@@ -3,6 +3,10 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import i18n from './i18n';
 import Root from './Pages/App';
 
+// Safari en iOS no aplica :active al tocar a menos que la página escuche
+// touchstart. Sin esto, el "press" de botones y tarjetas no existía en iPhone.
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 const container = document.getElementById('root');
 const app = (
   <StrictMode>

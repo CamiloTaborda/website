@@ -1,5 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  // Los hover: solo se aplican en dispositivos con puntero real. En pantallas
+  // táctiles el hover se quedaba "pegado" tras tocar una tarjeta o un botón.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -22,15 +27,21 @@ export default {
       // Escala tipografica con tracking negativo en los tamanos grandes: es lo
       // que separa un titular premium de uno generico. Cuanto mas grande el
       // texto, mas apretado el interletrado.
+      //
+      // Los valores están calibrados para el corte Display de Inter, que el
+      // eje de tamaño óptico activa solo en los titulares (ver App.css). Ese
+      // corte ya trae su propio espaciado ajustado: con el tracking que se
+      // usaba para el corte de texto (-0.045em en el mayor), las letras
+      // llegaban a tocarse.
       fontSize: {
         // Los límites están calculados para que "Diseño, construyo" entre en
         // una sola línea en cualquier ancho: por debajo se parte en móvil,
         // por encima se parte en monitores anchos.
-        'display-2xl': ['clamp(2.25rem, 8.5vw, 7rem)',  { lineHeight: '0.98', letterSpacing: '-0.045em', fontWeight: '600' }],
-        'display-xl':  ['clamp(2.75rem, 7vw, 5.5rem)',  { lineHeight: '1.02', letterSpacing: '-0.04em',  fontWeight: '600' }],
-        'display-lg':  ['clamp(2.25rem, 5vw, 4rem)',    { lineHeight: '1.05', letterSpacing: '-0.035em', fontWeight: '600' }],
-        'display-md':  ['clamp(1.75rem, 3.5vw, 2.75rem)',{ lineHeight: '1.12', letterSpacing: '-0.03em', fontWeight: '600' }],
-        'display-sm':  ['clamp(1.375rem, 2.5vw, 1.875rem)',{ lineHeight: '1.2', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'display-2xl': ['clamp(2.25rem, 8.5vw, 7rem)',  { lineHeight: '0.98', letterSpacing: '-0.028em', fontWeight: '600' }],
+        'display-xl':  ['clamp(2.75rem, 7vw, 5.5rem)',  { lineHeight: '1.02', letterSpacing: '-0.025em', fontWeight: '600' }],
+        'display-lg':  ['clamp(2.25rem, 5vw, 4rem)',    { lineHeight: '1.05', letterSpacing: '-0.022em', fontWeight: '600' }],
+        'display-md':  ['clamp(1.75rem, 3.5vw, 2.75rem)',{ lineHeight: '1.12', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'display-sm':  ['clamp(1.375rem, 2.5vw, 1.875rem)',{ lineHeight: '1.2', letterSpacing: '-0.015em', fontWeight: '600' }],
         'body-lg':     ['clamp(1.0625rem, 1.6vw, 1.3125rem)', { lineHeight: '1.55', letterSpacing: '-0.01em' }],
         'body':        ['1.0625rem', { lineHeight: '1.6', letterSpacing: '-0.005em' }],
         'caption':     ['0.8125rem', { lineHeight: '1.4', letterSpacing: '0.01em' }],

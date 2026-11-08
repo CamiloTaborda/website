@@ -144,8 +144,8 @@ const Navbar = () => {
               href="https://wa.me/573052737622"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full bg-white px-4 py-1.5 text-[0.8125rem] font-medium text-ink-700
-                         hover:bg-ink-100 transition-colors duration-400 ease-smooth"
+              className="pressable rounded-full bg-white px-4 py-1.5 text-[0.8125rem] font-medium text-ink-700
+                         hover:bg-ink-100"
             >
               {t('contact_me')}
             </a>

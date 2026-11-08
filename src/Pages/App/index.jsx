@@ -1,5 +1,6 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { useRoutes, BrowserRouter, useLocation } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import Home from '../Home';
 import Navbar from '../../Components/Navbar';
 import Footer from '../../Components/Footer';
@@ -39,19 +40,24 @@ const ScrollToTop = () => {
 };
 
 // Exportado aparte para que el prerender lo envuelva en un StaticRouter.
+// MotionConfig con reducedMotion="user": si el sistema pide reducir el
+// movimiento, framer-motion deja los fundidos y quita los desplazamientos.
+// La regla CSS de App.css no alcanzaba a estas animaciones.
 export const App = () => (
-  <div className="flex flex-col min-h-screen">
-    <ScrollToTop />
-    <Navbar />
-    <div className="flex-grow">
-      {/* El Spinner solo aparece mientras se descarga el chunk de la ruta,
-          no como retardo fijo en cada carga. */}
-      <Suspense fallback={<Spinner />}>
-        <AppRoutes />
-      </Suspense>
+  <MotionConfig reducedMotion="user">
+    <div className="flex flex-col min-h-screen">
+      <ScrollToTop />
+      <Navbar />
+      <div className="flex-grow">
+        {/* El Spinner solo aparece mientras se descarga el chunk de la ruta,
+            no como retardo fijo en cada carga. */}
+        <Suspense fallback={<Spinner />}>
+          <AppRoutes />
+        </Suspense>
+      </div>
+      <Footer />
     </div>
-    <Footer />
-  </div>
+  </MotionConfig>
 );
 
 const Root = () => (

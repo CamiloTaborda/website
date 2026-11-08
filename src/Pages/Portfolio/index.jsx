@@ -1,5 +1,6 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
 import Reveal from "../../Animations/Reveal";
@@ -10,6 +11,10 @@ import { getCategories, CATEGORY_IDS } from '../../Data/categoriesData';
 
 const WHATSAPP =
   "https://wa.me/573052737622?text=Hola%20Camilo,%20vi%20tu%20portfolio%20y%20me%20interesa%20trabajar%20contigo";
+
+const GRID_SPRING = { type: 'spring', bounce: 0, duration: 0.5 };
+const CARD_HIDDEN = { opacity: 0, scale: 0.96 };
+const CARD_SHOWN = { opacity: 1, scale: 1 };
 
 const Portfolio = () => {
   const t = useCustomTranslation();
@@ -66,7 +71,7 @@ const Portfolio = () => {
           {/* Los filtros quedan fijos al hacer scroll: con más de una docena de proyectos evita
               tener que volver arriba para cambiar de categoría. */}
           <div className="sticky top-12 z-30 -mx-6 mb-16 border-b border-white/[0.08]
-                          bg-ink/85 px-6 py-5 backdrop-blur-2xl sm:top-14 sm:mx-0 sm:rounded-2xl
+                          bg-ink/85 px-6 py-5 backdrop-blur-2xl backdrop-saturate-150 sm:top-14 sm:mx-0 sm:rounded-2xl
                           sm:border sm:border-white/[0.08] sm:px-6">
             <FilterCarousel
               categories={categories}
@@ -80,12 +85,29 @@ const Portfolio = () => {
           {filtered.length === 0 ? (
             <p className="py-20 text-center text-body text-ink-400">{t('pf_empty')}</p>
           ) : (
+            // Al filtrar, las tarjetas que se quedan se desplazan a su nuevo
+            // hueco (layout) y las demás se van encogiéndose un poco: la
+            // grilla se reacomoda en lugar de cambiar de golpe. Son springs,
+            // así que cambiar de filtro a mitad de la transición la redirige.
+            // initial={false}: la primera carga ya llega pintada desde el HTML
+            // prerenderizado y no debe animarse de nuevo.
             <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 md:gap-y-20">
-              {filtered.map((item, i) => (
-                <Reveal key={item.link} delay={(i % 2) * 0.08}>
-                  <ProjectCard item={item} t={t} />
-                </Reveal>
-              ))}
+              <AnimatePresence mode="popLayout" initial={false}>
+                {filtered.map((item, i) => (
+                  <motion.div
+                    key={item.link}
+                    layout
+                    initial={CARD_HIDDEN}
+                    animate={CARD_SHOWN}
+                    exit={CARD_HIDDEN}
+                    transition={GRID_SPRING}
+                  >
+                    <Reveal delay={(i % 2) * 0.08}>
+                      <ProjectCard item={item} t={t} />
+                    </Reveal>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
             </div>
           )}
         </div>

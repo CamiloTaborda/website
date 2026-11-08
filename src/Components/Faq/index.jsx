@@ -53,8 +53,12 @@ const Faq = ({ tone = 'dark' }) => {
             <div className={`border-t ${c.border}`}>
               {faqItems(t).map(({ q, a }) => (
                 <details key={q} className={`group border-b ${c.border}`}>
+                  {/* Al pulsar, la fila se atenúa al instante (75 ms): el
+                      mismo resaltado inmediato de una celda de lista en iOS. */}
                   <summary className={`flex cursor-pointer list-none items-start justify-between gap-6 py-7
-                                       text-display-sm [&::-webkit-details-marker]:hidden ${c.question}`}>
+                                       text-display-sm transition-opacity duration-300
+                                       active:opacity-60 active:duration-75
+                                       [&::-webkit-details-marker]:hidden ${c.question}`}>
                     <h3>{q}</h3>
                     <svg className={`mt-2 h-3.5 w-3.5 flex-shrink-0 transition-transform duration-400
                                      ease-smooth group-open:rotate-45 ${c.icon}`}

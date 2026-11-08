@@ -1,5 +1,6 @@
 import { useState, useRef, Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import useCustomTranslation from "../../Hooks/useCustomTranslation";
 import useSeo from "../../Hooks/useSeo";
 import Reveal from "../../Animations/Reveal";
@@ -20,8 +21,15 @@ const STACK = [
   'Vercel', 'DigitalOcean', 'AWS',
 ];
 
+// Spring críticamente amortiguado (sin rebote): es el valor por defecto de
+// Apple para la interfaz que no viene de un gesto con impulso.
+const SPRING = { type: 'spring', bounce: 0, duration: 0.3 };
+const CV_MENU_HIDDEN = { opacity: 0, scale: 0.94, y: -6, filter: 'blur(6px)' };
+const CV_MENU_SHOWN = { opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' };
+
 const Home = () => {
   const t = useCustomTranslation();
+  const reduceMotion = useReducedMotion();
   const [cvOpen, setCvOpen] = useState(false);
   const cvTimer = useRef(null);
 
@@ -65,7 +73,10 @@ const Home = () => {
                 mouseForce={22}
                 cursorSize={130}
                 resolution={0.45}
-                autoDemo
+                // Con "reducir movimiento" el fondo deja de animarse solo: un
+                // fondo a pantalla completa en movimiento constante es justo
+                // lo que esa preferencia pide evitar. Sigue reaccionando al mouse.
+                autoDemo={!reduceMotion}
                 autoSpeed={0.38}
                 autoIntensity={1.9}
                 autoResumeDelay={2600}
@@ -97,7 +108,14 @@ const Home = () => {
               {t('home_cta_primary')}
             </Link>
 
-            <div className="relative" onMouseEnter={openCv} onMouseLeave={closeCv}>
+            {/* Hover solo con mouse: al tocar en móvil, el navegador simula un
+                hover que abría el menú y el click lo volvía a cerrar al
+                instante, así que en el teléfono nunca llegaba a verse. */}
+            <div
+              className="relative"
+              onPointerEnter={(e) => e.pointerType === 'mouse' && openCv()}
+              onPointerLeave={(e) => e.pointerType === 'mouse' && closeCv()}
+            >
               <button
                 type="button"
                 className="btn-ghost-light"
@@ -114,24 +132,41 @@ const Home = () => {
               </button>
 
               {/* z-40 explícito: sin él, la sección siguiente (que abre su
-                  propio contexto de apilamiento) se dibujaba encima. */}
-              {cvOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-44 z-40 overflow-hidden
-                                rounded-2xl border border-white/10 bg-ink-800/95 backdrop-blur-xl
-                                shadow-2xl animate-fade-in">
-                  <a href="/CV/cv-camilo-taborda-es.pdf" download
-                     onClick={() => setCvOpen(false)}
-                     className="block px-5 py-3.5 text-[0.9375rem] text-ink-200 hover:bg-white/10 hover:text-white transition-colors">
-                    {t('home_cv_es')}
-                  </a>
-                  <div className="h-px bg-white/10" />
-                  <a href="/CV/cv-camilo-taborda.pdf" download
-                     onClick={() => setCvOpen(false)}
-                     className="block px-5 py-3.5 text-[0.9375rem] text-ink-200 hover:bg-white/10 hover:text-white transition-colors">
-                    {t('home_cv_en')}
-                  </a>
-                </div>
-              )}
+                  propio contexto de apilamiento) se dibujaba encima. El
+                  posicionamiento va en un envoltorio aparte porque framer-motion
+                  escribe su propio transform y pisaría el -translate-x-1/2. */}
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-44 z-40">
+                <AnimatePresence>
+                  {cvOpen && (
+                    // Nace del botón (origin-top) y se va por el mismo camino.
+                    // Escala y desenfoque juntos: se lee como un material que
+                    // aparece, no como un simple fundido.
+                    <motion.div
+                      key="cv-menu"
+                      initial={CV_MENU_HIDDEN}
+                      animate={CV_MENU_SHOWN}
+                      exit={CV_MENU_HIDDEN}
+                      transition={SPRING}
+                      className="origin-top overflow-hidden rounded-2xl border border-white/10
+                                 bg-ink-800/95 backdrop-blur-xl backdrop-saturate-150 shadow-2xl"
+                    >
+                      <a href="/CV/cv-camilo-taborda-es.pdf" download
+                         onClick={() => setCvOpen(false)}
+                         className="block px-5 py-3.5 text-[0.9375rem] text-ink-200 transition-colors duration-200
+                                    hover:bg-white/10 hover:text-white active:bg-white/15">
+                        {t('home_cv_es')}
+                      </a>
+                      <div className="h-px bg-white/10" />
+                      <a href="/CV/cv-camilo-taborda.pdf" download
+                         onClick={() => setCvOpen(false)}
+                         className="block px-5 py-3.5 text-[0.9375rem] text-ink-200 transition-colors duration-200
+                                    hover:bg-white/10 hover:text-white active:bg-white/15">
+                        {t('home_cv_en')}
+                      </a>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>

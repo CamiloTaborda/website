@@ -1,4 +1,11 @@
 import { useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
+
+// La pastilla blanca del filtro activo es un solo elemento (layoutId) que viaja
+// de una categoría a otra con un spring sin rebote, en lugar de apagarse en una
+// y encenderse en otra. Si se cambia de filtro a mitad del viaje, el spring
+// sale desde donde está la pastilla en ese momento.
+const PILL_SPRING = { type: 'spring', bounce: 0, duration: 0.4 };
 
 const FilterCarousel = ({ categories, activeFilter, onFilterChange, label, counts }) => {
   const buttonRefs = useRef({});
@@ -30,19 +37,30 @@ const FilterCarousel = ({ categories, activeFilter, onFilterChange, label, count
               role="tab"
               aria-selected={isActive}
               onClick={() => handleClick(cat.id)}
-              className={`flex-shrink-0 rounded-full px-5 py-2.5 text-[0.875rem]
-                          transition-all duration-400 ease-smooth ${
+              className={`pressable relative flex-shrink-0 rounded-full border px-5 py-2.5 text-[0.875rem] ${
                 isActive
-                  ? 'bg-white text-ink-700'
-                  : 'border border-white/12 text-ink-300 hover:border-white/30 hover:text-white'
+                  ? 'border-transparent text-ink-700'
+                  : 'border-white/12 text-ink-300 hover:border-white/30 hover:text-white'
               }`}
             >
-              {cat.label}
-              {counts?.[cat.id] != null && (
-                <span className={`ml-2 tabular-nums ${isActive ? 'text-ink-400' : 'text-ink-500'}`}>
-                  {counts[cat.id]}
-                </span>
+              {isActive && (
+                <motion.span
+                  layoutId="filter-pill"
+                  transition={PILL_SPRING}
+                  className="absolute inset-0 rounded-full bg-white"
+                  aria-hidden="true"
+                />
               )}
+              <span className="relative">
+                {cat.label}
+                {counts?.[cat.id] != null && (
+                  <span className={`ml-2 tabular-nums transition-colors duration-400 ${
+                    isActive ? 'text-ink-400' : 'text-ink-500'
+                  }`}>
+                    {counts[cat.id]}
+                  </span>
+                )}
+              </span>
             </button>
           );
         })}
