@@ -69,10 +69,15 @@ const Portfolio = () => {
       <section className="pb-28 sm:pb-36">
         <div className="container-page">
           {/* Los filtros quedan fijos al hacer scroll: con más de una docena de proyectos evita
-              tener que volver arriba para cambiar de categoría. */}
+              tener que volver arriba para cambiar de categoría. Cuando el nav
+              se esconde al bajar (data-nav-hidden, ver Navbar), suben a
+              ocupar su lugar con la misma duración y curva, para moverse
+              juntos en vez de dejar un hueco arriba. */}
           <div className="sticky top-12 z-30 -mx-6 mb-16 border-b border-white/[0.08]
                           bg-ink/85 px-6 py-5 backdrop-blur-2xl backdrop-saturate-150 sm:top-14 sm:mx-0 sm:rounded-2xl
-                          sm:border sm:border-white/[0.08] sm:px-6">
+                          sm:border sm:border-white/[0.08] sm:px-6
+                          transition-[top] duration-500 ease-smooth
+                          [html[data-nav-hidden]_&]:top-0 sm:[html[data-nav-hidden]_&]:top-4">
             <FilterCarousel
               categories={categories}
               activeFilter={activeFilter}

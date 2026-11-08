@@ -16,6 +16,11 @@ const LINKS = [
 // público. Agrupado con el resto se leía como una sección más del portfolio.
 const SERVICES_LINK = { to: '/servicios', key: 'services' };
 
+// Por encima de esta altura la barra siempre se muestra.
+const TOP_ZONE = 80;
+// Píxeles seguidos en una dirección antes de esconder o mostrar la barra.
+const SCROLL_HYSTERESIS = 10;
+
 const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
@@ -28,12 +33,56 @@ const Navbar = () => {
   const panelRef = useRef(null);
   const burgerRef = useRef(null);
 
+  // La barra se esconde al bajar y vuelve al subir. Solo cambia tras
+  // SCROLL_HYSTERESIS px seguidos en la misma dirección: así un temblor del
+  // dedo o del trackpad no la hace parpadear. Cerca del inicio de la página
+  // siempre está visible. Math.max(…, 0) neutraliza el rebote elástico de iOS
+  // en el borde superior, que da scrollY negativo.
+  const [hiddenByScroll, setHiddenByScroll] = useState(false);
+
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
+    let lastY = Math.max(window.scrollY, 0);
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const y = Math.max(window.scrollY, 0);
+      setScrolled(y > 12);
+
+      if (y < TOP_ZONE) {
+        setHiddenByScroll(false);
+        lastY = y;
+        return;
+      }
+
+      const delta = y - lastY;
+      if (Math.abs(delta) < SCROLL_HYSTERESIS) return;
+      setHiddenByScroll(delta > 0);
+      lastY = y;
+    };
+
+    // Un cálculo por frame como mucho, aunque lleguen varios eventos.
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      cancelAnimationFrame(frame);
+    };
   }, []);
+
+  // Con el menú abierto la barra nunca se esconde: contiene el botón para
+  // cerrarlo.
+  const navHidden = hiddenByScroll && !menuOpen;
+
+  // Otros elementos pegados bajo la barra (los filtros del Portfolio) leen
+  // este atributo para subir a ocupar su lugar cuando se esconde.
+  useEffect(() => {
+    document.documentElement.toggleAttribute('data-nav-hidden', navHidden);
+  }, [navHidden]);
 
   // Con el menú móvil abierto bloqueamos el scroll del fondo.
   useEffect(() => {
@@ -93,8 +142,13 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Se esconde subiendo y vuelve bajando por el mismo camino. Si recibe
+          el foco con el teclado (Tab) mientras está escondida, reaparece:
+          un enlace con foco nunca debe quedar fuera de la pantalla. */}
       <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-600 ease-smooth ${
+        onFocusCapture={() => setHiddenByScroll(false)}
+        className={`fixed top-0 inset-x-0 z-50 transition-[transform,background-color,border-color]
+                    duration-500 ease-smooth ${navHidden ? '-translate-y-full' : 'translate-y-0'} ${
           // Opacidad alta a propósito: con menos, el texto blanco se vuelve
           // ilegible cuando la barra pasa sobre las secciones de fondo claro.
           scrolled || menuOpen
